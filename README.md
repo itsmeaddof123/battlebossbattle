@@ -1,5 +1,5 @@
 # BATTLE BOSS BATTLE
 
-Rise up from nothing and work your way to power in order to fight for the title of Battle Boss in this three-stage confrontation! Compete for resources during the collection round, gear up during the crafting round, and go all out against the Battle Boss and other fighters to claim victory. The winner's prize? Well, if you're going to be the boss of the battle, you'll earn yourself the title of the next game's Battle Boss!
+Start with nothing and work your way to power to claim the title of Battle Boss in this three-part fight! Compete for raw materials to craft your gear and train your stats in the Crafting round, fight in a free-for-all against other players and the Battle Boss during the Battle round, and survive for as long as you can in the ever-increasing toxicity of the Armageddon round. Perform the best across the three rounds to earn the title of next game's Battle Boss!
 
 Made during the gmodstore gamemode competition during the summer of 2020.
