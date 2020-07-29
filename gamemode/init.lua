@@ -245,7 +245,7 @@ function EndCrafting()
             ply:ChooseRank()
         end
     end
-    RemoveMaterials(true)
+    RemoveMaterials(false)
     StartBattle()
 end
 

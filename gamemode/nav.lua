@@ -162,13 +162,14 @@ function RemoveMaterials(removeAll)
                 v:Remove()
             end
         end
+        spawnedMaterials = {}
     else
         for i, v in ipairs(spawnedMaterials) do
-            if IsValid(v) and (math.random(0, 1) >= 0.25) or (v:Health() <= 15) then
-                v:SetPos(v:GetPos() + Vector(0, 0, -50))
-                v:Remove()
+            if IsValid(v) and (math.random(0, 1) >= 0.75 or v:Health() <= 20) then
+                local damage = DamageInfo()
+                damage:SetDamage(20)
+                v:TakeDamageInfo(damage)
             end
         end
     end
-    spawnedMaterials = {}
 end
