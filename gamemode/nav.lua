@@ -3,7 +3,7 @@
 navCenters = navCenters or {}
 spawnedMaterials = spawnedMaterials or {}
 minDistance = minDistance or 1500
-local minNavs = 75
+minNavs = minNavs or 100
 
 -- Types of material entities
 local materials = {
@@ -36,15 +36,17 @@ function InitializeSpawns(retrying)
     -- If this isn't the first attempt, lower the minimum distance between CNavAreas
     if retrying then
         if minDistance >= 500 then
+            minNavs = minNavs - 5
             minDistance = minDistance - 100
-            print("Reducing minimum distance between nav centers to "..tostring(minDistance))
         elseif minDistance >= 100 then
             print("This map may be too small for the game!")
             minDistance = minDistance - 100
+            minNavs = minNavs - 5
         else
             print("This map isn't suitable for the game!")
             return
         end
+        print("Reducing minimum distance between nav centers to "..tostring(minDistance))
     end
 
     -- Checks ever CNavArea on the map
@@ -83,8 +85,9 @@ end
 -- We can calculate that with the following algorithm
 
 -- The average number of materials per entity, calculated from each respective entity script
+-- Numbers added on reduce the frequency of material spawning for balancing
 local matsPerEnt = {
-    bbb_essence = 1.2,
+    bbb_essence = 1.2 + 0.15,
     bbb_stone = 2.2,
     bbb_fur = 1.85,
     bbb_metal = 2.5,
@@ -136,7 +139,7 @@ end
 function SpawnMaterials()
     -- Removes old materials
     RemoveMaterials()
-    local numberOfEnts = math.Clamp(math.ceil(BBB.estimatedPlaying / 1.5), 4, 8)
+    local numberOfEnts = math.Clamp(math.ceil(BBB.estimatedPlaying), 6, 10)
     for i, navCenter in ipairs(navCenters) do
         -- Picks a random material to spawn using a weighted algorithm
         local loopTotal = totalWeight
