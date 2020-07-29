@@ -31,7 +31,7 @@ util.AddNetworkString("MessageSide")
 util.AddNetworkString("AbilityAttempt")
 util.AddNetworkString("AbilityResult")
 
-resource.AddWorkshop(2181101787) -- BBB content
+resource.AddWorkshop(2181148353) -- BBB content
 
 --------------------------------
 --[[     GAME FUNCTIONS     ]]--
