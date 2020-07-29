@@ -38,8 +38,8 @@ SWEP.AdminSpawnable     = false
 SWEP.Primary.ClipSize   = -1
 SWEP.Primary.DefaultClip= -1
 SWEP.Primary.Damage     = 25
-SWEP.Primary.Power      = 1000
-SWEP.Primary.Delay      = 1
+SWEP.Primary.Power      = 500
+SWEP.Primary.Delay      = 0.8
 SWEP.Primary.Ammo       = "none"
 SWEP.Primary.Automatic  = true
 
@@ -102,12 +102,34 @@ function SWEP:PrimaryAttack()
                 target:TakeDamageInfo(damage)
             else
                 ply:EmitSound(stabSound)
+                local slapMult = 1
+                -- Reduces the effectiveness of consecutive slaps
+                if timer.Exists("slapcooldown4"..target:SteamID64()) then
+                    slapMult = 0
+                    ply:UpdateScore(1, "Your slap is at minimum power! Time to find a new target.")
+                    timer.Remove("slapcooldown3"..target:SteamID64())
+                    timer.Create("slapcooldown3"..target:SteamID64(), 5, 1, function() end)
+                elseif timer.Exists("slapcooldown3"..target:SteamID64()) then
+                    slapMult = 0.25
+                    ply:UpdateScore(2, "Your slap is feeling very weak! Try hitting someone else.")
+                    timer.Create("slapcooldown4"..target:SteamID64(), 5, 1, function() end)
+                elseif timer.Exists("slapcooldown2"..target:SteamID64()) then
+                    slapMult = 0.5
+                    ply:UpdateScore(2, "Your slap is getting weaker! Maybe hit someone else.")
+                    timer.Create("slapcooldown3"..target:SteamID64(), 5, 1, function() end)
+                elseif timer.Exists("slapcooldown1"..target:SteamID64()) then
+                    slapMult = 0.75
+                    ply:UpdateScore(4, "Your slap feels weaker as you hit "..target:Name().." again!")
+                    timer.Create("slapcooldown2"..target:SteamID64(), 5, 1, function() end)
+                else
+                    ply:UpdateScore(5, "You got 5 points for slapping "..target:Name().."!")
+                    timer.Create("slapcooldown1"..target:SteamID64(), 5, 1, function() end)
+                end
                 local slapDirection = target:GetPos() - ply:GetPos()
                 local slapTable = slapDirection:ToTable()
                 slapDirection:SetUnpacked(slapTable[1], slapTable[2], 0)
-                slapDirection = self.Primary.Power * (slapDirection / slapDirection:Length()) + Vector(0, 0, self.Primary.Power / 3)
+                slapDirection = slapMult * self.Primary.Power * (slapDirection / slapDirection:Length()) + Vector(0, 0, self.Primary.Power / 2)
                 target:SetVelocity(slapDirection)
-                ply:UpdateScore(5, "You got 5 points for slapping "..target:Name().."!")
             end
         else
             ply:EmitSound(hitSound)

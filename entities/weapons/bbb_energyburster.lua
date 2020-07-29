@@ -28,10 +28,10 @@ SWEP.AdminSpawnable     = false
 SWEP.Primary.ClipSize   = 10
 SWEP.Primary.DefaultClip= 10
 SWEP.Primary.Ammo       = "none"
-SWEP.Primary.Recoil     = 1
-SWEP.Primary.Damage     = 100
+SWEP.Primary.Recoil     = 0.25
+SWEP.Primary.Damage     = 50
 SWEP.Primary.Spread     = 0.01
-SWEP.Primary.Delay      = 0.5
+SWEP.Primary.Delay      = 0.25
 SWEP.Primary.Automatic  = true
 
 SWEP.Secondary.ClipSize = -1
@@ -41,7 +41,7 @@ SWEP.Secondary.Automatic= false
 
 SWEP.ShouldDropOnDie    = false
 
-local shootSounds = {"npc/combine_gunship/attack_stop2.wav", "npc/env_headcrabcanister/incoming.wav"}
+local shootSounds = {"npc/combine_gunship/attack_stop2.wav",}-- "npc/env_headcrabcanister/incoming.wav"}
 
 function SWEP:Initialize()
     self:SetHoldType("revolver")
@@ -51,7 +51,7 @@ function SWEP:PrimaryAttack()
 
     local ply = self:GetOwner()
     for k, v in ipairs(shootSounds) do
-        ply:EmitSound(v, 100, 100, 0.25)
+        ply:EmitSound(v, 100, 100, 0.4)
     end
     self:SetNextPrimaryFire(CurTime() + self.Primary.Delay)
 
