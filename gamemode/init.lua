@@ -1,3 +1,5 @@
+resource.AddWorkshop(2181148353)
+
 AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
 AddCSLuaFile("cl_hud.lua")
@@ -31,8 +33,6 @@ util.AddNetworkString("MessageSide")
 util.AddNetworkString("AbilityAttempt")
 util.AddNetworkString("AbilityResult")
 util.AddNetworkString("WinnerMessage")
-
-resource.AddWorkshop(2181148353) -- BBB content
 
 --------------------------------
 --[[     GAME FUNCTIONS     ]]--
