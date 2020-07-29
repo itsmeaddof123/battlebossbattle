@@ -207,8 +207,9 @@ function GM:OnPlayerHitGround(ply, inWater, onFloater, speed)
         damage:SetDamageType(DMG_FALL)
         damage:SetDamage(plyDmg)
         ply:TakeDamageInfo(damage)
-        ply:EmitSound("physics/body/body_medium_break2.wav")
     end
+
+    ply:EmitSound("physics/body/body_medium_break2.wav")
 end
 
 -------------------------------------
