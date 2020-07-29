@@ -210,6 +210,12 @@ end
 -- Open crafting menu
 function toggleCrafting(toggle)
     
+    if timer.Exists("togglebuffer") then
+        return
+    else
+        timer.Create("togglebuffer", 0.2, 1, function() end)
+    end
+
     -- Open a new crafting menu
     if toggle then
         toggleCraft = true
@@ -337,6 +343,13 @@ local statNames = {"Max Health", "Max Shield", "Ranged Strength", "Melee Strengt
 
 -- Opens the training menu
 function toggleTraining(toggle)
+    
+    if timer.Exists("togglebuffer") then
+        return
+    else
+        timer.Create("togglebuffer", 0.2, 1, function() end)
+    end
+
     if toggle then
         toggleTrain = true
 
