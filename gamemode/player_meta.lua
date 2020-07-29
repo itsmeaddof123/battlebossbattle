@@ -22,8 +22,8 @@ function plyMeta:FullReset()
     self:SetMaxShield(100)
     self:SetMaxHP(100)
     self:SetJumpPower(200)
-    self:SetWalkSpeed(250)
-    self:SetRunSpeed(350)
+    self:SetWalkSpeed(300)
+    self:SetRunSpeed(300)
     self:SetRangedAttack(1)
     self:SetMeleeAttack(1)
     self:SetAttack(1)
@@ -165,8 +165,8 @@ function plyMeta:ChangeStats()
     if rank == "Warrior" then
         self:SetAttack(self:GetAttack() + 0.25)
     elseif rank == "Rogue" then
-        self:SetWalkSpeed(self:GetWalkSpeed() + 25)
-        self:SetRunSpeed(self:GetRunSpeed() + 25)
+        self:SetWalkSpeed(self:GetWalkSpeed() + 50)
+        self:SetRunSpeed(self:GetRunSpeed() + 50)
     elseif rank == "Medic" then
         timer.Create("medicregen"..self:SteamID64(), 1, 0, function() medicRegen(self) end)
     elseif rank == "Wild Card" then

@@ -216,8 +216,8 @@ function StartCrafting()
     for ply, bool in pairs(BBB.playing) do
         if ply:GetBoss() then
             ply:SetLives(1)
-            ply:SetWalkSpeed(400)
-            ply:SetRunSpeed(600)
+            ply:SetWalkSpeed(500)
+            ply:SetRunSpeed(500)
             ply:SetJumpPower(400)
             ply:SetMaxHP(100 + 50 * amt)
             ply:SetMaxShield(100 + 25 * amt)
