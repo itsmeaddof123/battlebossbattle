@@ -355,7 +355,7 @@ net.Receive("AbilityAttempt", function(len, ply)
                         target:SetWalkSpeed(target:GetWalkSpeed() - 200)
                         target:SetRunSpeed(target:GetRunSpeed() - 200)
                         timer.Simple(2, function()
-                            if GetRound() == "Crafting" or GetRound() == "Battle" then
+                            if GetRound() == "Crafting" or GetRound() == "Battle" or GetRound() == "Armageddon" then
                                 target:SetWalkSpeed(target:GetWalkSpeed() + 200)
                                 target:SetRunSpeed(target:GetRunSpeed() + 200)
                             end
