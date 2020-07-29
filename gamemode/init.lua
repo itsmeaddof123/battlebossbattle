@@ -1,4 +1,8 @@
-resource.AddWorkshop(2181806047)
+resource.AddWorkshop(2181831767)
+resource.AddWorkshop(788109554)
+resource.AddWorkshop(1275272057)
+resource.AddWorkshop(442214334)
+resource.AddWorkshop(892493593)
 
 AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
