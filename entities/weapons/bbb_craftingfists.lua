@@ -72,6 +72,8 @@ function SWEP:PrimaryAttack(right)
     local vm = ply:GetViewModel()
 	vm:SendViewModelMatchingSequence(vm:LookupSequence(anim))
 
+    timer.Remove("trainstat"..ply:SteamID64())
+
     ply:EmitSound(swingSound)
     self:UpdateNextIdle()
     self:SetNextPrimaryFire(CurTime() + self.Primary.Delay)
