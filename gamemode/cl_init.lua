@@ -76,7 +76,7 @@ net.Receive("UpdateStat", function(len)
         playerCache.stats = {0, 0, 0, 0, 0, 0}
     end
     playerCache.stats[statId] = amt
-    if amt >= 50 then
+    if amt >= 50 and IsValid(LocalPlayer()) then
         LocalPlayer():ChatPrint("Finished training: "..statNames[statId])
     end
 end)
@@ -85,39 +85,40 @@ end)
 net.Receive("UpdateRound", function(len)
     playerCache.round = net.ReadString()
     playerCache.time = net.ReadInt(16)
-    if not LocalPlayer() then return end
-    if playerCache.round == "Crafting" then
+    local ply = LocalPlayer()
+    if not IsValid(ply) then return end
+    if playerCache.round == "Crafting" and IsValid(ply) then
         if playerCache.playSongs then
-            LocalPlayer():EmitSound(craftingSongs[math.random(1, #craftingSongs)], 100, 100, 0.4)
-        else
-            LocalPlayer():EmitSound("ambient/alarms/warningbell1.wav")
+            ply:EmitSound(craftingSongs[math.random(1, #craftingSongs)], 100, 100, 0.4)
+        elseif ply then
+            ply:EmitSound("ambient/alarms/warningbell1.wav")
         end
-        if scoreboardCache[LocalPlayer()] and scoreboardCache[LocalPlayer()].boss then
+        if scoreboardCache[ply] and scoreboardCache[ply].boss then
             messageTop("Crafting: Slap players with your bat, destroy props with your zapper, and use your abilities to slow the others!")
         else
             messageTop("Crafting: Punch props to gain materials! Craft gear and train stats to get ready for the Battle Round!")
         end
-    elseif playerCache.round == "Battle" then
+    elseif playerCache.round == "Battle" and IsValid(ply) then
         if playerCache.playSongs then
             for k, v in ipairs(craftingSongs) do
-                LocalPlayer():StopSound(v)
+                ply:StopSound(v)
             end
-            LocalPlayer():EmitSound(battleSongs[math.random(1, #battleSongs)], 100, 100, 0.7)
+            ply:EmitSound(battleSongs[math.random(1, #battleSongs)], 100, 100, 0.7)
         else
-            LocalPlayer():EmitSound("ambient/alarms/warningbell1.wav")
+            ply:EmitSound("ambient/alarms/warningbell1.wav")
         end
         toggleCrafting(false)
         toggleTraining(false)
         if playerCache.rank then
             messageTop(craftingTable.ranks[playerCache.rank])
         end
-    elseif playerCache.round == "Armageddon" then
-        LocalPlayer():EmitSound("ambient/alarms/alarm_citizen_loop1.wav", 100, 100, 0.75)
-        timer.Simple(5.7, function() LocalPlayer():StopSound("ambient/alarms/alarm_citizen_loop1.wav") end)
+    elseif playerCache.round == "Armageddon" and IsValid(ply) then
+        ply:EmitSound("ambient/alarms/alarm_citizen_loop1.wav", 100, 100, 0.75)
+        timer.Simple(5.7, function() if IsValid(ply) then ply:StopSound("ambient/alarms/alarm_citizen_loop1.wav") end end)
         messageTop("Armageddon: Shields are disabled. You're all dying. It's only a matter of time before it all ends and the victor is crowned!")
-    elseif playerCache.round == "Scoring" then
+    elseif playerCache.round == "Scoring" and IsValid(ply) then
         for k, v in ipairs(battleSongs) do
-            LocalPlayer():StopSound(v)
+            ply:StopSound(v)
         end
         toggleConsumables(false)
     end
@@ -162,12 +163,12 @@ end)
 
 net.Receive("ScoreMessage", function(len)
     local msg = net.ReadString()
-    LocalPlayer():ChatPrint(msg)
+    if IsValid(LocalPlayer()) then LocalPlayer():ChatPrint(msg) end
 end)
 
 net.Receive("ConsumeExpired", function(len)
     local itemId = net.ReadInt(16)
-    LocalPlayer():ChatPrint("Your "..craftingTable.items[6][itemId].name.." has expired!")
+    if IsValid(LocalPlayer()) then LocalPlayer():ChatPrint("Your "..craftingTable.items[6][itemId].name.." has expired!") end
 end)
 
 -- Removes a player from the cache
