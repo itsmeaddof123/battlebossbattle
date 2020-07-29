@@ -1,0 +1,5 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/vinrax/player/gandalf/hands"
+	"$halflambert" "1"
+}

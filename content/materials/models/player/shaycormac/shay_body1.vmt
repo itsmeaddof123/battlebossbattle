@@ -1,0 +1,13 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/player/shaycormac/shay_body1"
+	"$bumpmap" "models/player/shaycormac/shay_body1_n"
+	"$halflambert" 1
+
+	"$normalmapalphaenvmapmask" 1
+
+	"$phong" "1"
+	"$phongexponent" "5"
+	"$phongboost" "1"
+	"$phongfresnelranges" "[0.1 0.2 0.5]"
+}

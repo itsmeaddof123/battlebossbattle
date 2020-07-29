@@ -1,0 +1,5 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/auditor/lotr/warrior/NeckGuard"
+	"$bumpmap" "models/auditor/lotr/warrior/NeckGuard_N"
+}

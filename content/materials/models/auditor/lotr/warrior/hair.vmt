@@ -1,0 +1,6 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/auditor/lotr/warrior/Hair"
+	"$alphatest" 1
+	$alphatestreference 0.4
+}

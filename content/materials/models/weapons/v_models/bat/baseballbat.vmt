@@ -1,0 +1,6 @@
+"VertexlitGeneric"
+{
+	"$baseTexture" "models\weapons\v_models\bat\baseballbat"
+	"$envmap" "env_cubemap"
+	"$envmapmask" "models\weapons\v_models\bat\baseballbat_ref"
+}

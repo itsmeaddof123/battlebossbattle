@@ -1,0 +1,31 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/auditor/lotr/warrior/Helmet"
+	"$bumpmap" "models/auditor/lotr/warrior/Helmet_N"
+	$nocull 1
+	//$color2 0.0.0
+	"$blendTintByBaseAlpha"	"1"
+
+
+	$normalmapalphaenvmapmask 1
+	
+	"$envmap" "env_cubemap"					
+	"$envmaptint" "[ 0.005 0.005 0.005]"				
+ 	"$envmapFresnel" "5 7 8"
+
+
+	"$phong" "1"						
+	"$phongboost"	"0.35"
+	"$phongexponent" 4
+	//"$phongwarptexture"		"models/auditor/lotr/warrior/phongwarp_metal2"
+	$lightwarptexture "models/auditor/lotr/warrior/lightwarp_elchulus"
+	"$phongfresnelranges"	"[5 7 8]"
+	"$phongtint" 			"[0.85 0.9 1]"
+	"$PhongAlbedoTint" "1"
+
+	//$rimlight 1
+
+
+}
+
+

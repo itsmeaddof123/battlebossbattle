@@ -1,0 +1,6 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/vinrax/player/gandalf/clothes"
+	"$halflambert" "1"
+	"$nocull" "1"
+}
