@@ -5,7 +5,7 @@ GM.Author = "add___123 - itsmeaddof123#0773"
 
     Models for melee weapons: https://steamcommunity.com/sharedfiles/filedetails/?id=369150821
     Some free sounds were from here: https://www.soundjay.com/index.html
-    Gandalf model: https://steamcommunity.com/sharedfiles/filedetails/?id=788109554
+    Wizard model: https://steamcommunity.com/sharedfiles/filedetails/?id=788109554
     Warrior model: https://steamcommunity.com/sharedfiles/filedetails/?id=1275272057
     Rogue model: https://steamcommunity.com/sharedfiles/filedetails/?id=442214334
     Medic model: https://steamcommunity.com/sharedfiles/filedetails/?id=892493593
