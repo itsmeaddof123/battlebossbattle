@@ -107,8 +107,12 @@ net.Receive("UpdateRound", function(len)
         else
             ply:EmitSound("ambient/alarms/warningbell1.wav")
         end
-        toggleCrafting(false)
-        toggleTraining(false)
+        if IsValid(trainingPanel) then
+            trainingPanel:Remove()
+        end
+        if IsValid(craftingPanel) then
+            craftingPanel:Remove()
+        end
         if playerCache.rank then
             messageTop(craftingTable.ranks[playerCache.rank])
         end
