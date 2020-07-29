@@ -325,7 +325,9 @@ function StartScoring()
     local winner = table.SortByKey(playerScores)[1]
     if winner then
         winner:SetBoss(true)
-        net.Start(winner:Name().." has won with "..tostring(winner:GetScore()).." points and has proven worthy of being Battle Boss!")
+        net.Start("WinnerMessage")
+        net.WriteString(winner:Name().." has won with "..tostring(math.ceil(winner:GetScore())).." points and has proven worthy of being Battle Boss!")
+        net.Broadcast()
     end
     SetRound("Scoring")
     timer.Create("endscoring", roundTimes.Scoring, 1, EndScoring)
