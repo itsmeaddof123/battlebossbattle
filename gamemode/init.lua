@@ -340,7 +340,7 @@ function EndScoring()
             ply:FullReset()
         end
     end
-    if minPlayersMet() then
+    if minPlayersMet() and SpawnsSelected() then
         StartPreparing()
     else
         StartWaiting()
