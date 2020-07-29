@@ -32,6 +32,7 @@ function plyMeta:FullReset()
     self:SetWeakTo("")
     self:SetScore(0)
     self:SetFrags(0)
+    self:AllowFlashlight(true)
 end
 
 -- This does player init stuff that round end doesn't need to reset
