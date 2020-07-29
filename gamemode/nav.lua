@@ -37,7 +37,7 @@ function InitializeSpawns(retrying)
     if retrying then
         if minDistance >= 500 then
             minDistance = minDistance - 100
-            print("Reducing minimum distance between material regions to "..tostring(minDistance))
+            print("Reducing minimum distance between nav centers to "..tostring(minDistance))
         elseif minDistance >= 100 then
             print("This map may be too small for the game!")
             minDistance = minDistance - 100
