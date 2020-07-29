@@ -1,6 +1,0 @@
-"VertexlitGeneric"
-{
-	"$basetexture" "models/vinrax/player/gandalf/weapon"
-	"$alphatest" 1
-	"$halflambert" "1"
-}

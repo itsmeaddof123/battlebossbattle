@@ -1,5 +1,0 @@
-VertexLitGeneric
-{
-	"$basetexture"	"models\weapons\v_models\knife_t\T1"
-	"$bumpmap" "models\weapons\v_models\knife_t\T1_normal"
-}
