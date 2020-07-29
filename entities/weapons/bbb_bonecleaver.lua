@@ -100,7 +100,7 @@ function SWEP:PrimaryAttack()
             target:TakeDamageInfo(damage)
             ply:EmitSound(stabSound)
 
-            if target:IsPlayers() then
+            if target:IsPlayer() then
                 local damageToHeal = 5 * mult
                 local damageHealed = 0
                 damageHealed = math.Clamp(ply:GetMaxHealth() - ply:Health(), 0, damageToHeal)
