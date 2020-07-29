@@ -28,10 +28,10 @@ SWEP.AdminSpawnable     = false
 SWEP.Primary.ClipSize   = -1
 SWEP.Primary.DefaultClip= -1
 SWEP.Primary.Ammo       = "none"
-SWEP.Primary.Recoil     = 1
-SWEP.Primary.Damage     = 100
+SWEP.Primary.Recoil     = 0.5
+SWEP.Primary.Damage     = 70
 SWEP.Primary.Spread     = 0.005
-SWEP.Primary.Delay      = 1.5
+SWEP.Primary.Delay      = 1
 SWEP.Primary.Automatic  = true
 
 SWEP.Secondary.ClipSize = -1

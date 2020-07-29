@@ -29,9 +29,9 @@ SWEP.Primary.ClipSize   = -1
 SWEP.Primary.DefaultClip= -1
 SWEP.Primary.Ammo       = "none"
 SWEP.Primary.Recoil     = 1
-SWEP.Primary.Damage     = 100
+SWEP.Primary.Damage     = 75
 SWEP.Primary.Spread     = 0.005
-SWEP.Primary.Delay      = 1
+SWEP.Primary.Delay      = 0.65
 SWEP.Primary.Automatic  = true
 
 SWEP.Secondary.ClipSize = -1
@@ -70,9 +70,9 @@ function SWEP:PrimaryAttack()
         Damage      = self.Primary.Damage * mult,
         AmmoType    = self.Primary.Ammo,
     }
+    ply:FireBullets(bullet)
 
     self:SendWeaponAnim(ACT_VM_MISSCENTER)
-    ply:FireBullets(bullet)
     ply:ViewPunch(Angle(-1 * self.Primary.Recoil, math.random(-0.2, 0.2) * self.Primary.Recoil, 0))
     self:ShootEffects()
 
