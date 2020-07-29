@@ -606,11 +606,11 @@ end
 
 function plyMeta:ConsumeItem(itemId)
     local mult = 1
-    -- Points for using a consumable
-    self:UpdateScore(5 * mult)
     if self:GetRank() == "Master Chemist" then
-        mult = 2
+        mult = 3
     end
+    -- Points for using a consumable
+    self:UpdateScore(5 * mult, "You got "..tostring(5 * mult).." points for using that item!")
     self:UpdateInv("consumable", itemId, self.consumable[itemId] - 1)
     if itemId == 1 then
         if self:Health() + 50 * mult >= self:GetMaxHealth() then
@@ -620,7 +620,8 @@ function plyMeta:ConsumeItem(itemId)
         end
     elseif itemId == 2 then
         self:SetDefense(self:GetDefense() + 0.25 * mult)
-        timer.Create("consume"..tostring(itemId)..self:SteamID64(), 30, 1, function() 
+        timer.Create("consume"..tostring(itemId)..self:SteamID64(), 30, 1, function()
+            if not IsValid(self) then return end
             if GetRound() == "Battle" or GetRound() == "Armageddon" then
                 self:SetDefense(self:GetDefense() - 0.25 * mult)
                 consumeExpired(self, itemId)
@@ -635,6 +636,7 @@ function plyMeta:ConsumeItem(itemId)
     elseif itemId == 4 then
         self:SetShieldRegen(self:GetShieldRegen() + 0.25 * mult)
         timer.Create("consume"..tostring(itemId)..self:SteamID64(), 30, 1, function() 
+            if not IsValid(self) then return end
             if GetRound() == "Battle" or GetRound() == "Armageddon" then
                 self:SetShieldRegen(self:GetShieldRegen() - 0.25 * mult)
                 consumeExpired(self, itemId)
@@ -643,6 +645,7 @@ function plyMeta:ConsumeItem(itemId)
     elseif itemId == 5 then
         self:SetAttack(self:GetAttack() + 0.25 * mult)
         timer.Create("consume"..tostring(itemId)..self:SteamID64(), 30, 1, function() 
+            if not IsValid(self) then return end
             if GetRound() == "Battle" or GetRound() == "Armageddon" then
                 self:SetAttack(self:GetAttack() - 0.25 * mult)
                 consumeExpired(self, itemId)
@@ -653,6 +656,7 @@ function plyMeta:ConsumeItem(itemId)
         self:SetRunSpeed(self:GetRunSpeed() + 50 * mult)
         self:SetJumpPower(self:GetJumpPower() + 50 * mult)
         timer.Create("consume"..tostring(itemId)..self:SteamID64(), 30, 1, function() 
+            if not IsValid(self) then return end
             if GetRound() == "Battle" or GetRound() == "Armageddon" then
                 consumeExpired(self, itemId)
                 self:SetWalkSpeed(self:GetWalkSpeed() - 50 * mult)

@@ -196,7 +196,7 @@ craftingTable = {
         ["Wild Card"] = "Battle: Wild Card! You have increased defense and you get a big point boost! Now go fight!",
         ["Overtrained"] = "Battle: Overtrained! All your stats are increased even more and you get a big point boost! Now go fight!",
         ["Collector"] = "Battle: Collector! You spent the whole round collecting materials? Congratulations, take this plastic knife.",
-        ["Master Chemist"] = "Battle: Master Chemist! Your consumables are twice as effective and you get a big point boost! Now go fight!",
+        ["Master Chemist"] = "Battle: Master Chemist! Your consumables are three times as effective and you get a big point boost! Now go fight!",
         ["Classless"] = "Battle: Classless. Next time, try crafting a full set of gear. If you experiment, you might be able to discover some secret classes! Now go fight!",
         ["Battle Boss"] = "Battle: Your weapons and abilities have been upgraded! Go now, wreak havoc, and show your enemies what makes you Battle Boss!"
     }
