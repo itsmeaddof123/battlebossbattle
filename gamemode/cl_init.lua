@@ -85,11 +85,12 @@ end)
 net.Receive("UpdateRound", function(len)
     playerCache.round = net.ReadString()
     playerCache.time = net.ReadInt(16)
+    if not LocalPlayer() then return end
     if playerCache.round == "Crafting" then
         if playerCache.playSongs then
-            surface.PlaySound(craftingSongs[math.random(1, #craftingSongs)])
+            LocalPlayer():EmitSound(craftingSongs[math.random(1, #craftingSongs)], 100, 100, 0.4)
         else
-            surface.PlaySound("ambient/alarms/warningbell1.wav")
+            LocalPlayer():EmitSound("ambient/alarms/warningbell1.wav")
         end
         if scoreboardCache[LocalPlayer()] and scoreboardCache[LocalPlayer()].boss then
             messageTop("Crafting: Slap players with your bat, destroy props with your zapper, and use your abilities to slow the others!")
@@ -101,9 +102,9 @@ net.Receive("UpdateRound", function(len)
             for k, v in ipairs(craftingSongs) do
                 LocalPlayer():StopSound(v)
             end
-            surface.PlaySound(battleSongs[math.random(1, #battleSongs)])
+            LocalPlayer():EmitSound(battleSongs[math.random(1, #battleSongs)], 100, 100, 0.7)
         else
-            surface.PlaySound("ambient/alarms/warningbell1.wav")
+            LocalPlayer():EmitSound("ambient/alarms/warningbell1.wav")
         end
         toggleCrafting(false)
         toggleTraining(false)
@@ -111,7 +112,7 @@ net.Receive("UpdateRound", function(len)
             messageTop(craftingTable.ranks[playerCache.rank])
         end
     elseif playerCache.round == "Armageddon" then
-        surface.PlaySound("ambient/alarms/alarm_citizen_loop1.wav", 100, 100, 0.75)
+        LocalPlayer():EmitSound("ambient/alarms/alarm_citizen_loop1.wav", 100, 100, 0.75)
         timer.Simple(5.7, function() LocalPlayer():StopSound("ambient/alarms/alarm_citizen_loop1.wav") end)
         messageTop("Armageddon: Shields are disabled. You're all dying. It's only a matter of time before it all ends and the victor is crowned!")
     elseif playerCache.round == "Scoring" then
