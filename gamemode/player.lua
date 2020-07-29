@@ -118,7 +118,11 @@ end
 -- Begins the regen loop after the initial delay
 local function shieldRegenStart(ply)
     if IsValid(ply) and GetRound() ~= "Armageddon" then
-        timer.Create("shieldregen"..ply:SteamID64(), 0.15, 0, function() shieldRegen(ply, ply:SteamID64()) end)
+        timer.Create("shieldregen"..ply:SteamID64(), 0.15, 0, function()
+            if IsValid(ply) then
+                shieldRegen(ply, ply:SteamID64())
+            end
+        end)
     end
 end
 
