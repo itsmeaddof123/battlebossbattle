@@ -10,9 +10,9 @@ local partialBlack = Color(0, 0, 0, 200)
 local partialWhite = Color(255, 255, 255, 200)
 local fullBlack = Color(0, 0, 0, 255)
 local fullWhite = Color(255, 255, 255, 255)
-local panelOpen1 = "panelOpen3.wav"
-local panelClose1 = "panelClose1.wav"
-local panelOpen2 = "panelOpen4.wav"
+local panelOpen1 = "panelopen3.wav"
+local panelClose1 = "panelclose1.wav"
+local panelOpen2 = "panelopen4.wav"
 
 -- Item Description
 surface.CreateFont("Courier Big 3", {
