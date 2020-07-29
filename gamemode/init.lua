@@ -8,7 +8,6 @@ AddCSLuaFile("cl_messages.lua")
 include("shared.lua")
 include("player_meta.lua")
 include("player.lua")
-include("models.lua")
 include("nav.lua")
 
 util.AddNetworkString("CraftAttempt")
