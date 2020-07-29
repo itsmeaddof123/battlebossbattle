@@ -74,7 +74,7 @@ local battleRanged = {"bbb_magicwand", "bbb_speedsac", "bbb_crossbow", "bbb_ligh
 
 -- Gives the player their respective tools based on the round and their role and equipment
 function plyMeta:GiveTools()
-    --self:Give("bbb_energyburster")
+    if not self then return end
     if self:GetBoss() then
         if GetRound() == "Crafting" then
             self:Give("bbb_slapbat")
