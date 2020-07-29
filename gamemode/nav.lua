@@ -138,7 +138,7 @@ end
 -- Starts the loop to spawn all the materials
 function SpawnMaterials()
     -- Removes old materials
-    RemoveMaterials()
+    RemoveMaterials(true)
     local numberOfEnts = math.Clamp(math.ceil(BBB.estimatedPlaying), 6, 10)
     for i, navCenter in ipairs(navCenters) do
         -- Picks a random material to spawn using a weighted algorithm
@@ -155,10 +155,19 @@ function SpawnMaterials()
     end
 end
 
-function RemoveMaterials()
-    for i, v in ipairs(spawnedMaterials) do
-        if IsValid(v) then
-            v:Remove()
+function RemoveMaterials(removeAll)
+    if removeAll then
+        for i, v in ipairs(spawnedMaterials) do
+            if IsValid(v) then
+                v:Remove()
+            end
+        end
+    else
+        for i, v in ipairs(spawnedMaterials) do
+            if IsValid(v) and (math.random(0, 1) >= 0.25) or (v:Health() <= 15) then
+                v:SetPos(v:GetPos() + Vector(0, 0, -50))
+                v:Remove()
+            end
         end
     end
     spawnedMaterials = {}

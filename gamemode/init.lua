@@ -245,6 +245,7 @@ function EndCrafting()
             ply:ChooseRank()
         end
     end
+    RemoveMaterials(true)
     StartBattle()
 end
 
@@ -304,7 +305,7 @@ function EndArmageddon()
         end
     end
     timer.Remove("checkforend")
-    RemoveMaterials()
+    RemoveMaterials(true)
     StartScoring()
 end
 
