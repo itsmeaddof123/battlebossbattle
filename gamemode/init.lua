@@ -50,7 +50,7 @@ function GetEndTime() return BBB.time end
 
 function GM:Initialize()
     StartWaiting()
-    timer.Simple(10, InitializeSpawns)
+    timer.Simple(5, InitializeSpawns)
 end
 
 ---------------------------------------------

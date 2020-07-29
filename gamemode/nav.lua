@@ -36,7 +36,7 @@ function InitializeSpawns(retrying)
     -- If this isn't the first attempt, lower the minimum distance between CNavAreas
     if retrying then
         if minDistance >= 500 then
-            minNavs = minNavs - 5
+            minNavs = minNavs - 3
             minDistance = minDistance - 100
         elseif minDistance >= 100 then
             print("This map may be too small for the game!")
@@ -46,7 +46,7 @@ function InitializeSpawns(retrying)
             print("This map isn't suitable for the game!")
             return
         end
-        print("Reducing minimum distance between nav centers to "..tostring(minDistance))
+        print("Reducing min dist between navs to "..tostring(minDistance).." and min navs to "..tostring(minNavs))
     end
 
     -- Checks ever CNavArea on the map
