@@ -90,7 +90,7 @@ local matsPerEnt = {
     bbb_essence = 1.2 + 0.15,
     bbb_stone = 2.2,
     bbb_fur = 1.85,
-    bbb_metal = 2.5,
+    bbb_metal = 2.5 - 0.25,
     bbb_wood = 1.75,
     bbb_water = 1.55,
 }
