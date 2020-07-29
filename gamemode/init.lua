@@ -32,12 +32,7 @@ util.AddNetworkString("MessageSide")
 util.AddNetworkString("AbilityAttempt")
 util.AddNetworkString("AbilityResult")
 
-resource.AddWorkshop(2181101787) -- All content
---[[resource.AddWorkshop(369150821)-- Melee models
-resource.AddWorkshop(788109554)-- Wizard model
-resource.AddWorkshop(1275272057)-- Warrior model
-resource.AddWorkshop(442214334)-- Rogue model
-resource.AddWorkshop(892493593)-- Medic model--]]
+resource.AddWorkshop(2181101787) -- BBB content
 
 --------------------------------
 --[[     GAME FUNCTIONS     ]]--
