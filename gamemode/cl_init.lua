@@ -120,11 +120,12 @@ net.Receive("UpdateRound", function(len)
             LocalPlayer():StopSound(v)
         end
         toggleConsumables(false)
-        local winner = playerCache.boss
-        if winner and scoreboardCache[winner] then
-            messageTop("Scoring: "..winner:Name().." has won with "..tostring(scoreboardCache[winner].points).." points and has proven worthy of being Battle Boss!")
-        end
     end
+end)
+
+net.Receive("WinnerMessage", function(len)
+    local msg = net.ReadString()
+    messageTop(msg)
 end)
 
 -- Updates the scoreboard cache with new player info

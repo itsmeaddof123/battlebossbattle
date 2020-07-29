@@ -30,6 +30,7 @@ util.AddNetworkString("RoundRequest")
 util.AddNetworkString("MessageSide")
 util.AddNetworkString("AbilityAttempt")
 util.AddNetworkString("AbilityResult")
+util.AddNetworkString("WinnerMessage")
 
 resource.AddWorkshop(2181148353) -- BBB content
 
@@ -117,6 +118,7 @@ local function pickBoss(attempt)
     local potentialBoss = potentialBosses[math.random(#potentialBosses)]
     if IsValid(potentialBoss) and potentialBoss:IsPlayer() then
         potentialBoss:SetBoss(true)
+
         return potentialBoss
     elseif attempt <= 3 then
         return pickBoss(attempt + 1)
@@ -310,14 +312,20 @@ function StartScoring()
     local playerScores = {}
     for k, ply in ipairs(player.GetAll()) do
         if IsValid(ply) and ply:GetPlayed() then
+            -- Give the boss an extra score penalty
+            if ply:GetBoss() then
+                ply:SetScore(ply:GetScore() / 1.5)
+            end
+            -- Increases the scores of players who repeatedly lose (Resets when boss)
             ply:SetScore(ply:GetScore() * ply:GetPity())
-            ply:SetPity(ply:GetPity() + 0.1) -- Pity points increase the scores of players who repeatedly lose (Resets when boss)
+            ply:SetPity(ply:GetPity() + 0.15)
             playerScores[ply] = ply:GetScore()
         end
     end
     local winner = table.SortByKey(playerScores)[1]
     if winner then
         winner:SetBoss(true)
+        net.Start(winner:Name().." has won with "..tostring(winner:GetScore()).." points and has proven worthy of being Battle Boss!")
     end
     SetRound("Scoring")
     timer.Create("endscoring", roundTimes.Scoring, 1, EndScoring)
