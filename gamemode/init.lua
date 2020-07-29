@@ -1,4 +1,4 @@
-resource.AddWorkshop(2181148353)
+resource.AddWorkshop(2181806047)
 
 AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
