@@ -86,12 +86,12 @@ function SWEP:PrimaryAttack()
 end
 
 function SWEP:Reload()
+    local ply = self:GetOwner()
 	self:SetNextPrimaryFire(CurTime() + 1.5)
 	self:DefaultReload( ACT_VM_RELOAD )
-	self.Owner:SetAnimation(PLAYER_RELOAD)
+	ply:SetAnimation(PLAYER_RELOAD)
 	self:EmitSound("weapons/smg1/smg1_reload.wav")
     timer.Simple(1.5, function()
-        local ply = self:GetOwner()
         if IsValid(ply) then
             ply:SetAmmo(self.Primary.ClipSize, self.Primary.Ammo)
         end
