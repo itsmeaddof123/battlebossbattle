@@ -206,9 +206,11 @@ hook.Add("PlayerButtonDown", "MenuToggler", function(ply, key)
                 net.WriteString("E")
                 net.SendToServer()
             end
+        elseif playerCache.round == "Crafting" and key == KEY_Q then
+            toggleCrafting(not toggleCraft)
+        elseif playerCache.round == "Crafting" and key == KEY_E then
+            toggleTraining(not toggleTrain)
         else
-            toggleCrafting(key == KEY_Q and playerCache.round == "Crafting" and not toggleCraft)
-            toggleTraining(key == KEY_E and playerCache.round == "Crafting" and not toggleTrain)
             toggleConsumables(playerCache.round == "Battle" or playerCache.round == "Armageddon")
         end
     end

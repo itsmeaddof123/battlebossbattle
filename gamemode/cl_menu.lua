@@ -213,7 +213,7 @@ function toggleCrafting(toggle)
     if timer.Exists("togglebuffer") then
         return
     else
-        timer.Create("togglebuffer", 0.2, 1, function() end)
+        timer.Create("togglebuffer", 0.1, 1, function() timer.Remove("togglebuffer") end)
     end
 
     -- Open a new crafting menu
@@ -225,6 +225,12 @@ function toggleCrafting(toggle)
         -- Remove old crafting frame
         if IsValid(craftingPanel) then
             craftingPanel:Remove()
+        end
+
+        -- Close the training menu
+        toggleTrain = false
+        if IsValid(trainingPanel) then
+            trainingPanel:Remove()
         end
 
         -- Page open sound
@@ -347,15 +353,21 @@ function toggleTraining(toggle)
     if timer.Exists("togglebuffer") then
         return
     else
-        timer.Create("togglebuffer", 0.2, 1, function() end)
+        timer.Create("togglebuffer", 0.1, 1, function() timer.Remove("togglebuffer") end)
     end
 
     if toggle then
         toggleTrain = true
 
-        -- Close the training menu
+        -- Close the old training menu
         if IsValid(trainingPanel) then
             trainingPanel:Remove()
+        end
+
+        -- Remove the crafting frame
+        toggleCraft = false
+        if IsValid(craftingPanel) then
+            craftingPanel:Remove()
         end
 
         -- Page open sound
