@@ -64,17 +64,17 @@ hook.Add("HUDPaint", "HealthHUD", function()
     if scoreboardCache[ply] and scoreboardCache[ply].boss then
         if currentRound == "Crafting" then
             draw.RoundedBox(10, scrW / 2 - insW - insBuffer, scrH - insH - insBuffer, insW, insH, partialBlack)
-            draw.RoundedBox(10, scrW / 2 - insW - insBuffer, scrH - insH - insBuffer, insW * math.min(CurTime() - playerCache.lastQ, 10) / 10, insH, partialBlack)
+            draw.RoundedBox(10, scrW / 2 - insW - insBuffer, scrH - insH - insBuffer, insW * math.min(CurTime() - playerCache.lastAbility, 7) / 7, insH, partialBlack)
             draw.SimpleTextOutlined("Q: Gravity Toss", "Roboto Small 1", (scrW - insW) / 2 - insBuffer, scrH - insH / 2 - insBuffer, fullWhite, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 2, fullBlack)
             draw.RoundedBox(10, scrW / 2 + insBuffer, scrH - insH - insBuffer, insW, insH, partialBlack)
-            draw.RoundedBox(10, scrW / 2 + insBuffer, scrH - insH - insBuffer, insW * math.min(CurTime() - playerCache.lastE, 10) / 10, insH, partialBlack)
+            draw.RoundedBox(10, scrW / 2 + insBuffer, scrH - insH - insBuffer, insW * math.min(CurTime() - playerCache.lastAbility, 7) / 7, insH, partialBlack)
             draw.SimpleTextOutlined("E: Slowness Beam", "Roboto Small 1", (scrW + insW) / 2 + insBuffer, scrH - insH / 2 - insBuffer, fullWhite, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 2, fullBlack)
         elseif (currentRound == "Battle" or currentRound == "Armageddon") then
             draw.RoundedBox(10, scrW / 2 - insW - insBuffer, scrH - insH - insBuffer, insW, insH, partialBlack)
-            draw.RoundedBox(10, scrW / 2 - insW - insBuffer, scrH - insH - insBuffer, insW * math.min(CurTime() - playerCache.lastQ, 10) / 10, insH, partialBlack)
+            draw.RoundedBox(10, scrW / 2 - insW - insBuffer, scrH - insH - insBuffer, insW * math.min(CurTime() - playerCache.lastAbility, 7) / 7, insH, partialBlack)
             draw.SimpleTextOutlined("Q: Gravity Pummel", "Roboto Small 1", (scrW - insW) / 2 - insBuffer, scrH - insH / 2 - insBuffer, fullWhite, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 2, fullBlack)
             draw.RoundedBox(10, scrW / 2 + insBuffer, scrH - insH - insBuffer, insW, insH, partialBlack)
-            draw.RoundedBox(10, scrW / 2 + insBuffer, scrH - insH - insBuffer, insW * math.min(CurTime() - playerCache.lastE, 10) / 10, insH, partialBlack)
+            draw.RoundedBox(10, scrW / 2 + insBuffer, scrH - insH - insBuffer, insW * math.min(CurTime() - playerCache.lastAbility, 7) / 7, insH, partialBlack)
             draw.SimpleTextOutlined("E: Death Beam", "Roboto Small 1", (scrW + insW) / 2 + insBuffer, scrH - insH / 2 - insBuffer, fullWhite, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 2, fullBlack)
         end
     else

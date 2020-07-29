@@ -265,6 +265,7 @@ function StartBattle()
             ply:ChangeStats()
         end
     end
+    timer.Remove("abilitycooldown")
     timer.Create("endbattle", roundTimes.Battle, 1, EndBattle)
     timer.Create("checkforend", 3, 0, checkForEnd)
 end

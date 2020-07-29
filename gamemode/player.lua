@@ -314,9 +314,9 @@ net.Receive("AbilityAttempt", function(len, ply)
     local key = net.ReadString()
     local success = false
     if IsValid(ply) and ply:GetBoss() and ply:GetPlaying() then
-        if key == "Q" and not timer.Exists("QCooldown") then
+        if key == "Q" and not timer.Exists("abilitycooldown") then
             success = true
-            timer.Create("QCooldown", 10, 1, function() end)
+            timer.Create("abilitycooldown", 7, 1, function() end)
             -- Gravity Toss
             if GetRound() == "Crafting" then
                 for target, bool in pairs(BBB.playing) do
@@ -325,9 +325,8 @@ net.Receive("AbilityAttempt", function(len, ply)
                         target:EmitSound("ambient/levels/canals/windmill_wind_loop1.wav")
                         target:SetVelocity(Vector(math.random(-150, 150), math.random(-150, 150), 400))
                         timer.Simple(0.7, function()
-                            if IsValid(target) then
-                                target:StopSound("ambient/levels/canals/windmill_wind_loop1.wav")
-                            end
+                            if not IsValid(target) then return end
+                            target:StopSound("ambient/levels/canals/windmill_wind_loop1.wav")
                         end)
                     end
                 end
@@ -339,18 +338,17 @@ net.Receive("AbilityAttempt", function(len, ply)
                         target:EmitSound("ambient/levels/canals/windmill_wind_loop1.wav")
                         target:SetVelocity(Vector(math.random(-150, 150), math.random(-150, 150), 600))
                         timer.Simple(0.5, function()
-                            if IsValid(target) then
-                                target:StopSound("ambient/levels/canals/windmill_wind_loop1.wav")
-                                target:SetVelocity(Vector(0, 0, -600))
-                                target:EmitSound("npc/antlion_guard/shove1.wav")
-                            end
+                            if not IsValid(target) then return end
+                            target:StopSound("ambient/levels/canals/windmill_wind_loop1.wav")
+                            target:SetVelocity(Vector(0, 0, -600))
+                            target:EmitSound("npc/antlion_guard/shove1.wav")
                         end)
                     end
                 end
             end
-        elseif key == "E" and not timer.Exists("ECooldown") then
+        elseif key == "E" and not timer.Exists("abilitycooldown") then
             success = true
-            timer.Create("ECooldown", 10, 1, function() end)
+            timer.Create("abilitycooldown", 7, 1, function() end)
             -- Slowness Beam
             if GetRound() == "Crafting" then
                 for target, bool in pairs(BBB.playing) do
@@ -360,6 +358,7 @@ net.Receive("AbilityAttempt", function(len, ply)
                         target:SetWalkSpeed(target:GetWalkSpeed() - 200)
                         target:SetRunSpeed(target:GetRunSpeed() - 200)
                         timer.Simple(2, function()
+                            if not IsValid(target) then return end
                             if GetRound() == "Crafting" or GetRound() == "Battle" or GetRound() == "Armageddon" then
                                 target:SetWalkSpeed(target:GetWalkSpeed() + 200)
                                 target:SetRunSpeed(target:GetRunSpeed() + 200)
@@ -374,6 +373,16 @@ net.Receive("AbilityAttempt", function(len, ply)
                         target:ChatPrint("You've been struck by the Death Beam!")
                         target:EmitSound("ambient/energy/spark5.wav")
                         target:EmitSound("ambient/energy/zap8.wav")
+                        target:SetWalkSpeed(math.max(target:GetWalkSpeed() - 100, 50))
+                        target:SetRunSpeed(math.max(target:GetRunSpeed() - 100, 50))
+                        timer.Simple(2, function()
+                            if not IsValid(target) then return end
+                            if GetRound() == "Crafting" or GetRound() == "Battle" or GetRound() == "Armageddon" then
+                                target:ChatPrint("You feel that some of the slowing is permanent...")
+                                target:SetWalkSpeed(target:GetWalkSpeed() + 85)
+                                target:SetRunSpeed(target:GetRunSpeed() + 85)
+                            end
+                        end)
                         local damage = DamageInfo()
                         damage:SetDamage(math.random(5, 25))
                         damage:SetDamageType(DMG_GENERIC)

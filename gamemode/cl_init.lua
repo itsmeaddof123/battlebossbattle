@@ -25,8 +25,7 @@ playerCache = playerCache or {
     time = 0,
     shield = 0,
     maxShield = 0,
-    lastQ = 0,
-    lastE = 0,
+    lastAbility = 0,
     playSongs = true
 }
 
@@ -99,6 +98,7 @@ net.Receive("UpdateRound", function(len)
             messageTop("Crafting: Punch props to gain materials! Craft gear and train stats to get ready for the Battle Round!")
         end
     elseif playerCache.round == "Battle" and IsValid(ply) then
+        playerCache.lastAbility = 0
         if playerCache.playSongs then
             for k, v in ipairs(craftingSongs) do
                 ply:StopSound(v)
@@ -181,10 +181,9 @@ end)
 
 -- Handles the server response to a boss ability attempt
 net.Receive("AbilityResult", function(len)
-    local key = net.ReadString()
     local success = net.ReadBool()
     if success then
-        playerCache["last"..key] = CurTime()
+        playerCache.lastAbility = CurTime()
     end
 end)
 
@@ -197,11 +196,11 @@ toggleTrain = false
 hook.Add("PlayerButtonDown", "MenuToggler", function(ply, key)
     if scoreboardCache[ply] and scoreboardCache[ply].playing and (key == KEY_Q or key == KEY_E) then
         if scoreboardCache[ply].boss and (playerCache.round == "Crafting" or playerCache.round == "Battle" or playerCache.round == "Armageddon") then
-            if key == KEY_Q and (playerCache.lastQ + 10 <= CurTime()) then
+            if key == KEY_Q and (playerCache.lastAbility + 7.1 <= CurTime()) then
                 net.Start("AbilityAttempt")
                 net.WriteString("Q")
                 net.SendToServer()
-            elseif key == KEY_E and (playerCache.lastE + 10 <= CurTime()) then
+            elseif key == KEY_E and (playerCache.lastAbility + 7.1 <= CurTime()) then
                 net.Start("AbilityAttempt")
                 net.WriteString("E")
                 net.SendToServer()
