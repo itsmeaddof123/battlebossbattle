@@ -1,6 +1,7 @@
 -- This file handles the spawning of material entities via the navmesh
 
 navCenters = navCenters or {}
+spawnedObstacles = spawnedObstacles or {}
 spawnedMaterials = spawnedMaterials or {}
 minDistance = minDistance or 1500
 minNavs = minNavs or 100
@@ -114,7 +115,7 @@ for k, v in pairs(weightedMats) do
 end
 
 -- Spawns materials randomly in the region based on how many players there are
-local function SpawnRegion(navCenter, matName, numberOfEnts)
+local function MaterialRegion(navCenter, matName, numberOfEnts)
     -- Gets nearby navmeshes
     local navTable = navmesh.Find(navCenter, minDistance / 1.5, 250, 100)
     while numberOfEnts >= 1 and #navTable >= 1 do
@@ -131,14 +132,12 @@ local function SpawnRegion(navCenter, matName, numberOfEnts)
             mat:Spawn()
         end
     end
-
-    -- Spawn an obstacle entity once those are made along with the region?
 end
 
 -- Starts the loop to spawn all the materials
 function SpawnMaterials()
     -- Removes old materials
-    RemoveMaterials(true)
+    RemoveMaterials()
     local numberOfEnts = math.Clamp(math.ceil(BBB.estimatedPlaying), 6, 10)
     for i, navCenter in ipairs(navCenters) do
         -- Picks a random material to spawn using a weighted algorithm
@@ -148,27 +147,94 @@ function SpawnMaterials()
             loopTotal = loopTotal - weight
             if chosenWeight >= loopTotal then
                 -- Delays the spawning of each region to prevent a lag spike
-                timer.Simple(i * 0.1, function() SpawnRegion(navCenter, mat, numberOfEnts) end)
+                timer.Simple(i * 0.1, function() MaterialRegion(navCenter, mat, numberOfEnts) end)
                 break
             end
         end
     end
 end
 
-function RemoveMaterials(removeAll)
+-- Removes all materials
+function RemoveMaterials()
+    for i, v in ipairs(spawnedMaterials) do
+        if IsValid(v) then
+            local damage = DamageInfo()
+            damage:SetDamage(100)
+            v:TakeDamageInfo(damage)
+        end
+    end
+    spawnedMaterials = {}
+end
+
+-- Spawns materials randomly in the region based on how many players there are
+local function ObstacleRegion(navCenter)
+    -- Gets nearby navmeshes
+    local navTable = navmesh.Find(navCenter, minDistance, 250, 100)
+    local numToSpawn = 6
+    while numToSpawn >= 1 and #navTable >= 1 do
+        local navKey = math.random(1, #navTable)
+        local nav = navTable[navKey]
+        -- Remove tiny navs without spawning anything
+        if nav:GetSizeX() < 100 then
+            table.remove(navTable, navKey)
+        -- Remove small navs with a chance to spawn an obstacle
+        elseif nav:GetSizeX() < 250 then
+            if math.random(0, 1) >= 0.8 then
+                local obstacle = ents.Create("bbb_obstacle")
+                if IsValid(obstacle) then
+                    table.insert(spawnedObstacles, obstacle)
+                    obstacle:SetPos(nav:GetRandomPoint())
+                    obstacle:Spawn()
+                    numToSpawn = numToSpawn - 1
+                end
+            end
+            table.remove(navTable, navKey)
+        -- Remove medium navs and spawn an obstacle
+        elseif nav:GetSizeX() < 400 then
+            local obstacle = ents.Create("bbb_obstacle")
+            if IsValid(obstacle) then
+                table.insert(spawnedObstacles, obstacle)
+                obstacle:SetPos(nav:GetRandomPoint())
+                obstacle:Spawn()
+                numToSpawn = numToSpawn - 1
+            end
+            table.remove(navTable, navKey)
+        -- Spawn an obstacle without removing large navs
+        else
+            local obstacle = ents.Create("bbb_obstacle")
+            if IsValid(obstacle) then
+                table.insert(spawnedObstacles, obstacle)
+                obstacle:SetPos(nav:GetRandomPoint())
+                obstacle:Spawn()
+                numToSpawn = numToSpawn - 1
+            end
+        end
+    end
+end
+
+-- Starts the loop to spawn all the obstacles
+function SpawnObstacles()
+    -- Removes old obstacles
+    RemoveObstacles(true)
+    for i, navCenter in ipairs(navCenters) do
+        timer.Simple(i * 0.1, function() ObstacleRegion(navCenter) end)
+    end
+end
+
+-- Removes all obstacles
+function RemoveObstacles(removeAll)
     if removeAll then
-        for i, v in ipairs(spawnedMaterials) do
-            if IsValid(v) then
+        for i, v in ipairs(spawnedObstacles) do
+            if IsValid(v) then 
                 v:Remove()
             end
         end
-        spawnedMaterials = {}
+        spawnedObstacles = {}
     else
-        for i, v in ipairs(spawnedMaterials) do
-            if IsValid(v) and (math.random(0, 1) >= 0.75 or v:Health() <= 20) then
-                local damage = DamageInfo()
-                damage:SetDamage(20)
-                v:TakeDamageInfo(damage)
+        for i, v in ipairs(spawnedObstacles) do
+            if IsValid(v) and math.random(0, 1) >= 0.9 then
+                v:EmitSound("physics/metal/metal_box_break"..math.random(1, 2)..".wav")
+                v:Remove()
             end
         end
     end

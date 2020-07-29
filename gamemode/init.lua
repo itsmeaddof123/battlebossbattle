@@ -245,7 +245,8 @@ function EndCrafting()
             ply:ChooseRank()
         end
     end
-    RemoveMaterials(false)
+    RemoveMaterials()
+    SpawnObstacles()
     StartBattle()
 end
 
@@ -288,6 +289,13 @@ function StartArmageddon()
             timer.Create("applytoxicity"..tostring(id), 1, 0, function() applyToxicity(ply, id, curtime) end)
         end
     end
+    timer.Create("breakobstacles", 7, 0, function()
+        if GetRound() == "Armageddon" then
+            RemoveObstacles(false)
+        else
+            timer.Remove("breakobstacles")
+        end
+    end)
     timer.Create("endarmageddon", roundTimes.Armageddon, 1, EndArmageddon)
 end
 
@@ -305,8 +313,9 @@ function EndArmageddon()
             ply:UpdateScore(50 * ply:GetLives(), "You got 50 points for each leftover life!")
         end
     end
+    timer.Remove("breakobstacles")
     timer.Remove("checkforend")
-    RemoveMaterials(true)
+    RemoveMaterials()
     StartScoring()
 end
 
