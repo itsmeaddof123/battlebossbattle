@@ -103,7 +103,7 @@ net.Receive("UpdateRound", function(len)
             for k, v in ipairs(craftingSongs) do
                 ply:StopSound(v)
             end
-            ply:EmitSound(battleSongs[math.random(1, #battleSongs)], 100, 100, 0.7)
+            ply:EmitSound(battleSongs[math.random(1, #battleSongs)], 100, 100, 0.5)
         else
             ply:EmitSound("ambient/alarms/warningbell1.wav")
         end
