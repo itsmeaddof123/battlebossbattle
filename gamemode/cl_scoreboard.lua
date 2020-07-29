@@ -15,19 +15,18 @@ local skull = "menu/skull.png"
 local crown = "menu/crown.png"
 
 -- Scoreboard title font
-surface.CreateFont("Amatic Big 1", {
-	font = "Amatic SC",
-	size = 75,
-	weight = 1000,
+surface.CreateFont("Courier Big 5", {
+	font = "Courier New",
+	size = 60,
+	weight = 800,
     bold = true,
 })
 
 -- Scoreboard title font
-surface.CreateFont("Amatic Small 1", {
-	font = "Amatic SC",
-	size = 50,
-	weight = 900,
-    bold = true,
+surface.CreateFont("Courier Small 4", {
+	font = "Courier New",
+	size = 30,
+	weight = 700,
 })
 
 -- Scoreboard panel font
@@ -75,13 +74,13 @@ local function toggleScoreboard(toggle)
         -- Title, red lines, credits footer
         scorePanel.Paint = function(self, w, h)
             draw.RoundedBox(10, 0, 0, w, h, paperColor)
-            draw.SimpleText("BATTLE BOSS BATTLERS", "Amatic Big 1", w / 2, 40, scoreboardText, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            draw.SimpleText("BATTLE BOSS BATTLERS", "Courier Big 5", w / 2, 40, scoreboardText, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
             draw.SimpleText("Gamemode made by add___123", "Courier Small 2", w - 5, h - 5, scoreboardText, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM)
-            draw.SimpleText("Name", "Amatic Small 1", 200, topBuffer - 8, fullBlack, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
-            draw.SimpleText("Score", "Amatic Small 1", 70, topBuffer - 8, fullBlack, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
-            draw.SimpleText("Ping", "Amatic Small 1", 3, topBuffer - 8, fullBlack, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
-            draw.SimpleText("Boss", "Amatic Small 1", scoreW - interval - 100, topBuffer - 8, fullBlack, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
-            draw.SimpleText("Active", "Amatic Small 1", scoreW - interval - 40, topBuffer - 8, fullBlack, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+            draw.SimpleText("Name", "Courier Small 4", 200, topBuffer + 5, fullBlack, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+            draw.SimpleText("Score", "Courier Small 4", 70, topBuffer + 5, fullBlack, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+            draw.SimpleText("ms", "Courier Small 4", 3, topBuffer + 5, fullBlack, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+            draw.SimpleText("Boss", "Courier Small 4", scoreW - interval - 140, topBuffer + 5, fullBlack, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+            draw.SimpleText("Active", "Courier Small 4", scoreW - interval - 60, topBuffer + 5, fullBlack, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
             surface.SetDrawColor(fullRed)
             surface.DrawLine(63, 0, 63, h)
             surface.DrawLine(65, 0, 65, h)
@@ -137,13 +136,13 @@ local function toggleScoreboard(toggle)
                 end
                 if boss then
                     local crownImage = vgui.Create("DImage", plyButton)
-                    crownImage:SetPos(scoreW - interval - 93, 2)
+                    crownImage:SetPos(scoreW - interval - 125, 1)
                     crownImage:SetSize(interval - 4, interval - 4)
                     crownImage:SetImage(crown)
                 end
                 if not scoreboardCache[ply].playing then
                     local skullImage = vgui.Create("DImage", plyButton)
-                    skullImage:SetPos(scoreW - interval - 20, 2)
+                    skullImage:SetPos(scoreW - interval - 32, 1)
                     skullImage:SetSize(interval - 4, interval - 4)
                     skullImage:SetImage(skull)
                 end
