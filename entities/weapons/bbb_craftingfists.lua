@@ -111,7 +111,7 @@ function SWEP:PrimaryAttack(right)
             dmg:SetAttacker(ply)
             dmg:SetInflictor(self)
             target:TakeDamageInfo(dmg)
-        else
+        elseif SERVER then 
             ply:EmitSound("physics/body/body_medium_impact_hard"..math.random(1, 6)..".wav")
         end
     end

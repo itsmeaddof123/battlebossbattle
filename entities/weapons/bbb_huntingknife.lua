@@ -98,12 +98,12 @@ function SWEP:PrimaryAttack()
             damage:SetAttacker(ply)
             target:TakeDamageInfo(damage)
             ply:EmitSound(stabSound)
-        else
+        elseif SERVER then 
             ply:EmitSound(hitSound)
         end
     else
         self.Weapon:SendWeaponAnim(ACT_VM_MISSCENTER)
-        ply:EmitSound(swingSound)
+        if SERVER then ply:EmitSound(swingSound) end
     end
 
     ply:LagCompensation(false)

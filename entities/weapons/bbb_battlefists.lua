@@ -96,7 +96,7 @@ function SWEP:PrimaryAttack(right)
 
     if trace.Hit then
         local target = trace.Entity
-        ply:EmitSound("physics/body/body_medium_impact_hard"..math.random(1, 6)..".wav")
+        if SERVER then ply:EmitSound("physics/body/body_medium_impact_hard"..math.random(1, 6)..".wav") end
         if SERVER and IsValid(target) then
             local damage = DamageInfo()
             damage:SetDamage(self.Primary.Damage)

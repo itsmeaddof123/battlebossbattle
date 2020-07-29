@@ -108,12 +108,12 @@ function SWEP:PrimaryAttack()
                 slapDirection = self.Primary.Power * (slapDirection / slapDirection:Length()) + Vector(0, 0, self.Primary.Power / 1.75)
                 target:SetVelocity(slapDirection)
             end
-        else
+        elseif SERVER then 
             ply:EmitSound(hitSound)
         end
     else
         self.Weapon:SendWeaponAnim(ACT_VM_HITCENTER)
-        ply:EmitSound(swingSound)
+        if SERVER then ply:EmitSound(swingSound) end
     end
 
     ply:LagCompensation(false)

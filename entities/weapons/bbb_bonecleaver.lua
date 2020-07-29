@@ -108,12 +108,12 @@ function SWEP:PrimaryAttack()
                 damageHealed = math.Clamp(ply:GetMaxShield() - ply:GetShield(), 0, damageToHeal - damageHealed)
                 ply:SetShield(math.Clamp(ply:GetShield() + damageHealed, ply:GetShield(), ply:GetMaxShield()))
             end
-        else
+        elseif SERVER then 
             ply:EmitSound(hitSound)
         end
     else
         self.Weapon:SendWeaponAnim(ACT_VM_MISSCENTER)
-        ply:EmitSound(swingSound)
+        if SERVER then ply:EmitSound(swingSound) end
     end
 
     ply:LagCompensation(false)
