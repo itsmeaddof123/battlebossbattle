@@ -42,7 +42,7 @@ if SERVER then
                 attacker:GiveMat(6)
                 attacker:UpdateScore(3)
             elseif inflictor:GetClass() == "bbb_energyzapper" then
-                attacker:UpdateScore(3)
+                attacker:UpdateScore(1)
             end
         end
 
