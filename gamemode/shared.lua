@@ -11,7 +11,7 @@ GM.Author = "add___123 - itsmeaddof123#0773"
     Medic model: https://steamcommunity.com/sharedfiles/filedetails/?id=892493593
     Songs are from HL1 and HL2 so they were already in gmod
     Crafting icons are open source clip art since I can't draw
-    Gamemode icon and logo by 🥞Pancake!🥞#5459 and with help on the logo by Dog#6969
+    Gamemode icon and logo by https://steamcommunity.com/id/Shadow01100/ and with help on the logo by Dog
 
 --]]
 
