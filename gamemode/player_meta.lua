@@ -574,6 +574,7 @@ end
 
 -- Part of a two-function recursion 
 local function trainStat(ply, statId)
+    if not IsValid(ply) then return end
     ply:UpdateStat(statId, ply:GetStat(statId) + 0.1)
     ply:UpdateScore(0.1)
     timer.Remove("trainstat"..ply:SteamID64())
@@ -589,7 +590,14 @@ function plyMeta:TrainStat(statId)
     if statLevel >= 50 then return false, "Stat fully trained!" end
 
     -- This timer causes a two-function recursion that ends once any of the above conditions are met
-    timer.Create("trainstat"..self:SteamID64(), 0.1, 1, function() trainStat(self, statId) end)
+    local id = self:SteamID64()
+    timer.Create("trainstat"..id, 0.1, 1, function()
+        if not IsValid(self) then 
+            timer.Remove("trainstat"..id)
+            return
+        end
+        trainStat(self, statId)
+    end)
     return true, "Success!"
 end
 
