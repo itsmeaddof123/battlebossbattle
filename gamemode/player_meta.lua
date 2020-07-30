@@ -260,7 +260,7 @@ function plyMeta:ChooseRank()
             trained = trained + v
         end
         -- No crafting, lots of training
-        if trained >= 20 then -- RECONFIGURE WITH TESTING
+        if trained >= 120 then
             self:SetRank("Overtrained") 
             self:SetMdl("models/player/charple.mdl")
             self:UpdateScore(75, "You got 75 points for achieving the secret rank of Overtrained!")
@@ -271,7 +271,7 @@ function plyMeta:ChooseRank()
                 collected = collected + v
             end
             print(self:Name().." collected "..tostring(collected).." materials!")
-            if collected >= 50 then -- RECONFIGURE WITH TESTING
+            if collected >= 50 then
                 self:SetRank("Collector")
                 self:SetMdl("models/player/gman_high.mdl")
                 self:UpdateScore(150, "You got 75 points for achieving the secret rank of Collector!")
