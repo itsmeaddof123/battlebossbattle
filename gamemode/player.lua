@@ -433,11 +433,16 @@ net.Receive("AbilityAttempt", function(len, ply)
             timer.Create("abilitycooldown", 7, 1, function() end)
             -- Gravity Toss
             if GetRound() == "Crafting" then
+                ply:EmitSound("ambient/levels/canals/windmill_wind_loop1.wav")
+                timer.Simple(0.7, function()
+                    if not IsValid(ply) then return end
+                    ply:StopSound("ambient/levels/canals/windmill_wind_loop1.wav")
+                end)
                 for target, bool in pairs(BBB.playing) do
                     if IsValid(target) and target:Alive() and not target:GetBoss() then
                         target:ChatPrint("You've been hit by Gravity Toss!")
                         target:EmitSound("ambient/levels/canals/windmill_wind_loop1.wav")
-                        target:SetVelocity(Vector(math.random(-150, 150), math.random(-150, 150), 400))
+                        target:SetVelocity(Vector(math.random(-400, 400), math.random(-400, 400), 400))
                         timer.Simple(0.7, function()
                             if not IsValid(target) then return end
                             target:StopSound("ambient/levels/canals/windmill_wind_loop1.wav")
@@ -446,6 +451,11 @@ net.Receive("AbilityAttempt", function(len, ply)
                 end
             -- Gravity Pummel
             elseif GetRound() == "Battle" or GetRound() == "Armageddon" then
+                ply:EmitSound("ambient/levels/canals/windmill_wind_loop1.wav")
+                timer.Simple(0.7, function()
+                    if not IsValid(ply) then return end
+                    ply:StopSound("ambient/levels/canals/windmill_wind_loop1.wav")
+                end)
                 for target, bool in pairs(BBB.playing) do
                     if IsValid(target) and target:Alive() and not target:GetBoss() then
                         target:ChatPrint("You've been hit by Gravity Pummel!")
@@ -482,6 +492,7 @@ net.Receive("AbilityAttempt", function(len, ply)
                 end
             -- Death Beam
             elseif GetRound() == "Battle" or GetRound() == "Armageddon" then
+                ply:EmitSound("ambient/energy/zap9.wav")
                 for target, bool in pairs(BBB.playing) do
                     if IsValid(target) and target:Alive() and not target:GetBoss() then
                         target:ChatPrint("You've been struck by the Death Beam!")

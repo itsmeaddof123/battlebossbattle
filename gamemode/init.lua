@@ -101,7 +101,7 @@ local function applyToxicity(ply, id, startTime)
     if IsValid(ply) and ply:GetPlaying() and GetRound() == "Armageddon" then
         if ply:Alive() then
             local damage = DamageInfo()
-            damage:SetDamage(math.ceil((CurTime() - startTime) / 7))
+            damage:SetDamage(math.ceil((CurTime() - startTime) / 5))
             ply:TakeDamageInfo(damage)
             -- Points for surviving another second into armageddon
             ply:UpdateScore(2)
