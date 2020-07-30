@@ -46,6 +46,7 @@ function plyMeta:InitReset()
     self:SetPlayable(true)
     self:SetPity(1)
     self:SetInitialized(true)
+    self:SetDefaultModel(0)
 end
 
 -- This forces players to spawn for preparing and for crafting
@@ -356,6 +357,16 @@ local playerModels = {
 "models/player/Group03/male_07.mdl",
 "models/player/Group03/male_08.mdl",}
 
+function plyMeta:GetDefaultModel()
+    if not self.defaultModel then return 0 end
+    if self.defaultModel >= 1 and self.defaultModel <= #playerModels then
+        return self.defaultModel
+    else
+        return playerModels[math.random(#playerModels)]
+    end
+end
+function plyMeta:SetDefaultModel(arg) self.defaultModel = arg end
+
 -- Tracks the model that the player should have when spawning
 function plyMeta:GetMdl() return self.mdl end
 function plyMeta:SetMdl(arg)
@@ -363,7 +374,8 @@ function plyMeta:SetMdl(arg)
         self.mdl = arg
         self:SetModel(arg)
     else
-        self:SetModel(playerModels[math.random(#playerModels)])
+        self.mdl = self:GetDefaultModel()
+        self:SetModel(self:GetDefaultModel())
     end
 end
 

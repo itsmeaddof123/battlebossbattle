@@ -20,6 +20,13 @@ local trainSuccess = "buttons/blip1.wav"
 local consumeSuccess = "npc/barnacle/barnacle_gulp2.wav"
 local failure = "npc/roller/code2.wav"
 local itemSelect = "buttons/button15.wav"
+-- New UI
+local lightGrey = Color(200, 200, 200, 75)
+--local darkGrey = Color(100, 100, 100, 150)
+local solidGrey = Color(75, 75, 75, 255)
+local lightBlue = Color(25, 75, 150, 150)
+local solidWhite = Color(255, 255, 255, 255)
+local solidBlack = Color(0, 0, 0, 255)
 
 -- Item Title
 surface.CreateFont("Courier Big 1", {
@@ -50,6 +57,28 @@ surface.CreateFont("Courier Small 3", {
 	size = interval * 0.5,
 	weight = 750,
     italic = true,
+})
+
+-- New UI
+-- F1 Menu font
+surface.CreateFont("F1 Menu 1", {
+    font = "Courier New",
+    size = 25,
+    weight = 650,
+})
+
+-- F1 Menu font
+surface.CreateFont("F1 Menu 2", {
+    font = "Courier New",
+    size = 45,
+    weight = 750,
+})
+
+-- F1 Menu font
+surface.CreateFont("F1 Menu 3", {
+    font = "Courier New",
+    size = 25,
+    weight = 650,
 })
 
 ------------------------------------
@@ -510,16 +539,231 @@ function toggleConsumables(toggle)
     end
 end
 
-local f1width = 400
-local f1height = 300
+-- Intro page titles
+local titleText = {
+    "Battle Boss Battle",
+    "Crafting",
+    "Loadouts",
+    "Battle",
+    "Armageddon",
+    "Scoring",
+    "Battle Boss",
+    "Crafting",
+    "Battle and Armageddon",
+}
+
+-- Intro page bodies
+local bodyText = {
+    "In this three-round fight, you start with nothing and fight your way to claiming the title of the Battle Boss!\n\nPrepare your loadout in the Crafting Round, compete for domination in the Battle Round, and fight for your life in the Amargeddon Round.\n\nShould you outperform all others, you will be crowned Battle Boss!",
+    "During the Crafting Round, punch props to gain raw materials. With these, you can craft up to five different equipment pieces and stock up on six types of consumables to use during the Battle Round.\n\nIn addition, you can also train six different skills to raise your stats,\n\nOnce the Battle Round begins, you'll receive your loadout!",
+    "Each equipment slot has six items to choose from. Mix and match as you please, but if you craft five items of the same class, you'll unlock extra buffs!\n\nAside from the six main classes, there are four secret classes that you just might be able to unlock if you experiment during the Crafting Round!",
+    "When the Battle Round starts, you'll receive your loadout to start fighting.\n\nYou can join the brawl against the powerful Battle Boss or take advantage of the chaos to strike other players!\n\nYour shield will absorb any damage you take, but if you're not careful your enemies might break through!",
+    "When the Armageddon Round begins, an ever-increasing toxicity will take over the battlefield, slowly killing everyone and destroying the obstacles.\n\nSurvive for as long as you can in this final showdown! The last player standing will receive a big point bonus!",
+    "After the fighting is all over, the crowning of the next Battle Boss will take place.\n\nYour score - determined by how much you collected, crafted and trained, how many players you killed and eliminated, how long you survived, and more, will be used to find a winner.\n\nIf you win, you will be crowned Battle Boss!",
+    "As the Battle Boss, all of your stats will be increased: Health, Shield, Strength, Defense, Speed, and Jumping Power.\n\nYou will receive special weapons and special abilities. You will have a different role to take on in the game.\n\nIt's your chance to show everyone why you're the Battle Boss!",
+    "In the Crafting Round, you have a Slap Bat which will let you launch players away from their materials, and an Energy Zapper to destroy materials.\n\nYou also get the Gravity Toss to throw players around and the Slowness Beam to stop them in their tracks.\n\nDo everything you can to slow down their progress!",
+    "In the Battle and Armageddon Rounds, you have an upgraded Smack Bat and Energy Burster to attack players and destroy any obstacles they hide behind!\n\nYour abilities are also upgraded to Gravity Pummel and the Death Beam to help you conquer the battlefield.\n\nIt's your time to shine!",
+}
+
+local playerModels = {
+    "Random Model",
+    "Citizen 1",
+    "Citizen 2",
+    "Citizen 3",
+    "Citizen 4",
+    "Citizen 5",
+    "Citizen 6",
+    "Citizen 7",
+    "Citizen 8",
+    "Rebel 1",
+    "Rebel 2",
+    "Rebel 3",
+    "Rebel 4",
+    "Rebel 5",
+    "Rebel 6",
+    "Rebel 7",
+    "Rebel 8",
+}
+
+local f1Width = 700
+local f1Height = 500
 function toggleF1Menu(toggle)
     if toggle then
+        toggleF1 = true
         -- Close the old f1 menu
         if IsValid(f1Panel) then
             f1Panel:Remove()
-            -- Play sound?
         end
+
+        -- Main panel
+        f1Panel = vgui.Create("DPanel")
+        f1Panel:SetSize(f1Width + 20, f1Height + 20)
+        f1Panel:Center()
+        f1Panel:MakePopup()
+        f1Panel:SetKeyboardInputEnabled(false)
+        f1Panel.Paint = function(self, w, h)
+            draw.RoundedBox(20, 0, 0, w, h, lightGrey)
+        end
+
+        -- Inner panel
+        local f1Inner = vgui.Create("DPanel", f1Panel)
+        f1Inner:SetSize(f1Width, f1Height)
+        f1Inner:Center()
+        f1Inner.Paint = function(self, w, h)
+            draw.RoundedBox(15, 0, 0, w, h, lightBlue)
+        end
+
+        -- Close button
+        local f1Close = vgui.Create("DImageButton", f1Inner)
+        f1Close:SetSize(16, 16)
+        f1Close:SetPos(f1Width * 0.98 - 16, 5)
+        f1Close.Paint = function(self, w, h)
+            draw.RoundedBox(3, 0, 0, w, h, solidGrey)
+        end
+        f1Close:SetImage("icon16/cross.png")
+        function f1Close:DoClick()
+            toggleF1 = false
+            -- Close the old f1 menu
+            if IsValid(f1Panel) then
+                f1Panel:Remove()
+            end
+        end
+
+        -- Tabs
+        local f1Tabs = vgui.Create("DPropertySheet", f1Inner)
+        f1Tabs:SetSize(f1Width * 0.96, f1Height * 0.93)
+        f1Tabs:SetPos(f1Width * 0.02, f1Height * 0.05)
+        local tabsWidth = f1Width * 0.96
+        local tabsHeight = f1Height * 0.93
+
+        -- Intro tab
+        local f1Intro = vgui.Create("DPanel", f1Tabs)
+        local introPage = 1
+        f1Tabs:AddSheet("Intro", f1Intro, "icon16/comments.png")
+        f1Intro:SetSize(tabsWidth, tabsHeight)
+        f1Intro.Paint = function(self, w, h)
+            draw.RoundedBox(5, 0, h * 0.1, w, h * 0.9, solidBlack)
+        end
+
+        local titles = {}
+        local bodies = {}
+
+        -- Ceates the intro pages
+        for i = 1, #titleText do
+            -- Intro page content
+            local introTitle = vgui.Create("DLabel", f1Intro)
+            introTitle:SetWide(tabsWidth * 0.94)
+            introTitle:SetAutoStretchVertical(true)
+            introTitle:SetPos(tabsWidth * 0.03, tabsHeight * 0.12)
+            introTitle:SetFont("F1 Menu 2")
+            introTitle:SetText(titleText[i])
+            introTitle:SetTextColor(solidWhite)
+            introTitle:SetWrap(true)
+            table.insert(titles, introTitle)
+            local introBody = vgui.Create("DLabel", f1Intro)
+            introBody:SetWide(tabsWidth * 0.94)
+            introBody:SetAutoStretchVertical(true)
+            introBody:SetPos(tabsWidth * 0.03, tabsHeight * 0.24)
+            introBody:SetFont("F1 Menu 3")
+            introBody:SetText(bodyText[i])
+            introBody:SetTextColor(solidWhite)
+            introBody:SetWrap(true)
+            table.insert(bodies, introBody)
+            if i != introPage then
+                introTitle:Hide()
+                introBody:Hide()
+            end
+        end
+
+        -- Moves to the previous page
+        local leftButton = vgui.Create("DButton", f1Intro)
+        leftButton:SetSize(tabsWidth * 0.15, tabsHeight * 0.08)
+        leftButton:SetPos(tabsWidth * 0.25, 0)
+        leftButton:SetTextColor(solidWhite)
+        leftButton:SetText("Previous")
+        leftButton.Paint = function(self, w, h)
+            draw.RoundedBox(5, 0, 0, w, h, solidGrey)
+        end
+        function leftButton:DoClick()
+            if introPage > 1 then
+                titles[introPage]:Hide()
+                bodies[introPage]:Hide()
+                introPage = introPage - 1
+                titles[introPage]:Show()
+                bodies[introPage]:Show()
+            end
+        end
+
+        -- Tells which page is up
+        local pageLabel = vgui.Create("DPanel", f1Intro)
+        pageLabel:SetSize(tabsWidth * 0.1, tabsHeight * 0.08)
+        pageLabel:SetPos(tabsWidth * 0.45, 0)
+        pageLabel.Paint = function(self, w, h)
+            draw.SimpleText(tostring(introPage).." / "..tostring(#titleText), "F1 Menu 1", w / 2, h / 2, solidBlack, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        end
+
+        -- Moves to the next page
+        local rightButton = vgui.Create("DButton", f1Intro)
+        rightButton:SetSize(tabsWidth * 0.15, tabsHeight * 0.08)
+        rightButton:SetPos(tabsWidth * 0.6, 0)
+        rightButton:SetTextColor(solidWhite)
+        rightButton:SetText("Next")
+        rightButton.Paint = function(self, w, h)
+            draw.RoundedBox(5, 0, 0, w, h, solidGrey)
+        end
+        function rightButton:DoClick()
+            if introPage < #titleText then
+                titles[introPage]:Hide()
+                bodies[introPage]:Hide()
+                introPage = introPage + 1
+                titles[introPage]:Show()
+                bodies[introPage]:Show()
+            end
+        end
+
+        -- Settings tab
+        local f1Settings = vgui.Create("DPanel", f1Tabs)
+        f1Tabs:AddSheet("Settings", f1Settings, "icon16/wrench.png")
+        f1Settings.Paint = function(self, w, h) end
+
+        -- Settings panel
+        local settingsPanel = vgui.Create("DPanel", f1Settings)
+        settingsPanel:Dock(BOTTOM)
+        settingsPanel:SetTall(tabsHeight * 0.9)
+        settingsPanel.Paint = function(self, w, h)
+            draw.RoundedBox(5, 0, 0, w, h, solidGrey)
+        end
+        local settingsWidth = settingsPanel:GetWide()
+        local settingsHeight = settingsPanel:GetTall()
+
+        -- Default model choice
+        local modelChoice = vgui.Create("DComboBox", settingsPanel)
+        modelChoice:SetSize(400, 25)
+        modelChoice:SetPos(20, 20)
+        modelChoice:SetValue("Choose Default Player Model")
+        for k, v in ipairs(playerModels) do
+            modelChoice:AddChoice(v)
+        end
+        modelChoice.OnSelect = function(self, index, value)
+            net.Start("DefaultModelChoice")
+            net.WriteInt(index - 1, 16)
+            net.SendToServer()
+        end
+
+        -- Toggle round transition noises
+        
+
+        -- Toggle music
+
+
+        -- Music volume slider
+
+
+
+
+
     else
+        toggleF1 = false
         -- Close the f1 menu
         if IsValid(f1Panel) then
             f1Panel:Remove()

@@ -520,15 +520,20 @@ net.Receive("AbilityAttempt", function(len, ply)
 end)
 
 -- Sends the requesting player info about each player's playing, boss, and score
-net.Receive("ScoreboardRequest", function(len, requester)
-    for k, ply in ipairs(player.GetAll()) do
-        if IsValid(ply) then
+net.Receive("ScoreboardRequest", function(len, ply)
+    for k, v in ipairs(player.GetAll()) do
+        if IsValid(v) then
             net.Start("ScoreboardResult")
-            net.WriteEntity(ply)
-            net.WriteBool(ply:GetPlaying())
-            net.WriteBool(ply:GetBoss())
-            net.WriteInt(ply:GetScore(), 16)
-            net.Send(requester)
+            net.WriteEntity(v)
+            net.WriteBool(v:GetPlaying() or false)
+            net.WriteBool(v:GetBoss() or false)
+            net.WriteInt(v:GetScore() or 0, 16)
+            net.Send(ply)
         end
     end
+end)
+
+-- Changes the player's default model based on their choise
+net.Receive("DefaultModelChoice", function(len, ply)
+    ply:SetDefaultModel(net.ReadInt(16))
 end)

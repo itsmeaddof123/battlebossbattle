@@ -27,7 +27,7 @@ playerCache = playerCache or {
     maxShield = 0,
     lastAbility = 0,
     playSongs = true,
-    songVolume = 100,
+    songVolume = 50,
     scoreboardInitialized = false,
 }
 
@@ -91,7 +91,7 @@ net.Receive("UpdateRound", function(len)
     if not IsValid(ply) then return end
     if playerCache.round == "Crafting" and IsValid(ply) then
         if playerCache.playSongs then
-            ply:EmitSound(craftingSongs[math.random(1, #craftingSongs)], 100, 100, playerCache.songVolume / 100 * 0.5)
+            ply:EmitSound(craftingSongs[math.random(1, #craftingSongs)], 100, 100, playerCache.songVolume / 100)
         elseif ply then
             ply:EmitSound("ambient/alarms/warningbell1.wav")
         end
@@ -106,7 +106,7 @@ net.Receive("UpdateRound", function(len)
             for k, v in ipairs(craftingSongs) do
                 ply:StopSound(v)
             end
-            ply:EmitSound(battleSongs[math.random(1, #battleSongs)], 100, 100, playerCache.songVolume / 100 * 0.5)
+            ply:EmitSound(battleSongs[math.random(1, #battleSongs)], 100, 100, playerCache.songVolume / 100)
         else
             ply:EmitSound("ambient/alarms/warningbell1.wav")
         end
@@ -131,9 +131,9 @@ net.Receive("UpdateRound", function(len)
     end
 end)
 
+-- e
 net.Receive("WinnerMessage", function(len)
-    local msg = net.ReadString()
-    messageTop(msg)
+    messageTop(net.ReadString())
 end)
 
 -- Updates the scoreboard cache with new player info
@@ -176,6 +176,7 @@ end)
 net.Receive("ConsumeExpired", function(len)
     local itemId = net.ReadInt(16)
     if IsValid(LocalPlayer()) then LocalPlayer():ChatPrint("Your "..craftingTable.items[6][itemId].name.." has expired!") end
+    -- Add a sound here
 end)
 
 -- Removes a player from the cache
@@ -194,6 +195,7 @@ net.Receive("AbilityResult", function(len)
     end
 end)
 
+-- Initializes the player's scoreboard cache
 net.Receive("ScoreboardResult", function(len)
     local ply = net.ReadEntity()
     local playingInfo = net.ReadBool()
@@ -240,12 +242,12 @@ hook.Add("PlayerButtonDown", "MenuToggler", function(ply, key)
     end
     -- Cheap way to tell the server that the player is ready to receive scoreboard information
     if not playerCache.scoreboardInitialized and not timer.Exists("waitforinfo") then
+        toggleF1Menu(true)
         timer.Create("waitforinfo", 3, 1, function() timer.Remove("waitforinfo") end) -- Gives the server time to respond
         net.Start("ScoreboardRequest")
         net.SendToServer()
     end
 end)
-
 hook.Add("PlayerButtonUp", "ConsumeReleaser", function(ply, key)
     if key == KEY_Q or key == KEY_E then
         toggleConsumables(false)
