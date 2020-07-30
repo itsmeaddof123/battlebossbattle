@@ -260,7 +260,7 @@ function plyMeta:ChooseRank()
             trained = trained + v
         end
         -- No crafting, lots of training
-        if trained >= 120 then
+        if trained >= 100 then
             self:SetRank("Overtrained") 
             self:SetMdl("models/player/charple.mdl")
             self:UpdateScore(75, "You got 75 points for achieving the secret rank of Overtrained!")
