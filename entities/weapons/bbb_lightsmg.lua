@@ -92,7 +92,7 @@ function SWEP:Reload()
 	ply:SetAnimation(PLAYER_RELOAD)
 	self:EmitSound("weapons/smg1/smg1_reload.wav")
     timer.Simple(1.5, function()
-        if IsValid(ply) then
+        if IsValid(ply) and IsValid(self) then
             ply:SetAmmo(self.Primary.ClipSize, self.Primary.Ammo)
         end
     end)
