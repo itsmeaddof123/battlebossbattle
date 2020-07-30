@@ -37,7 +37,7 @@ SWEP.AdminSpawnable     = false
 
 SWEP.Primary.ClipSize   = -1
 SWEP.Primary.DefaultClip= -1
-SWEP.Primary.Damage     = 25
+SWEP.Primary.Damage     = 100
 SWEP.Primary.Power      = 500
 SWEP.Primary.Delay      = 0.8
 SWEP.Primary.Ammo       = "none"
