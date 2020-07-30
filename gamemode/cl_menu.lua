@@ -588,6 +588,13 @@ local playerModels = {
 local f1Width = 700
 local f1Height = 500
 function toggleF1Menu(toggle)
+
+    if timer.Exists("f1buffer") then
+        return
+    else
+        timer.Create("f1buffer", 0.1, 1, function() timer.Remove("f1buffer") end)
+    end
+
     if toggle then
         toggleF1 = true
         -- Close the old f1 menu
