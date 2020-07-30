@@ -643,25 +643,25 @@ function plyMeta:ConsumeItem(itemId)
             end
         end)
     elseif itemId == 5 then
-        self:SetAttack(self:GetAttack() + 0.25 * mult)
+        self:SetAttack(self:GetAttack() + 0.5 * mult)
         timer.Create("consume"..tostring(itemId)..self:SteamID64(), 30, 1, function() 
             if not IsValid(self) then return end
             if GetRound() == "Battle" or GetRound() == "Armageddon" then
-                self:SetAttack(self:GetAttack() - 0.25 * mult)
+                self:SetAttack(self:GetAttack() - 0.5 * mult)
                 consumeExpired(self, itemId)
             end
         end)
     elseif itemId == 6 then
-        self:SetWalkSpeed(self:GetWalkSpeed() + 50 * mult)
-        self:SetRunSpeed(self:GetRunSpeed() + 50 * mult)
-        self:SetJumpPower(self:GetJumpPower() + 50 * mult)
+        self:SetWalkSpeed(self:GetWalkSpeed() + 75 * mult)
+        self:SetRunSpeed(self:GetRunSpeed() + 75 * mult)
+        self:SetJumpPower(self:GetJumpPower() + 75 * mult)
         timer.Create("consume"..tostring(itemId)..self:SteamID64(), 30, 1, function() 
             if not IsValid(self) then return end
             if GetRound() == "Battle" or GetRound() == "Armageddon" then
                 consumeExpired(self, itemId)
-                self:SetWalkSpeed(self:GetWalkSpeed() - 50 * mult)
-                self:SetRunSpeed(self:GetRunSpeed() - 50 * mult)
-                self:SetJumpPower(self:GetJumpPower() - 50 * mult)
+                self:SetWalkSpeed(self:GetWalkSpeed() - 75 * mult)
+                self:SetRunSpeed(self:GetRunSpeed() - 75 * mult)
+                self:SetJumpPower(self:GetJumpPower() - 75 * mult)
             end
         end)
     end
