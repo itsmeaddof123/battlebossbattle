@@ -198,6 +198,7 @@ hook.Add("OnSpawnMenuOpen", "DisableSpawnMenu", function() return false end)
 -- Toggle crafting and training
 toggleCraft = false
 toggleTrain = false
+toggleF1 = false
 hook.Add("PlayerButtonDown", "MenuToggler", function(ply, key)
     if scoreboardCache[ply] and scoreboardCache[ply].playing and (key == KEY_Q or key == KEY_E) then
         if scoreboardCache[ply].boss and (playerCache.round == "Crafting" or playerCache.round == "Battle" or playerCache.round == "Armageddon") then
@@ -217,6 +218,8 @@ hook.Add("PlayerButtonDown", "MenuToggler", function(ply, key)
         else
             toggleConsumables(playerCache.round == "Battle" or playerCache.round == "Armageddon")
         end
+    elseif key == KEY_F1 then
+        toggleF1Menu(not toggleF1)
     end
 end)
 

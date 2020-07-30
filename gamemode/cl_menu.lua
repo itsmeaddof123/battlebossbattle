@@ -510,6 +510,24 @@ function toggleConsumables(toggle)
     end
 end
 
+local f1width = 400
+local f1height = 300
+function toggleF1Menu(toggle)
+    if toggle then
+        -- Close the old f1 menu
+        if IsValid(f1Panel) then
+            f1Panel:Remove()
+            -- Play sound?
+        end
+    else
+        -- Close the f1 menu
+        if IsValid(f1Panel) then
+            f1Panel:Remove()
+            -- Play sound?
+        end
+    end
+end
+
 ---------------------------------
 --[[     MENU NETWORKING     ]]--
 ---------------------------------
