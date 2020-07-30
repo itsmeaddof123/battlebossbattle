@@ -221,6 +221,7 @@ function StartCrafting()
     -- The double loop is a necessary evil
     for ply, bool in pairs(BBB.playing) do
         if ply:GetBoss() then
+            ply:EmitSounds("vo/ravenholm/madlaugh0"..math.random(1, 4)..".wav")
             ply:SetLives(1)
             ply:SetWalkSpeed(400)
             ply:SetRunSpeed(400)
@@ -266,6 +267,9 @@ function StartBattle()
                 ply:SetShield(ply:GetMaxShield())
                 ply:FullStrip()
                 ply:GiveTools()
+            end
+            if ply:GetBoss() then
+                ply:EmitSound(bossTaunst[math.random(1, #bossTaunts)])
             end
             ply:ChangeStats()
         end
