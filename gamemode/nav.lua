@@ -179,7 +179,7 @@ local function ObstacleRegion(navCenter)
             table.remove(navTable, navKey)
         -- Remove small navs with a chance to spawn an obstacle
         elseif nav:GetSizeX() < 250 then
-            if math.random(0, 1) >= 0.8 then
+            if math.random(0, 100) >= 80 then
                 local obstacle = ents.Create("bbb_obstacle")
                 if IsValid(obstacle) then
                     table.insert(spawnedObstacles, obstacle)
@@ -232,7 +232,7 @@ function RemoveObstacles(removeAll)
         spawnedObstacles = {}
     else
         for i, v in ipairs(spawnedObstacles) do
-            if IsValid(v) and math.random(0, 1) >= 0.9 then
+            if IsValid(v) and math.random(0, 100) >= 80 then
                 v:EmitSound("physics/metal/metal_box_break"..math.random(1, 2)..".wav")
                 v:Remove()
             end
