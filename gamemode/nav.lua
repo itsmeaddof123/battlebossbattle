@@ -86,14 +86,14 @@ end
 -- We can calculate that with the following algorithm
 
 -- The average number of materials per entity, calculated from each respective entity script
--- Numbers added on reduce the frequency of material spawning for balancing
+-- Numbers added/subtracted artificially change the weight of spawning
 local matsPerEnt = {
-    bbb_essence = 1.2 + 0.15,
-    bbb_stone = 2.2,
-    bbb_fur = 1.85,
-    bbb_metal = 2.5 - 0.25,
+    bbb_essence = 1.2 + 0.2,
+    bbb_stone = 2.2 - 0.15,
+    bbb_fur = 1.85 + 0.05,
+    bbb_metal = 2.5 - 0.3,
     bbb_wood = 1.75,
-    bbb_water = 1.55,
+    bbb_water = 1.55 - 0.05,
 }
 
 -- Uses for calculations
@@ -138,7 +138,7 @@ end
 function SpawnMaterials()
     -- Removes old materials
     RemoveMaterials()
-    local numberOfEnts = math.Clamp(math.ceil(BBB.estimatedPlaying), 6, 10)
+    local numberOfEnts = math.Clamp(BBB.estimatedPlaying, 8, 12)
     for i, navCenter in ipairs(navCenters) do
         -- Picks a random material to spawn using a weighted algorithm
         local loopTotal = totalWeight
@@ -170,7 +170,7 @@ end
 local function ObstacleRegion(navCenter)
     -- Gets nearby navmeshes
     local navTable = navmesh.Find(navCenter, minDistance, 250, 100)
-    local numToSpawn = 6
+    local numToSpawn = 3
     while numToSpawn >= 1 and #navTable >= 1 do
         local navKey = math.random(1, #navTable)
         local nav = navTable[navKey]

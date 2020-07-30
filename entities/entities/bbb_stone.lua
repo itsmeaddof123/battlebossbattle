@@ -26,7 +26,10 @@ if SERVER then
         local modelTable = models[math.random(1, #models)]
         self:SetModel(modelTable.model)
         self:SetAngles(Angle(0, math.random(1, 360), 0) + (modelTable.angle or Angle(0, 0, 0)))
-        timer.Simple(0.1, function() self:SetPos(self:GetPos() + (modelTable.offset or Vector(0, 0, 0))) end)
+        timer.Simple(0.1, function()
+            self:SetPos(self:GetPos() + (modelTable.offset or Vector(0, 0, 0)))
+            self:EmitSound("ambient/materials/rock"..math.random(1, 4)..".wav")
+        end)
         self:PhysicsInit(SOLID_VPHYSICS)
         self:SetMoveType(MOVETYPE_NONE)
         self:SetSolid(SOLID_VPHYSICS)
