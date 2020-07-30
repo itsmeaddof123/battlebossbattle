@@ -31,7 +31,7 @@ SWEP.Primary.Ammo       = "none"
 SWEP.Primary.Recoil     = 0.25
 SWEP.Primary.Damage     = 50
 SWEP.Primary.Spread     = 0.01
-SWEP.Primary.Delay      = 0.25
+SWEP.Primary.Delay      = 0.3
 SWEP.Primary.Automatic  = true
 
 SWEP.Secondary.ClipSize = -1
@@ -41,7 +41,7 @@ SWEP.Secondary.Automatic= false
 
 SWEP.ShouldDropOnDie    = false
 
-local shootSounds = {"npc/combine_gunship/attack_stop2.wav",}-- "npc/env_headcrabcanister/incoming.wav"}
+local shootSounds = {"npc/combine_gunship/attack_stop2.wav",}
 
 function SWEP:Initialize()
     self:SetHoldType("revolver")

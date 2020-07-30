@@ -32,7 +32,7 @@ SWEP.AdminSpawnable     = false
 
 SWEP.Primary.ClipSize   = -1
 SWEP.Primary.DefaultClip= -1
-SWEP.Primary.Damage     = 20
+SWEP.Primary.Damage     = 30
 SWEP.Primary.Delay      = 0.4
 SWEP.Primary.Ammo       = "none"
 SWEP.Primary.Automatic  = true
@@ -101,7 +101,7 @@ function SWEP:PrimaryAttack()
             ply:EmitSound(stabSound)
 
             if target:IsPlayer() then
-                local damageToHeal = 5 * mult
+                local damageToHeal = 10 * mult
                 local damageHealed = 0
                 damageHealed = math.Clamp(ply:GetMaxHealth() - ply:Health(), 0, damageToHeal)
                 ply:SetHealth(math.Clamp(ply:Health() + damageHealed, ply:Health(), ply:GetMaxHealth()))

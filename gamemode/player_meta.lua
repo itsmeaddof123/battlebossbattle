@@ -106,7 +106,7 @@ end
 local function medicRegen(ply)
     if (GetRound() == "Battle" or GetRound() == "Armageddon") and ply:GetPlaying() then
         if ply:Alive() then
-            ply:SetHealth(math.min(ply:Health() + 1, ply:GetMaxHealth()))
+            ply:SetHealth(math.min(ply:Health() + 3, ply:GetMaxHealth()))
         end
     else
         timer.Remove("medicregen"..ply:SteamID64())
@@ -174,11 +174,11 @@ function plyMeta:ChangeStats()
         self:SetAttack(self:GetAttack() + 0.5)
         self:SetDefense(self:GetDefense() + 0.5)
     elseif rank == "Overtrained" then
-        self:SetAttack(self:GetAttack() + 0.25)
-        self:SetDefense(self:GetDefense() + 0.25)
-        self:SetWalkSpeed(self:GetWalkSpeed() + 50)
-        self:SetRunSpeed(self:GetRunSpeed() + 50)
-        self:SetJumpPower(self:GetJumpPower() + 50)
+        self:SetAttack(self:GetAttack() + 0.5)
+        self:SetDefense(self:GetDefense() + 0.5)
+        self:SetWalkSpeed(self:GetWalkSpeed() + 100)
+        self:SetRunSpeed(self:GetRunSpeed() + 100)
+        self:SetJumpPower(self:GetJumpPower() + 100)
         self:SetMaxHP(self:GetMaxHP() + 50)
         self:SetMaxShield(self:GetMaxShield() + 50)
     elseif rank == "Collector" then

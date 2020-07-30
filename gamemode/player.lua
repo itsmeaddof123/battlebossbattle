@@ -373,16 +373,8 @@ net.Receive("AbilityAttempt", function(len, ply)
                         target:ChatPrint("You've been struck by the Death Beam!")
                         target:EmitSound("ambient/energy/spark5.wav")
                         target:EmitSound("ambient/energy/zap8.wav")
-                        target:SetWalkSpeed(math.max(target:GetWalkSpeed() - 100, 50))
-                        target:SetRunSpeed(math.max(target:GetRunSpeed() - 100, 50))
-                        timer.Simple(2, function()
-                            if not IsValid(target) then return end
-                            if GetRound() == "Crafting" or GetRound() == "Battle" or GetRound() == "Armageddon" then
-                                target:ChatPrint("You feel that some of the slowing is permanent...")
-                                target:SetWalkSpeed(target:GetWalkSpeed() + 85)
-                                target:SetRunSpeed(target:GetRunSpeed() + 85)
-                            end
-                        end)
+                        target:SetWalkSpeed(target:GetWalkSpeed() - 5)
+                        target:SetRunSpeed(target:GetRunSpeed() - 5)
                         local damage = DamageInfo()
                         damage:SetDamage(math.random(5, 25))
                         damage:SetDamageType(DMG_GENERIC)
