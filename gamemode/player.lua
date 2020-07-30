@@ -68,7 +68,7 @@ local killSounds = {
     "vo/npc/male01/answer39.wav",
     "vo/npc/male01/gotone01.wav",
     "vo/npc/male01/gotone02.wav",
-    "vo/npc/male01/yeah02.wav",
+    "vo/npc/male01/oneforme.wav",
 }
 local eliminationSounds = {
     "vo/npc/barney/ba_laugh01.wav",
@@ -78,11 +78,11 @@ local eliminationSounds = {
     "vo/npc/barney/ba_bringiton.wav",
     "vo/npc/male01/answer35.wav",
     "vo/npc/male01/nice.wav",
-    "vo/npc/male01/oneforme.wav",
+    "vo/npc/male01/yeah02.wav",
 }
 
 -- Called second
-function GM:PlayerDeath(victim, inflictor, attacker) -- Second
+function GM:PlayerDeath(victim, inflictor, attacker)
     if IsValid(victim) and victim:GetPlaying() then
         local lives = victim:GetLives()
         if GetRound() == "Battle" or GetRound() == "Armageddon" then
@@ -96,32 +96,38 @@ function GM:PlayerDeath(victim, inflictor, attacker) -- Second
             victim:SetPlaying(false)
             BBB.playing[victim] = nil
             if victim:GetBoss() then
-                if IsValid(attacker) and attacker:IsPlayer() and not victim == attacker then
+                if IsValid(attacker) and attacker:IsPlayer() and victim != attacker then
                     attacker:UpdateScore(150," You got 150 points for eliminating the boss!")
                     attacker:EmitSound(eliminationSounds[math.random(1, #eliminationSounds)])
+                    print("playing elimination sound")
                 end
                 messageSide("The Battle Boss has been defeated, triggering Armageddon!")
             else
-                if IsValid(attacker) and attacker:IsPlayer() and not victim == attacker then
+                if IsValid(attacker) and attacker:IsPlayer() and victim != attacker then
                     attacker:UpdateScore(25, "You got 25 points for the elimination!")
                     attacker:EmitSound(eliminationSounds[math.random(1, #eliminationSounds)])
+                    print("playing elimination sound")
                 end
                 messageSide(victim:Name().." has been eliminated! Keep fighting!")
             end
-        elseif IsValid(attacker) and attacker:IsPlayer() and not victim == attacker then
+        else
+            if IsValid(attacker) and attacker:IsPlayer() and victim != attacker then
             attacker:EmitSound(killSounds[math.random(1, #killSounds)])
+            print("playing kill sound")
+            end
         end
         if victim:GetBoss() and GetRound() == "Battle" and timer.Exists("endbattle") then
             timer.Remove("endbattle")
             EndBattle()
         end
         victim:EmitSound(deathSounds[math.random(1, #deathSounds)])
+        print("playing death sound")
     end
     -- Tells clients kill info
 end
 
 -- Called third
-function GM:PostPlayerDeath(ply) -- Third
+function GM:PostPlayerDeath(ply)
     ply:SetHealth(0)
     ply:SetShield(0)
     if ply:GetPlaying() and ply:GetPlayable() and GetRound() != "Waiting" and GetRound() != "Scoring"then
@@ -178,8 +184,6 @@ local minorHurts = {
     "vo/npc/barney/ba_pain02.wav",
     "vo/npc/barney/ba_pain04.wav",
     "vo/npc/male01/moan04.wav",
-    "vo/npc/male01/myarm01.wav",
-    "vo/npc/male01/myleg01.wav",
     "vo/npc/male01/pain01.wav",
     "vo/npc/male01/startle01.wav",
     "vo/npc/male01/startle02.wav",
@@ -274,15 +278,13 @@ function GM:EntityTakeDamage(victim, dmg)
         end
 
         -- Hurt sounds
-        local remainingHealth = victim:Health() - baseDmg
-        if not timer.Exists("hurtsoundcooldown"..victim:SteamID64()) and 1 <= remainingHealth and remainingHealth <= 20 then
-            victim:EmitSound("hl1/fvox/near_death.wav", 100, 100, 0.3)
-        end
-        if not timer.Exists("hurtsoundcooldown"..victim:SteamID64()) then
+        if not timer.Exists("hurtsoundcooldown"..victim:SteamID64()) and victim:Health() - baseDmg > 0 then
             timer.Create("hurtsoundcooldown"..victim:SteamID64(), 0.8, 1, function() end)
-            if baseDmg <= 20 then
+            if baseDmg < 1 then
+                victim:EmitSound("weapons/physcannon/superphys_small_zap"..math.random(1, 4)..".wav", 100, 100, 0.75)
+            elseif baseDmg <= 15 then
                 victim:EmitSound(minorHurts[math.random(1, #minorHurts)])
-            elseif baseDmg <= 50 then
+            elseif baseDmg <= 40 then
                 victim:EmitSound(mediumHurts[math.random(1, #mediumHurts)])
             else
                 victim:EmitSound(majorHurts[math.random(1, #majorHurts)])

@@ -77,6 +77,7 @@ net.Receive("UpdateStat", function(len)
     playerCache.stats[statId] = amt
     if amt >= 50 and IsValid(LocalPlayer()) then
         LocalPlayer():ChatPrint("Finished training: "..statNames[statId])
+        LocalPlayer():EmitSound("hl1/fvox/bell.wav")
     end
 end)
 
