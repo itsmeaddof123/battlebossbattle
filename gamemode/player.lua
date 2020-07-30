@@ -42,8 +42,44 @@ end
 
  -- Called first
 function GM:DoPlayerDeath(victim, attacker, dmg)
-    -- Ragdolls the player and sets a timer for the ragdoll to disappear
 end
+
+local deathSounds = {
+    "player/pl_pain5.wav",
+    "player/pl_pain6.wav",
+    "player/pl_pain7.wav",
+    "vo/npc/barney/ba_pain06.wav",
+    "vo/npc/barney/ba_pain07.wav",
+    "vo/npc/barney/ba_pain09.wav",
+    "vo/npc/barney/ba_no01.wav",
+    "vo/npc/male01/no01.wav",
+    "vo/npc/male01/no02.wav",
+    "vo/npc/male01/pain04.wav",
+    "vo/npc/male01/pain07.wav",
+    "vo/npc/male01/pain08.wav",
+    "vo/npc/male01/pain09.wav",
+}
+local killSounds = {
+    "vo/npc/barney/ba_yell.wav",
+    "vo/npc/barney/ba_ohyeah.wav",
+    "vo/npc/barney/ba_gotone.wav",
+    "vo/npc/barney/ba_downyougo.wav",
+    "vo/npc/barney/ba_goingdown.wav",
+    "vo/npc/male01/answer39.wav",
+    "vo/npc/male01/gotone01.wav",
+    "vo/npc/male01/gotone02.wav",
+    "vo/npc/male01/yeah02.wav",
+}
+local eliminationSounds = {
+    "vo/npc/barney/ba_laugh01.wav",
+    "vo/npc/barney/ba_laugh02.wav",
+    "vo/npc/barney/ba_laugh03.wav",
+    "vo/npc/barney/ba_laugh04.wav",
+    "vo/npc/barney/ba_bringiton.wav",
+    "vo/npc/male01/answer35.wav",
+    "vo/npc/male01/nice.wav",
+    "vo/npc/male01/oneforme.wav",
+}
 
 -- Called second
 function GM:PlayerDeath(victim, inflictor, attacker) -- Second
@@ -52,7 +88,6 @@ function GM:PlayerDeath(victim, inflictor, attacker) -- Second
         if GetRound() == "Battle" or GetRound() == "Armageddon" then
             lives = lives - 1
             if IsValid(attacker) and attacker:IsPlayer() and not (victim == attacker) then
-                -- Points for getting the kill
                 attacker:UpdateScore(50, "You got 50 points for the kill!")
             end
         end
@@ -61,26 +96,28 @@ function GM:PlayerDeath(victim, inflictor, attacker) -- Second
             victim:SetPlaying(false)
             BBB.playing[victim] = nil
             if victim:GetBoss() then
-                if IsValid(attacker) and attacker:IsPlayer() and not (victim == attacker) then
-                    -- Points for eliminating the boss
+                if IsValid(attacker) and attacker:IsPlayer() and not victim == attacker then
                     attacker:UpdateScore(150," You got 150 points for eliminating the boss!")
+                    attacker:EmitSound(eliminationSounds[math.random(1, #eliminationSounds)])
                 end
-                messageSide("The Battle Boss has been defeated! ("..victim:Name()..")")
+                messageSide("The Battle Boss has been defeated, triggering Armageddon!")
             else
-                if IsValid(attacker) and attacker:IsPlayer() and not (victim == attacker) then
-                    -- Points for eliminating the player
+                if IsValid(attacker) and attacker:IsPlayer() and not victim == attacker then
                     attacker:UpdateScore(25, "You got 25 points for the elimination!")
+                    attacker:EmitSound(eliminationSounds[math.random(1, #eliminationSounds)])
                 end
                 messageSide(victim:Name().." has been eliminated! Keep fighting!")
             end
+        elseif IsValid(attacker) and attacker:IsPlayer() and not victim == attacker then
+            attacker:EmitSound(killSounds[math.random(1, #killSounds)])
         end
         if victim:GetBoss() and GetRound() == "Battle" and timer.Exists("endbattle") then
             timer.Remove("endbattle")
             EndBattle()
         end
+        victim:EmitSound(deathSounds[math.random(1, #deathSounds)])
     end
     -- Tells clients kill info
-    -- Checks/changes round status
 end
 
 -- Called third
@@ -88,7 +125,15 @@ function GM:PostPlayerDeath(ply) -- Third
     ply:SetHealth(0)
     ply:SetShield(0)
     if ply:GetPlaying() and ply:GetPlayable() and GetRound() != "Waiting" and GetRound() != "Scoring"then
-        timer.Create("respawn"..ply:SteamID64(), 3, 1, function() ply:Spawn() end)
+        timer.Create("respawn"..ply:SteamID64(), 3, 1, function()
+            if not IsValid(ply) then return end
+            ply:Spawn()
+            ply:ChatPrint("You will be protected for a few seconds until you rejoin the fight!")
+            timer.Create("spawnprotection"..ply:SteamID64(), 5, 1, function()
+                if not IsValid(ply) then return end
+                ply:ChatPrint("Your spawn protection has ended!")
+            end)
+        end)
     else
         ply:Spectate(OBS_MODE_ROAMING)
     end
@@ -108,6 +153,7 @@ local function shieldRegen(ply, id)
         -- Caps the shield level and stops regen
         else
             ply:SetShield(ply:GetMaxShield())
+            ply:EmitSound("hl1/fvox/power_restored.wav")
             timer.Remove("shieldregen"..id)
         end
     else
@@ -126,6 +172,47 @@ local function shieldRegenStart(ply)
     end
 end
 
+-- Victim callouts when taking damage
+local minorHurts = {
+    "vo/npc/barney/ba_pain01.wav",
+    "vo/npc/barney/ba_pain02.wav",
+    "vo/npc/barney/ba_pain04.wav",
+    "vo/npc/male01/moan04.wav",
+    "vo/npc/male01/myarm01.wav",
+    "vo/npc/male01/myleg01.wav",
+    "vo/npc/male01/pain01.wav",
+    "vo/npc/male01/startle01.wav",
+    "vo/npc/male01/startle02.wav",
+    "vo/ravenholm/monk_pain05.wav",
+    "vo/ravenholm/monk_pain08.wav",
+}
+local mediumHurts = {
+    "vo/npc/barney/ba_pain03.wav",
+    "vo/npc/barney/ba_pain05.wav",
+    "vo/npc/barney/ba_pain08.wav",
+    "vo/npc/male01/help01.wav",
+    "vo/npc/male01/hitingut01.wav",
+    "vo/npc/male01/imhurt01.wav",
+    "vo/npc/male01/imhurt02.wav",
+    "vo/npc/male01/pain02.wav",
+    "vo/npc/male01/pain05.wav",
+    "vo/ravenholm/monk_pain01.wav",
+    "vo/ravenholm/monk_pain02.wav",
+}
+local majorHurts = {
+    "vo/npc/barney/ba_pain10.wav",
+    "vo/npc/barney/ba_wounded03.wav",
+    "vo/npc/barney/ba_no02.wav",
+    "vo/npc/male01/gordead_ans05.wav",
+    "vo/npc/male01/gordead_ans06.wav",
+    "vo/npc/male01/hitingut02.wav",
+    "vo/npc/male01/pain03.wav",
+    "vo/npc/male01/pain06.wav",
+    "vo/ravenholm/monk_pain03.wav",
+    "vo/ravenholm/monk_pain04.wav",
+    "vo/ravenholm/monk_pain12.wav",
+}
+
 -- Handles damage taking
 function GM:EntityTakeDamage(victim, dmg)
     if IsValid(victim) and victim:IsPlayer() then
@@ -138,9 +225,19 @@ function GM:EntityTakeDamage(victim, dmg)
         local baseDmg = dmg:GetDamage()
         local attacker = dmg:GetAttacker()
 
+        -- Protects freshly respawned players
+        if timer.Exists("spawnprotection"..victim:SteamID64()) then
+            baseDmg = 0
+        end
+
         -- Modify damage based on player stats
         baseDmg = baseDmg / victim:GetDefense()
         if IsValid(attacker) and attacker:IsPlayer() and not (attacker == victim) then
+            -- Removes spawn protection if it exists
+            if timer.Exists("spawnprotection"..attacker:SteamID64()) then
+                timer.Remove("spawnprotection"..attacker:SteamID64())
+                attacker:ChatPrint("You have ended your spawn protection!")
+            end
             -- Rank advantage
             local weakTo = victim:GetWeakTo()
             local attRank = attacker:GetRank()
@@ -170,10 +267,28 @@ function GM:EntityTakeDamage(victim, dmg)
             victim:SetShield(shield - baseDmg)
             dmg:SetDamage(0)
         -- Shield breaks
-        else
+        elseif shield > 0 then
             victim:SetShield(0)
             dmg:SetDamage(baseDmg - shield)
+            victim:EmitSound("hl1/fvox/armor_gone.wav")
         end
+
+        local finalDamage = dmg:GetDamage()
+        if not timer.Exists("hurtsoundcooldown"..target:SteamID64()) then
+            timer.Create("hurtsoundscooldown"..target:SteamID64(), 0.8, 1, function() end)
+            if finalDamage <= 20 then
+                target:EmitSound(minorHurts[math.random(1, #minorHurts)])
+            elseif finalDamage <= 50 then
+                target:EmitSound(mediumHurts[math.random(1, #mediumHurts)])
+            else
+                target:EmitSound(majorHurts[math.random(1, #majorHurts)])
+            end
+        end
+        local remainingHealth = victim:Health() - finalDamage
+        if 1 <= remainingHealth and remainingHealth <= 20 then
+            victim:EmitSound("hl1/fvox/near_death.wav", 100, 100, 0.3)
+        end
+
         if GetRound() ~= "Armageddon" then
             timer.Create("shieldregenbuffer"..victim:SteamID64(), 5, 1, function() shieldRegenStart(victim) end)
         end
@@ -373,6 +488,7 @@ net.Receive("AbilityAttempt", function(len, ply)
                         target:ChatPrint("You've been struck by the Death Beam!")
                         target:EmitSound("ambient/energy/spark5.wav")
                         target:EmitSound("ambient/energy/zap8.wav")
+                        target:EmitSound("player/pl_burnpain"..math.random(1, 3)..".wav")
                         target:SetWalkSpeed(target:GetWalkSpeed() - 5)
                         target:SetRunSpeed(target:GetRunSpeed() - 5)
                         local damage = DamageInfo()
