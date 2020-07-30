@@ -242,7 +242,6 @@ hook.Add("PlayerButtonDown", "MenuToggler", function(ply, key)
     end
     -- Cheap way to tell the server that the player is ready to receive scoreboard information
     if not playerCache.scoreboardInitialized and not timer.Exists("waitforinfo") then
-        toggleF1Menu(true)
         timer.Create("waitforinfo", 3, 1, function() timer.Remove("waitforinfo") end) -- Gives the server time to respond
         net.Start("ScoreboardRequest")
         net.SendToServer()

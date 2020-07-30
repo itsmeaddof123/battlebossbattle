@@ -358,7 +358,7 @@ local playerModels = {
 "models/player/Group03/male_08.mdl",}
 
 function plyMeta:GetDefaultModel()
-    if not self.defaultModel then return 0 end
+    if not self.defaultModel then return playerModels[math.random(#playerModels)] end
     if self.defaultModel >= 1 and self.defaultModel <= #playerModels then
         return self.defaultModel
     else
