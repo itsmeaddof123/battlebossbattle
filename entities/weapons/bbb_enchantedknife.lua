@@ -45,8 +45,8 @@ SWEP.Secondary.Automatic= false
 SWEP.ShouldDropOnDie    = false
 
 local swingSound = Sound("Weapon_Crowbar.Single")
-local hitSound = Sound("Weapon_Crowbar.Melee_Hit")
-local stabSound = Sound("Weapon_Crowbar.Melee_Hit")
+local hitSound = "npc/roller/blade_in.wav"
+local stabSound = "npc/roller/blade_cut.wav"
 
 function SWEP:Initialize()
     self:SetHoldType("melee")

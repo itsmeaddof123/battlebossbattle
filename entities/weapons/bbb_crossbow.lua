@@ -29,9 +29,9 @@ SWEP.Primary.ClipSize   = -1
 SWEP.Primary.DefaultClip= -1
 SWEP.Primary.Ammo       = "none"
 SWEP.Primary.Recoil     = 0.5
-SWEP.Primary.Damage     = 70
+SWEP.Primary.Damage     = 80
 SWEP.Primary.Spread     = 0.005
-SWEP.Primary.Delay      = 1
+SWEP.Primary.Delay      = 1.2
 SWEP.Primary.Automatic  = true
 
 SWEP.Secondary.ClipSize = -1
@@ -42,6 +42,7 @@ SWEP.Secondary.Automatic= false
 SWEP.ShouldDropOnDie    = false
 
 local shootSound = "weapons/crossbow/fire1.wav"
+local wooshSound = "npc/manhack/mh_blade_snick1.wav"
 
 function SWEP:Initialize()
     self:SetHoldType("crossbow")
@@ -50,7 +51,8 @@ end
 function SWEP:PrimaryAttack()
 
     local ply = self:GetOwner()
-    ply:EmitSound(shootSound)
+    ply:EmitSound(shootSound, 100, 100, 0.5)
+    ply:EmitSound(wooshSound, 100, 100, 0.5)
     self:SetNextPrimaryFire(CurTime() + self.Primary.Delay)
     self:SendWeaponAnim(ACT_VM_PRIMARYATTACK)
     ply:SetAnimation(PLAYER_ATTACK1)

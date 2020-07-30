@@ -45,8 +45,6 @@ SWEP.Secondary.Automatic= false
 SWEP.ShouldDropOnDie    = false
 
 local swingSound = Sound("Weapon_Crowbar.Single")
-local hitSound = Sound("Weapon_Crowbar.Melee_Hit")
-local stabSound = Sound("Weapon_Crowbar.Melee_Hit")
 
 function SWEP:Initialize()
     self:SetHoldType("melee")
@@ -98,7 +96,7 @@ function SWEP:PrimaryAttack()
             damage:SetDamageType(DMG_SLASH)
             damage:SetAttacker(ply)
             target:TakeDamageInfo(damage)
-            ply:EmitSound(stabSound)
+            ply:EmitSound("ambient/machines/slicer"..math.random(1, 4)..".wav")
 
             if target:IsPlayer() then
                 local damageToHeal = 10 * mult
@@ -109,7 +107,7 @@ function SWEP:PrimaryAttack()
                 ply:SetShield(math.Clamp(ply:GetShield() + damageHealed, ply:GetShield(), ply:GetMaxShield()))
             end
         elseif SERVER then 
-            ply:EmitSound(hitSound)
+            ply:EmitSound("ambient/machines/slicer"..math.random(1, 4)..".wav")
         end
     else
         self.Weapon:SendWeaponAnim(ACT_VM_MISSCENTER)

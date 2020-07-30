@@ -18,7 +18,7 @@ local panelClose = "panelclose1.wav"
 local craftSuccess = "buttons/button6.wav"
 local trainSuccess = "buttons/blip1.wav"
 local consumeSuccess = "npc/barnacle/barnacle_gulp2.wav"
-local failure = "ambient/alarms/klaxon1.wav"
+local failure = "npc/roller/code2.wav"
 local itemSelect = "buttons/button15.wav"
 
 -- Item Title

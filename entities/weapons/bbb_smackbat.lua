@@ -51,8 +51,8 @@ SWEP.Secondary.Automatic= false
 SWEP.ShouldDropOnDie    = false
 
 local swingSound = Sound("Weapon_Crowbar.Single")
+local stabSound = "npc/manhack/bat_away.wav"
 local hitSound = Sound("Weapon_Crowbar.Melee_Hit")
-local stabSound = Sound("Weapon_Crowbar.Melee_Hit")
 
 function SWEP:Initialize()
     self:SetHoldType("melee")
@@ -99,7 +99,7 @@ function SWEP:PrimaryAttack()
             damage:SetDamageType(DMG_SLASH)
             damage:SetAttacker(ply)
             target:TakeDamageInfo(damage)
-            ply:EmitSound(stabSound)
+            ply:EmitSound(stabSound, 100, 100, 0.75)
 
             if target:IsPlayer() then
                 local slapDirection = target:GetPos() - ply:GetPos()

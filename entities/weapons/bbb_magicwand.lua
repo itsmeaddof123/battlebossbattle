@@ -52,7 +52,8 @@ function SWEP:PrimaryAttack()
     self:SendWeaponAnim(ACT_VM_PRIMARYATTACK)
     ply:SetAnimation(PLAYER_ATTACK1)
 
-    ply:EmitSound("ambient/levels/citadel/weapon_disintegrate"..math.random(1, 4)..".wav")
+    ply:EmitSound("ambient/levels/citadel/weapon_disintegrate"..math.random(1, 4)..".wav", 100, 100, 0.25)
+    ply:EmitSound("npc/roller/mine/rmine_chirp_quest1.wav", 100, 100, 0.5)
 
     local mult = 1
     if ply:GetModel() == "models/vinrax/player/gandalf.mdl" then
