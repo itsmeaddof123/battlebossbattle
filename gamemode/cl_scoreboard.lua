@@ -79,8 +79,6 @@ local function toggleScoreboard(toggle)
             draw.SimpleText("Name", "Courier Small 4", 200, topBuffer + 5, fullBlack, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
             draw.SimpleText("Score", "Courier Small 4", 70, topBuffer + 5, fullBlack, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
             draw.SimpleText("ms", "Courier Small 4", 3, topBuffer + 5, fullBlack, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
-            draw.SimpleText("Boss", "Courier Small 4", scoreW - interval - 140, topBuffer + 5, fullBlack, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
-            draw.SimpleText("Active", "Courier Small 4", scoreW - interval - 60, topBuffer + 5, fullBlack, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
             surface.SetDrawColor(fullRed)
             surface.DrawLine(63, 0, 63, h)
             surface.DrawLine(65, 0, 65, h)
@@ -136,13 +134,13 @@ local function toggleScoreboard(toggle)
                 end
                 if boss then
                     local crownImage = vgui.Create("DImage", plyButton)
-                    crownImage:SetPos(scoreW - interval - 125, 1)
+                    crownImage:SetPos(scoreW - interval * 2, 1)
                     crownImage:SetSize(interval - 4, interval - 4)
                     crownImage:SetImage(crown)
                 end
                 if not scoreboardCache[ply].playing then
                     local skullImage = vgui.Create("DImage", plyButton)
-                    skullImage:SetPos(scoreW - interval - 32, 1)
+                    skullImage:SetPos(scoreW - interval, 1)
                     skullImage:SetSize(interval - 4, interval - 4)
                     skullImage:SetImage(skull)
                 end

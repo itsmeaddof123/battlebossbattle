@@ -99,29 +99,24 @@ function GM:PlayerDeath(victim, inflictor, attacker)
                 if IsValid(attacker) and attacker:IsPlayer() and victim != attacker then
                     attacker:UpdateScore(150," You got 150 points for eliminating the boss!")
                     attacker:EmitSound(eliminationSounds[math.random(1, #eliminationSounds)])
-                    print("playing elimination sound")
                 end
                 messageSide("The Battle Boss has been defeated! Armageddon time!")
             else
                 if IsValid(attacker) and attacker:IsPlayer() and victim != attacker then
                     attacker:UpdateScore(25, "You got 25 points for the elimination!")
                     attacker:EmitSound(eliminationSounds[math.random(1, #eliminationSounds)])
-                    print("playing elimination sound")
                 end
                 messageSide(victim:Name().." has been eliminated! Keep fighting!")
             end
         else
             if IsValid(attacker) and attacker:IsPlayer() and victim != attacker then
             attacker:EmitSound(killSounds[math.random(1, #killSounds)])
-            print("playing kill sound")
             end
         end
         if victim:GetBoss() and GetRound() == "Battle" and timer.Exists("endbattle") then
-            timer.Remove("endbattle")
             EndBattle()
         end
         victim:EmitSound(deathSounds[math.random(1, #deathSounds)])
-        print("playing death sound")
     end
     -- Tells clients kill info
 end
@@ -511,4 +506,18 @@ net.Receive("AbilityAttempt", function(len, ply)
     net.WriteString(key)
     net.WriteBool(success)
     net.Send(ply)
+end)
+
+-- Sends the requesting player info about each player's playing, boss, and score
+net.Receive("ScoreboardRequest", function(len, requester)
+    for k, ply in ipairs(player.GetAll()) do
+        if IsValid(ply) then
+            net.Start("ScoreboardResult")
+            net.WriteEntity(ply)
+            net.WriteBool(ply:GetPlaying())
+            net.WriteBool(ply:GetBoss())
+            net.WriteInt(ply:GetScore(), 16)
+            net.Send(requester)
+        end
+    end
 end)

@@ -26,14 +26,16 @@ playerCache = playerCache or {
     shield = 0,
     maxShield = 0,
     lastAbility = 0,
-    playSongs = true
+    playSongs = true,
+    songVolume = 100,
+    scoreboardInitialized = false,
 }
 
 -- Cache with info on each player
 scoreboardCache = scoreboardCache or {}
 
 -- Used to initialize a player's scoreboard cache to prevent errors when there's missing info
-function cacheInit() return {lives = 0, playing = false, played = false, boss = false, score = 0} end
+function cacheInit() return {playing = false, boss = false, score = 0} end
 
 -- Updates the player cache with new player info
 net.Receive("UpdateInfoCache", function(len)
@@ -89,7 +91,7 @@ net.Receive("UpdateRound", function(len)
     if not IsValid(ply) then return end
     if playerCache.round == "Crafting" and IsValid(ply) then
         if playerCache.playSongs then
-            ply:EmitSound(craftingSongs[math.random(1, #craftingSongs)], 100, 100, 0.4)
+            ply:EmitSound(craftingSongs[math.random(1, #craftingSongs)], 100, 100, playerCache.songVolume / 100 * 0.5)
         elseif ply then
             ply:EmitSound("ambient/alarms/warningbell1.wav")
         end
@@ -104,7 +106,7 @@ net.Receive("UpdateRound", function(len)
             for k, v in ipairs(craftingSongs) do
                 ply:StopSound(v)
             end
-            ply:EmitSound(battleSongs[math.random(1, #battleSongs)], 100, 100, 0.5)
+            ply:EmitSound(battleSongs[math.random(1, #battleSongs)], 100, 100, playerCache.songVolume / 100 * 0.5)
         else
             ply:EmitSound("ambient/alarms/warningbell1.wav")
         end
@@ -192,6 +194,21 @@ net.Receive("AbilityResult", function(len)
     end
 end)
 
+net.Receive("ScoreboardResult", function(len)
+    local ply = net.ReadEntity()
+    local playingInfo = net.ReadBool()
+    local bossInfo = net.ReadBool()
+    local scoreInfo = net.ReadInt(16)
+    if IsValid(ply) then
+        if not scoreboardCache[ply] then
+            scoreboardCache[ply] = cacheInit()
+        end
+        scoreboardCache[ply].playing = playingInfo
+        scoreboardCache[ply].boss = bossInfo
+        scoreboardCache[ply].score = scoreInfo
+    end
+end)
+
 -- Disables SpawnMenu
 hook.Add("OnSpawnMenuOpen", "DisableSpawnMenu", function() return false end)
 
@@ -220,6 +237,12 @@ hook.Add("PlayerButtonDown", "MenuToggler", function(ply, key)
         end
     elseif key == KEY_F1 then
         toggleF1Menu(not toggleF1)
+    end
+    -- Cheap way to tell the server that the player is ready to receive scoreboard information
+    if not playerCache.scoreboardInitialized and not timer.Exists("waitforinfo") then
+        timer.Create("waitforinfo", 3, 1, function() timer.Remove("waitforinfo") end) -- Gives the server time to respond
+        net.Start("ScoreboardRequest")
+        net.SendToServer()
     end
 end)
 

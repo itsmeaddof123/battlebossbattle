@@ -325,8 +325,17 @@ function plyMeta:SetWeakTo(arg) self.weakTo = arg end
 function plyMeta:GetPity() return self.pity end
 function plyMeta:SetPity(arg) self.pity = arg end
 
+-- Track's whether the player has been fully initialized or not
 function plyMeta:GetInitialized() return self.initialized end
 function plyMeta:SetInitialized(arg) self.initialized = arg end
+
+-- Tracks the number of lives a player has
+function plyMeta:GetLives() return self.lives end
+function plyMeta:SetLives(arg) self.lives = arg end
+
+-- Tracks whether a player has participated at all in the current round
+function plyMeta:GetPlayed() return self.played end
+function plyMeta:SetPlayed(arg) self.played = arg end
 
 -- Random default player models
 local playerModels = {
@@ -463,25 +472,11 @@ local function updateScoreboard(key, arg, ply)
     net.Broadcast()
 end
 
--- Tracks the number of lives a player has
-function plyMeta:GetLives() return self.lives end
-function plyMeta:SetLives(arg)
-    self.lives = arg
-    updateScoreboard("lives", arg, self)
-end
-
 -- Tracks whether a player is still playing in the current round
 function plyMeta:GetPlaying() return self.playing end
 function plyMeta:SetPlaying(arg)
     self.playing = arg
     updateScoreboard("playing", arg, self)
-end
-
--- Tracks whether a player has participated at all in the current round
-function plyMeta:GetPlayed() return self.played end
-function plyMeta:SetPlayed(arg)
-    self.played = arg
-    updateScoreboard("played", arg, self)
 end
 
 -- Tracks whether the player is the boss or not
