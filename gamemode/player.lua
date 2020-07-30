@@ -101,7 +101,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
                     attacker:EmitSound(eliminationSounds[math.random(1, #eliminationSounds)])
                     print("playing elimination sound")
                 end
-                messageSide("The Battle Boss has been defeated, triggering Armageddon!")
+                messageSide("The Battle Boss has been defeated! Armageddon time!")
             else
                 if IsValid(attacker) and attacker:IsPlayer() and victim != attacker then
                     attacker:UpdateScore(25, "You got 25 points for the elimination!")
