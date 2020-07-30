@@ -136,7 +136,7 @@ function SWEP:PrimaryAttack()
         end
     else
         self.Weapon:SendWeaponAnim(ACT_VM_HITCENTER)
-        if SERVER then ply:EmitSound(swingSound) then
+        if SERVER then ply:EmitSound(swingSound) end
     end
 
     ply:LagCompensation(false)
