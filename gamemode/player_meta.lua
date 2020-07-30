@@ -330,12 +330,6 @@ function plyMeta:SetInitialized(arg) self.initialized = arg end
 
 -- Random default player models
 local playerModels = {
-"models/player/Group01/female_01.mdl",
-"models/player/Group01/female_02.mdl",
-"models/player/Group01/female_03.mdl",
-"models/player/Group03/female_04.mdl",
-"models/player/Group03/female_05.mdl",
-"models/player/Group03/female_06.mdl",
 "models/player/Group01/male_01.mdl",
 "models/player/Group01/male_02.mdl",
 "models/player/Group01/male_03.mdl",

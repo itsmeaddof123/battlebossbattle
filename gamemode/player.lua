@@ -265,29 +265,31 @@ function GM:EntityTakeDamage(victim, dmg)
         -- Shield absorbs all the damage
         if shield >= baseDmg then
             victim:SetShield(shield - baseDmg)
-            dmg:SetDamage(0)
+            baseDmg = 0
         -- Shield breaks
         elseif shield > 0 then
             victim:SetShield(0)
-            dmg:SetDamage(baseDmg - shield)
+            baseDmg = baseDmg - shield
             victim:EmitSound("hl1/fvox/armor_gone.wav")
         end
 
-        local finalDamage = dmg:GetDamage()
-        if not timer.Exists("hurtsoundcooldown"..target:SteamID64()) then
-            timer.Create("hurtsoundscooldown"..target:SteamID64(), 0.8, 1, function() end)
-            if finalDamage <= 20 then
-                target:EmitSound(minorHurts[math.random(1, #minorHurts)])
-            elseif finalDamage <= 50 then
-                target:EmitSound(mediumHurts[math.random(1, #mediumHurts)])
-            else
-                target:EmitSound(majorHurts[math.random(1, #majorHurts)])
-            end
-        end
-        local remainingHealth = victim:Health() - finalDamage
-        if 1 <= remainingHealth and remainingHealth <= 20 then
+        -- Hurt sounds
+        local remainingHealth = victim:Health() - baseDmg
+        if not timer.Exists("hurtsoundcooldown"..victim:SteamID64()) and 1 <= remainingHealth and remainingHealth <= 20 then
             victim:EmitSound("hl1/fvox/near_death.wav", 100, 100, 0.3)
         end
+        if not timer.Exists("hurtsoundcooldown"..victim:SteamID64()) then
+            timer.Create("hurtsoundcooldown"..victim:SteamID64(), 0.8, 1, function() end)
+            if baseDmg <= 20 then
+                victim:EmitSound(minorHurts[math.random(1, #minorHurts)])
+            elseif baseDmg <= 50 then
+                victim:EmitSound(mediumHurts[math.random(1, #mediumHurts)])
+            else
+                victim:EmitSound(majorHurts[math.random(1, #majorHurts)])
+            end
+        end
+
+        dmg:SetDamage(baseDmg)
 
         if GetRound() ~= "Armageddon" then
             timer.Create("shieldregenbuffer"..victim:SteamID64(), 5, 1, function() shieldRegenStart(victim) end)
