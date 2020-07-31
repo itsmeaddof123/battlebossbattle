@@ -208,7 +208,7 @@ end
 
 -- Decides the player's ability class and bonus points
 function plyMeta:ChooseRank()
-    local ranks = {"Wizard", "Warrior", "Rogue", "Gunman", "Berserker", "Medic"} -- Acts as a rudimentary switch case
+    local ranks = {"Wizard", "Warrior", "Rogue", "Infantry", "Berserker", "Medic"} -- Acts as a rudimentary switch case
     local uniqueSlots = {false, false, false, false, false, false}
     local uniqueGear = 0
     local totalGear = 0
@@ -357,6 +357,7 @@ local playerModels = {
 "models/player/Group03/male_07.mdl",
 "models/player/Group03/male_08.mdl",}
 
+-- Gets the player's default model
 function plyMeta:GetDefaultModel()
     if not self.defaultModel then return playerModels[math.random(#playerModels)] end
     if self.defaultModel >= 1 and self.defaultModel <= #playerModels then
@@ -496,7 +497,7 @@ function plyMeta:GetBoss() return self.boss end
 function plyMeta:SetBoss(arg)
     self.boss = arg
     if arg then
-        self:SetPity(0.7)
+        self:SetPity(0.6)
     end
     updateScoreboard("boss", arg, self)
 end

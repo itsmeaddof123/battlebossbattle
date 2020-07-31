@@ -335,11 +335,11 @@ function StartScoring()
         if IsValid(ply) and ply:GetPlayed() then
             -- Give the boss an extra score penalty
             if ply:GetBoss() then
-                ply:SetScore(ply:GetScore() / 1.5)
+                ply:SetScore(ply:GetScore() / 2)
             end
             -- Increases the scores of players who repeatedly lose (Resets when boss)
             ply:SetScore(ply:GetScore() * ply:GetPity())
-            ply:SetPity(ply:GetPity() + 0.15)
+            ply:SetPity(ply:GetPity() + 0.2)
             playerScores[ply] = ply:GetScore()
         end
     end

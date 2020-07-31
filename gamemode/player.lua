@@ -100,13 +100,13 @@ function GM:PlayerDeath(victim, inflictor, attacker)
                     attacker:UpdateScore(150," You got 150 points for eliminating the boss!")
                     attacker:EmitSound(eliminationSounds[math.random(1, #eliminationSounds)])
                 end
-                messageSide("The Battle Boss has been defeated! Armageddon time!")
+                messageSide("The Battle Boss has been defeated!")
             else
                 if IsValid(attacker) and attacker:IsPlayer() and victim != attacker then
                     attacker:UpdateScore(25, "You got 25 points for the elimination!")
                     attacker:EmitSound(eliminationSounds[math.random(1, #eliminationSounds)])
                 end
-                messageSide(victim:Name().." has been eliminated! Keep fighting!")
+                messageSide(victim:Name().." has been eliminated!")
             end
         else
             if IsValid(attacker) and attacker:IsPlayer() and victim != attacker then
