@@ -276,7 +276,6 @@ function plyMeta:ChooseRank()
             for k, v in ipairs(self.mats) do
                 collected = collected + v
             end
-            print(self:Name().." collected "..tostring(collected).." materials!")
             if collected >= 100 then
                 self:SetRank("Collector")
                 self:SetMdl("models/player/gman_high.mdl")
