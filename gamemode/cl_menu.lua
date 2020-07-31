@@ -76,8 +76,8 @@ surface.CreateFont("F1 Menu 2", {
 -- F1 Menu font
 surface.CreateFont("F1 Menu 3", {
     font = "Courier New",
-    size = 25,
-    weight = 650,
+    size = 20,
+    weight = 500,
 })
 
 ------------------------------------
@@ -672,7 +672,7 @@ function toggleF1Menu(toggle)
             introBody:SetWide(tabsWidth * 0.94)
             introBody:SetAutoStretchVertical(true)
             introBody:SetPos(tabsWidth * 0.03, tabsHeight * 0.24)
-            introBody:SetFont("F1 Menu 3")
+            introBody:SetFont("F1 Menu 1")
             introBody:SetText(bodyText[i])
             introBody:SetTextColor(solidWhite)
             introBody:SetWrap(true)
@@ -744,28 +744,109 @@ function toggleF1Menu(toggle)
         local settingsWidth = settingsPanel:GetWide()
         local settingsHeight = settingsPanel:GetTall()
 
+        -- Default model label
+        local modelLabel = vgui.Create("DLabel", settingsPanel)
+        modelLabel:SetWide(500)
+        modelLabel:SetAutoStretchVertical(true)
+        modelLabel:SetPos(25, 25)
+        modelLabel:SetFont("F1 Menu 3")
+        modelLabel:SetTextColor(solidWhite)
+        modelLabel:SetText("Default playermodel")
+        modelLabel:SetWrap(true)
+
         -- Default model choice
         local modelChoice = vgui.Create("DComboBox", settingsPanel)
-        modelChoice:SetSize(400, 25)
-        modelChoice:SetPos(20, 20)
-        modelChoice:SetValue("Choose Default Player Model")
+        modelChoice:SetSize(250, 25)
+        modelChoice:SetPos(25, 50)
+        modelChoice:SetValue(playerCache.defaultModel)
         for k, v in ipairs(playerModels) do
             modelChoice:AddChoice(v)
         end
         modelChoice.OnSelect = function(self, index, value)
+            playerCache.defaultModel = playerModels[index]
             net.Start("DefaultModelChoice")
             net.WriteInt(index - 1, 16)
             net.SendToServer()
         end
 
+        -- Default model label
+        local transitionLabel = vgui.Create("DLabel", settingsPanel)
+        transitionLabel:SetWide(500)
+        transitionLabel:SetAutoStretchVertical(true)
+        transitionLabel:SetPos(50, 97)
+        transitionLabel:SetFont("F1 Menu 3")
+        transitionLabel:SetTextColor(solidWhite)
+        transitionLabel:SetText("Play a ding when the round changes")
+        transitionLabel:SetWrap(true)
+
         -- Toggle round transition noises
-        
+        local transitionCheck = vgui.Create("DCheckBox", settingsPanel)
+        transitionCheck:SetPos(25, 100)
+        transitionCheck:SetValue(playerCache.playTransitions)
+        function transitionCheck:OnChange(bool)
+            playerCache.playTransitions = bool
+        end
 
-        -- Toggle music
+        -- Toggle music label
+        local songsLabel = vgui.Create("DLabel", settingsPanel)
+        songsLabel:SetWide(500)
+        songsLabel:SetAutoStretchVertical(true)
+        songsLabel:SetPos(50, 147)
+        songsLabel:SetFont("F1 Menu 3")
+        songsLabel:SetTextColor(solidWhite)
+        songsLabel:SetText("Play music in Crafting and Battle")
+        songsLabel:SetWrap(true)
 
+        -- Toggle round transition noises
+        local songsCheck = vgui.Create("DCheckBox", settingsPanel)
+        songsCheck:SetPos(25, 150)
+        songsCheck:SetValue(playerCache.playSongs)
+        function songsCheck:OnChange(bool)
+            playerCache.playSongs = bool
+        end
+
+        -- Music volume label
+        local volumeLabel = vgui.Create("DLabel", settingsPanel)
+        volumeLabel:SetWide(500)
+        volumeLabel:SetAutoStretchVertical(true)
+        volumeLabel:SetPos(25, 197)
+        volumeLabel:SetFont("F1 Menu 3")
+        volumeLabel:SetTextColor(solidWhite)
+        volumeLabel:SetText("Adjust the volume of the music")
+        volumeLabel:SetWrap(true)
 
         -- Music volume slider
+        local volumeSlider = vgui.Create("DNumSlider", settingsPanel)
+        volumeSlider:SetPos(-390, 180)
+        volumeSlider:SetSize(1000, 100)
+        volumeSlider:SetMin(0)
+        volumeSlider:SetMax(100)
+        volumeSlider:SetValue(playerCache.songVolume * 100)
+        volumeSlider:SetDecimals(0)
+        volumeSlider.OnValueChanged = function( self, value )
+            playerCache.songVolume = math.Clamp(value / 100, 0, 1)
+        end
 
+        -- Spectate label
+        local spectateLabel = vgui.Create("DLabel", settingsPanel)
+        spectateLabel:SetWide(500)
+        spectateLabel:SetAutoStretchVertical(true)
+        spectateLabel:SetPos(50, 247)
+        spectateLabel:SetFont("F1 Menu 3")
+        spectateLabel:SetTextColor(solidWhite)
+        spectateLabel:SetText("Spectate only")
+        spectateLabel:SetWrap(true)
+
+        -- Toggle round transition noises
+        local spectateCheck = vgui.Create("DCheckBox", settingsPanel)
+        spectateCheck:SetPos(25, 250)
+        spectateCheck:SetValue(playerCache.playable)
+        function spectateCheck:OnChange(bool)
+            playerCache.playable = bool
+            net.Start("TogglePlayable")
+            net.WriteBool(not bool)
+            net.SendToServer()
+        end
 
 
 

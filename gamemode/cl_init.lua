@@ -27,6 +27,9 @@ playerCache = playerCache or {
     maxShield = 0,
     lastAbility = 0,
     playSongs = true,
+    playTransitions = false,
+    playable = true,
+    defaultModel = "Random Model",
     songVolume = 50,
     scoreboardInitialized = false,
 }
@@ -105,11 +108,12 @@ net.Receive("UpdateRound", function(len)
     playerCache.time = net.ReadInt(16)
     local ply = LocalPlayer()
     if not IsValid(ply) then return end
+    if playerCache.playTransitions then
+        ply:EmitSound("ambient/alarms/warningbell1.wav")
+    end
     if playerCache.round == "Crafting" and IsValid(ply) then
         if playerCache.playSongs then
-            ply:EmitSound(craftingSongs[math.random(1, #craftingSongs)], 100, 100, playerCache.songVolume / 100)
-        elseif ply then
-            ply:EmitSound("ambient/alarms/warningbell1.wav")
+            ply:EmitSound(craftingSongs[math.random(1, #craftingSongs)], 100, 100, playerCache.songVolume)
         end
         if scoreboardCache[ply] and scoreboardCache[ply].boss then
             messageTop("Crafting: Slap players with your bat, destroy props with your zapper, and use your abilities to slow the others!")
@@ -122,9 +126,7 @@ net.Receive("UpdateRound", function(len)
             for k, v in ipairs(craftingSongs) do
                 ply:StopSound(v)
             end
-            ply:EmitSound(battleSongs[math.random(1, #battleSongs)], 100, 100, playerCache.songVolume / 100)
-        else
-            ply:EmitSound("ambient/alarms/warningbell1.wav")
+            ply:EmitSound(battleSongs[math.random(1, #battleSongs)], 100, 100, playerCache.songVolume)
         end
         if IsValid(trainingPanel) then
             trainingPanel:Remove()

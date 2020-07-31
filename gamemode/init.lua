@@ -29,6 +29,7 @@ util.AddNetworkString("PlayerDisconnected")
 util.AddNetworkString("ScoreboardRequest")
 util.AddNetworkString("ScoreboardResult")
 util.AddNetworkString("ScoreMessage")
+util.AddNetworkString("SpectateToggle")
 util.AddNetworkString("TogglePlayable")
 util.AddNetworkString("TrainAttempt")
 util.AddNetworkString("TrainClosed")
@@ -193,8 +194,10 @@ function EndPreparing()
         -- Attempts to find a boss
         local bossFound = false
         for k, ply in ipairs(player.GetAll()) do
-            if IsValid(ply) and ply:GetPlayable() then
-                if ply:GetBoss() then
+            if IsValid(ply) then
+                if not ply:GetPlayable() then
+                    ply:KillSilent()
+                elseif ply:GetBoss() then
                     bossFound = true
                     BBB.bossLiving = true
                 end

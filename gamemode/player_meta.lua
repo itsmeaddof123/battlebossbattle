@@ -51,7 +51,7 @@ end
 
 -- This forces players to spawn for preparing and for crafting
 function plyMeta:SpawnReset()
-    if (GetRound() == "Preparing" and self:GetPlayable()) or ((GetRound() == "Crafting" or GetRound() == "Battle" or GetRound() == "Armageddon") and self:GetPlayable() and self:GetPlaying()) then
+    if (GetRound() == "Preparing" and self:GetPlayable()) or ((GetRound() == "Crafting" or GetRound() == "Battle" or GetRound() == "Armageddon") and self:GetPlaying()) then
         self:UnSpectate()
         self:FullStrip()
         self:GiveTools()

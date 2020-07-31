@@ -565,10 +565,18 @@ end)
 
 -- Changes the player's default model based on their choise
 net.Receive("DefaultModelChoice", function(len, ply)
+    if not IsValid(ply) then return end
     ply:SetDefaultModel(net.ReadInt(16))
 end)
 
 -- Toggles whether or not a player is playing
 net.Receive("TogglePlayable", function(len, ply)
+    if not IsValid(ply) then return end
     ply:SetPlayable(net.ReadBool())
+    if ply:Alive() and not ply:GetPlayable() then
+        ply:Kill()
+        ply:SetPlaying(false)
+        ply:SetPlayed(false)
+        ply:SetScore(0)
+    end
 end)
