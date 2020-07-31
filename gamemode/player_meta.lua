@@ -363,11 +363,10 @@ local playerModels = {
 
 -- Gets the player's default model
 function plyMeta:GetDefaultModel()
-    if not self.defaultModel then return playerModels[math.random(#playerModels)] end
-    if self.defaultModel >= 1 and self.defaultModel <= #playerModels then
-        return self.defaultModel
-    else
+    if not self.defaultModel or self.defaultModel < 1 or self.defaultModel > #playerModels then
         return playerModels[math.random(#playerModels)]
+    else
+        return playerModels[self.defaultModel]
     end
 end
 function plyMeta:SetDefaultModel(arg) self.defaultModel = arg end
