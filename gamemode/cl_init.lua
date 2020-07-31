@@ -230,6 +230,7 @@ end)
 -- Toggle crafting and training
 toggleCraft = false
 toggleTrain = false
+-- Togles gravity ability attempts, training and consumables
 hook.Add("OnSpawnMenuOpen", "SpawnMenuClose", function()
     local ply = LocalPlayer()
     if ply and scoreboardCache[ply] and scoreboardCache[ply].playing then
@@ -247,9 +248,11 @@ hook.Add("OnSpawnMenuOpen", "SpawnMenuClose", function()
     end
     return false
 end)
+-- Toggles off the consumables menu
 hook.Add("OnSpawnMenuClose", "SpawnMenuClose", function()
     toggleConsumables(false)
 end)
+-- Toggles beam ability attempts, crafting, and consumables
 hook.Add("KeyPress", "UseOpened", function(ply, key)
     if scoreboardCache[ply] and scoreboardCache[ply].playing and key == IN_USE then
         if scoreboardCache[ply].boss and (playerCache.round == "Crafting" or playerCache.round == "Battle" or playerCache.round == "Crafting") then
@@ -265,10 +268,10 @@ hook.Add("KeyPress", "UseOpened", function(ply, key)
         end
     end
 end)
--- Releas
+-- Toggles off the consumables menu
 hook.Add("KeyReleased", "UseReleased", function(ply, key)
     if key == IN_USE then
-        toggleConsumables(false)
+        toggleConsumables(false)    
     end
 end)
 -- Toggle the f1 menu
@@ -285,4 +288,43 @@ hook.Add("HUDPaint", "LoadedInits", function()
     net.Start("ScoreboardRequest")
     net.SendToServer()
     toggleF1Menu(true)
+end)
+
+-- Selects the player weapon
+hook.Add("PlayerButtonDown", "WeaponSelect", function(ply, key)
+    if IsValid(ply) and (key == KEY_1 or key == KEY_2) and not timer.Exists("weaponswitch") then
+        local weaponsTable = ply:GetWeapons()
+        local activeWeapon = ply:GetActiveWeapon()
+        if #weaponsTable < 2 then return end
+        for k, v in ipairs(weaponsTable) do
+            if v:GetSlot() ~= activeWeapon:GetSlot() then
+                if key == KEY_1 and v:GetSlot() == 0 then
+                    timer.Create("weaponswitch", 0.1, 1, function() timer.Remove("weaponswitch") end)
+                    input.SelectWeapon(v)
+                    return
+                elseif key == KEY_2 and v:GetSlot() == 1 then
+                    timer.Create("weaponswitch", 0.1, 1, function() timer.Remove("weaponswitch") end)
+                    input.SelectWeapon(v)
+                    return
+                end
+            end
+        end
+    end
+end)
+
+-- Switches the player weapon
+hook.Add("InputMouseApply", "WeaponSwitch", function(cmd, x, y, ang)
+    if cmd:GetMouseWheel() ~= 0 and IsValid(LocalPlayer()) and not timer.Exists("weaponswitch") then
+        print(cmd:GetMouseWheel())
+        local ply = LocalPlayer()
+        local weaponsTable = ply:GetWeapons()
+        local activeWeapon = ply:GetActiveWeapon()
+        for k, v in ipairs(weaponsTable) do
+            if v:GetSlot() ~= activeWeapon:GetSlot() then
+                timer.Create("weaponswitch", 0.2, 1, function() timer.Remove("weaponswitch") end)
+                input.SelectWeapon(v)
+                return
+            end
+        end
+    end
 end)
