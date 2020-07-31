@@ -321,7 +321,7 @@ hook.Add("InputMouseApply", "WeaponSwitch", function(cmd, x, y, ang)
         local activeWeapon = ply:GetActiveWeapon()
         for k, v in ipairs(weaponsTable) do
             if v:GetSlot() ~= activeWeapon:GetSlot() then
-                timer.Create("weaponswitch", 0.2, 1, function() timer.Remove("weaponswitch") end)
+                timer.Create("weaponswitch", 0.1, 1, function() timer.Remove("weaponswitch") end)
                 input.SelectWeapon(v)
                 return
             end
