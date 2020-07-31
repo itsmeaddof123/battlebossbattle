@@ -149,6 +149,11 @@ function GM:PostPlayerDeath(ply)
     end
 end
 
+-- Prevents players from using kill or explode binds
+hook.Add("CanPlayerSuicide", "DisableSuicide", function(ply)
+	return false
+end)
+
 -----------------------------------------
 --[[     PLAYER DAMAGE FUNCTIONS     ]]--
 -----------------------------------------
