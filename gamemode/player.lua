@@ -103,7 +103,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
         if GetRound() == "Battle" or GetRound() == "Armageddon" then
             lives = lives - 1
             if IsValid(attacker) and attacker:IsPlayer() and not (victim == attacker) then
-                attacker:UpdateScore(50, "You got 50 points for the kill!")
+                attacker:UpdateScore(75, "You got 50 points for the kill!")
             end
         end
         victim:SetLives(lives)
@@ -119,7 +119,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
                 messageSide("The Battle Boss has been defeated!")
             else
                 if IsValid(attacker) and attacker:IsPlayer() and victim != attacker then
-                    attacker:UpdateScore(25, "You got 25 points for the elimination!")
+                    attacker:UpdateScore(50, "You got 25 points for the elimination!")
                     attacker:EmitSound(eliminationSounds[math.random(1, #eliminationSounds)])
                 end
                 messageSide(victim:Name().." has been eliminated!")
@@ -266,7 +266,7 @@ function GM:EntityTakeDamage(victim, dmg)
                 if not timer.Exists("bosslivingmessage"..attacker:SteamID64()) then
                     local id = attacker:SteamID64()
                     timer.Create("bosslivingmessage"..id, 2, 1, function() timer.Remove("bosslivingmessage"..id) end)
-                    attacker:PrintColored(Color(200, 200, 200), "Your damage has been ", Color(255, 255, 255), "reduced ", Color(200, 200, 200), "because ", Color(255, 25, 25), "the boss is still alive!")
+                    attacker:PrintColored(Color(200, 200, 200), "Your damage has been ", Color(255, 25, 25), "reduced ", Color(200, 200, 200), "because ", Color(255, 25, 25), "the boss is still alive!")
                 end
             end
             -- Rank advantage
@@ -301,7 +301,7 @@ function GM:EntityTakeDamage(victim, dmg)
         elseif shield > 0 then
             victim:SetShield(0)
             baseDmg = baseDmg - shield
-            victim:EmitSound("hl1/fvox/armor_gone.wav")
+            victim:EmitSound("hl1/fvox/armor_gone.wav", 150)
         end
 
         -- Hurt sounds
@@ -471,7 +471,7 @@ net.Receive("AbilityAttempt", function(len, ply)
             timer.Create("abilitycooldown", 7, 1, function() end)
             -- Gravity Toss
             if GetRound() == "Crafting" then
-                ply:EmitSound("ambient/levels/canals/windmill_wind_loop1.wav")
+                ply:EmitSound("ambient/levels/canals/windmill_wind_loop1.wav", 150)
                 timer.Simple(0.7, function()
                     if not IsValid(ply) then return end
                     ply:StopSound("ambient/levels/canals/windmill_wind_loop1.wav")
@@ -479,7 +479,7 @@ net.Receive("AbilityAttempt", function(len, ply)
                 for target, bool in pairs(BBB.playing) do
                     if IsValid(target) and target:Alive() and not target:GetBoss() then
                         target:PrintColored(Color(200, 200, 200), "You've been hit by ", Color(255, 25, 25), "Gravity Toss", Color(200, 200, 200), "!")
-                        target:EmitSound("ambient/levels/canals/windmill_wind_loop1.wav")
+                        target:EmitSound("ambient/levels/canals/windmill_wind_loop1.wav", 150)
                         target:SetVelocity(Vector(math.random(-400, 400), math.random(-400, 400), 400))
                         timer.Simple(0.7, function()
                             if not IsValid(target) then return end
@@ -489,7 +489,7 @@ net.Receive("AbilityAttempt", function(len, ply)
                 end
             -- Gravity Pummel
             elseif GetRound() == "Battle" or GetRound() == "Armageddon" then
-                ply:EmitSound("ambient/levels/canals/windmill_wind_loop1.wav")
+                ply:EmitSound("ambient/levels/canals/windmill_wind_loop1.wav", 150)
                 timer.Simple(0.7, function()
                     if not IsValid(ply) then return end
                     ply:StopSound("ambient/levels/canals/windmill_wind_loop1.wav")
@@ -497,7 +497,7 @@ net.Receive("AbilityAttempt", function(len, ply)
                 for target, bool in pairs(BBB.playing) do
                     if IsValid(target) and target:Alive() and not target:GetBoss() then
                         target:PrintColored(Color(200, 200, 200), "You've been hit by ", Color(255, 25, 25), "Gravity Pummel", Color(200, 200, 200), "!")
-                        target:EmitSound("ambient/levels/canals/windmill_wind_loop1.wav")
+                        target:EmitSound("ambient/levels/canals/windmill_wind_loop1.wav", 150)
                         target:SetVelocity(Vector(math.random(-150, 150), math.random(-150, 150), 600))
                         timer.Simple(0.5, function()
                             if not IsValid(target) then return end
@@ -516,7 +516,7 @@ net.Receive("AbilityAttempt", function(len, ply)
                 for target, bool in pairs(BBB.playing) do
                     if IsValid(target) and target:Alive() and not target:GetBoss() then
                         target:PrintColored(Color(200, 200, 200), "You've slowed by the ", Color(255, 25, 25), "Slowness Beam", Color(200, 200, 200), "!")
-                        target:EmitSound("ambient/energy/spark5.wav")
+                        target:EmitSound("ambient/energy/spark5.wav", 150)
                         target:SetWalkSpeed(target:GetWalkSpeed() - 200)
                         target:SetRunSpeed(target:GetRunSpeed() - 200)
                         timer.Simple(2, function()
@@ -534,9 +534,9 @@ net.Receive("AbilityAttempt", function(len, ply)
                 for target, bool in pairs(BBB.playing) do
                     if IsValid(target) and target:Alive() and not target:GetBoss() then
                         target:PrintColored(Color(200, 200, 200), "You've struck by the ", Color(255, 25, 25), "Death Beam", Color(200, 200, 200), "!")
-                        target:EmitSound("ambient/energy/spark5.wav")
-                        target:EmitSound("ambient/energy/zap8.wav")
-                        target:EmitSound("player/pl_burnpain"..math.random(1, 3)..".wav")
+                        target:EmitSound("ambient/energy/spark5.wav", 150)
+                        target:EmitSound("ambient/energy/zap8.wav", 150)
+                        target:EmitSound("player/pl_burnpain"..math.random(1, 3)..".wav", 150)
                         target:SetWalkSpeed(target:GetWalkSpeed() - 5)
                         target:SetRunSpeed(target:GetRunSpeed() - 5)
                         local damage = DamageInfo()

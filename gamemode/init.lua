@@ -104,7 +104,7 @@ local function applyToxicity(ply, id, startTime)
     if IsValid(ply) and ply:GetPlaying() and GetRound() == "Armageddon" then
         if ply:Alive() then
             local damage = DamageInfo()
-            damage:SetDamage(math.ceil((CurTime() - startTime) / 5))
+            damage:SetDamage(math.ceil((CurTime() - startTime) / 4))
             ply:TakeDamageInfo(damage)
             -- Points for surviving another second into armageddon
             ply:UpdateScore(2)
@@ -228,7 +228,7 @@ function StartCrafting()
     -- The double loop is a necessary evil
     for ply, bool in pairs(BBB.playing) do
         if ply:GetBoss() then
-            ply:EmitSound("vo/ravenholm/madlaugh0"..math.random(1, 4)..".wav")
+            ply:EmitSound("vo/ravenholm/madlaugh0"..math.random(1, 4)..".wav", 150)
             ply:SetLives(1)
             ply:SetWalkSpeed(350)
             ply:SetRunSpeed(350)
@@ -276,7 +276,7 @@ function StartBattle()
                 ply:GiveTools()
             end
             if ply:GetBoss() then
-                ply:EmitSound("vo/Citadel/br_mock0"..tostring(3 * math.random(2, 3))..".wav")
+                ply:EmitSound("vo/Citadel/br_mock0"..tostring(3 * math.random(2, 3))..".wav", 150)
             end
             ply:ChangeStats()
         end
