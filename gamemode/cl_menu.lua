@@ -22,7 +22,6 @@ local failure = "npc/roller/code2.wav"
 local itemSelect = "buttons/button15.wav"
 -- New UI
 local lightGrey = Color(200, 200, 200, 75)
---local darkGrey = Color(100, 100, 100, 150)
 local solidGrey = Color(75, 75, 75, 255)
 local lightBlue = Color(25, 75, 150, 150)
 local solidWhite = Color(255, 255, 255, 255)

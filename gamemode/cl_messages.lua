@@ -1,10 +1,10 @@
 local topW = 650
 local topH = 200
-local topBuffer = 25
+local topBuffer = 10
 local topSpeed = 300
 local sideW = 400
 local sideH = 120
-local sideBuffer = 25
+local sideBuffer = 10
 local sideSpeed = 500
 local partialBlack = Color(0, 0, 0, 200)
 local partialWhite = Color(255, 255, 255, 200)
