@@ -315,7 +315,6 @@ end)
 -- Switches the player weapon
 hook.Add("InputMouseApply", "WeaponSwitch", function(cmd, x, y, ang)
     if cmd:GetMouseWheel() ~= 0 and IsValid(LocalPlayer()) and not timer.Exists("weaponswitch") then
-        print(cmd:GetMouseWheel())
         local ply = LocalPlayer()
         local weaponsTable = ply:GetWeapons()
         local activeWeapon = ply:GetActiveWeapon()
