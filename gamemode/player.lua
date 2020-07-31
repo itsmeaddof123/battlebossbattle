@@ -466,7 +466,7 @@ net.Receive("AbilityAttempt", function(len, ply)
                         timer.Simple(0.5, function()
                             if not IsValid(target) then return end
                             target:StopSound("ambient/levels/canals/windmill_wind_loop1.wav")
-                            target:SetVelocity(Vector(0, 0, -600))
+                            target:SetVelocity(Vector(0, 0, -550))
                             target:EmitSound("npc/antlion_guard/shove1.wav")
                         end)
                     end
