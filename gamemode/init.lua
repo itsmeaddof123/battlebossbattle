@@ -303,7 +303,7 @@ function StartArmageddon()
     for ply, bool in pairs(BBB.playing) do
         if IsValid(ply) then
             -- Points for reaching armageddon
-            ply:UpdateScore(50, "You got 50 points for reaching armageddon!")
+            ply:UpdateScore(50, "You got 50 points for reaching Armageddon!")
             -- Automatically damages each living player to end the round
             local id = ply:SteamID64()
             local curtime = CurTime()

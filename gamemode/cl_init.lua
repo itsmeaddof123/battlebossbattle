@@ -189,7 +189,7 @@ end)
 
 net.Receive("ConsumeExpired", function(len)
     local itemId = net.ReadInt(16)
-    chat.AddText(Color(200, 200, 200), "Your "..craftingTable.items[6][itemId].name, Color(255, 25, 25), "expired!")
+    chat.AddText(Color(200, 200, 200), "Your ", Color(255, 255, 255), craftingTable.items[6][itemId].name, Color(255, 25, 25), " expired!")
 end)
 
 -- Removes a player from the cache
