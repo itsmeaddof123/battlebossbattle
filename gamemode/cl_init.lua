@@ -211,37 +211,39 @@ net.Receive("ScoreboardResult", function(len)
     end
 end)
 
--- Disables SpawnMenu
-hook.Add("OnSpawnMenuOpen", "DisableSpawnMenu", function() return false end)
-
 -- Toggle crafting and training
 toggleCraft = false
 toggleTrain = false
-toggleF1 = false
-hook.Add("OnSpawnMenuOpen", "SpawnMenuClosed", function(ply, key)
-    if scoreboardCache[ply] and scoreboardCache[ply].playing then
-        if scoreboardCache[ply].boss and (playerCache.round == "Crafting" or playerCache.round == "Battle" or playerCache.round == "Crafting") and playerCache.lastAbility + 7.1 <= CurTime() then
-            net.Start("AbilityAttempt")
-            net.WriteString("E")
-            net.SendToServer()
+hook.Add("OnSpawnMenuOpen", "SpawnMenuClose", function()
+    local ply = LocalPlayer()
+    if ply and scoreboardCache[ply] and scoreboardCache[ply].playing then
+        if scoreboardCache[ply].boss and (playerCache.round == "Crafting" or playerCache.round == "Battle" or playerCache.round == "Crafting") then
+            if playerCache.lastAbility + 7.1 <= CurTime() then
+                net.Start("AbilityAttempt")
+                net.WriteString("Q")
+                net.SendToServer()
+            end
         elseif playerCache.round == "Crafting" then
-            toggleTraining(not toggleTrain)
+            toggleCrafting(not toggleCraft)
         elseif playerCache.round == "Battle" or playerCache.round == "Armageddon" then
             toggleConsumables(true)
         end
     end
+    return false
 end)
-hook.Add("OnSpawnMenuClose", "SpawnMenuOpen", function(ply, key)
+hook.Add("OnSpawnMenuClose", "SpawnMenuClose", function()
     toggleConsumables(false)
 end)
 hook.Add("KeyPress", "UseOpened", function(ply, key)
     if scoreboardCache[ply] and scoreboardCache[ply].playing and key == IN_USE then
-        if scoreboardCache[ply].boss and (playerCache.round == "Crafting" or playerCache.round == "Battle" or playerCache.round == "Crafting") and playerCache.lastAbility + 7.1 <= CurTime() then
-            net.Start("AbilityAttempt")
-            net.WriteString("Q")
-            net.SendToServer()
+        if scoreboardCache[ply].boss and (playerCache.round == "Crafting" or playerCache.round == "Battle" or playerCache.round == "Crafting") then
+            if playerCache.lastAbility + 7.1 <= CurTime() then
+                net.Start("AbilityAttempt")
+                net.WriteString("E")
+                net.SendToServer()
+            end
         elseif playerCache.round == "Crafting" then
-            toggleCrafting(not toggleCraft)
+            toggleTraining(not toggleTrain)
         elseif playerCache.round == "Battle" or playerCache.round == "Armageddon" then
             toggleConsumables(true)
         end
