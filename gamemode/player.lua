@@ -2,10 +2,18 @@
 --[[     MISC PLAYER HOOKS     ]]--
 -----------------------------------
 
+-- When the player disconnects
 function GM:PlayerDisconnected(ply)
     net.Start("PlayerDisconnected")
     net.WriteEntity(ply)
     net.Broadcast()
+    if IsValid(ply) and ply:GetBoss() and ply:GetPlaying() then
+        BBB.bossLiving = false
+        messageSide("The Battle Boss has been defeated!")
+        if GetRound() == "Battle" and timer.Exists("endbattle") then
+            EndBattle()
+        end
+    end
     BBB.playing[ply] = nil
 end
 
