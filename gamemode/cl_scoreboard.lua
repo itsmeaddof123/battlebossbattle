@@ -116,18 +116,21 @@ local function toggleScoreboard(toggle)
                 local playing = scoreboardCache[ply].playing
                 local boss = scoreboardCache[ply].boss
                 local score = scoreboardCache[ply].score
+                local name = ply:Name()
+                local ping = ply:Ping()
+                local id = ply:SteamID()
                 -- SteamID to clipboard on click
                 plyButton.DoClick = function()
-                    SetClipboardText(ply:SteamID())
-                    LocalPlayer():ChatPrint("Copied the SteamID of "..ply:Name())
+                    SetClipboardText(id)
+                    LocalPlayer():ChatPrint("Copied the SteamID of "..name)
                 end
                 plyButton:Dock(TOP)
                 plyButton:SetSize(scoreW, interval)
                 plyButton:SetText("")
                 plyButton.Paint = function(self, w, h)
-                    draw.SimpleText(ply:Name(), "Courier Big 4a", 200, -3, fullBlack, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+                    draw.SimpleText(name, "Courier Big 4a", 200, -3, fullBlack, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
                     draw.SimpleText(tostring(score), "Courier Big 4a", 70, 0, fullBlack, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
-                    draw.SimpleText(tostring(ply:Ping()), "Courier Small 2", 3, 3, fullBlack, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+                    draw.SimpleText(tostring(ping), "Courier Small 2", 3, 3, fullBlack, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
                     surface.SetDrawColor(fullBlue)
                     surface.DrawLine(0, h - 2, w, h - 2)
                     surface.DrawLine(0, h - 1, w, h - 1)
@@ -138,7 +141,7 @@ local function toggleScoreboard(toggle)
                     crownImage:SetSize(interval - 4, interval - 4)
                     crownImage:SetImage(crown)
                 end
-                if not scoreboardCache[ply].playing then
+                if not playing then
                     local skullImage = vgui.Create("DImage", plyButton)
                     skullImage:SetPos(scoreW - interval, 1)
                     skullImage:SetSize(interval - 4, interval - 4)

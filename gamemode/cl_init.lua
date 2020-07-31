@@ -84,13 +84,13 @@ net.Receive("UpdateStat", function(len)
         local ply = LocalPlayer()
         if timer.Exists("trainingtimer") then
             timer.Remove("trainingtimer")
-            timer.Create("trainingtimer", 0.2, 1, function()
+            timer.Create("trainingtimer", 0.3, 1, function()
                 if ply then ply:StopSound("ambient/levels/labs/teleport_active_loop1.wav") end
                 timer.Remove("trainingtimer")
             end)
         else
             ply:EmitSound("ambient/levels/labs/teleport_active_loop1.wav", 100, 100, 0.25)
-            timer.Create("trainingtimer", 0.2, 1, function()
+            timer.Create("trainingtimer", 0.3, 1, function()
                 if ply then ply:StopSound("ambient/levels/labs/teleport_active_loop1.wav") end
                 timer.Remove("trainingtimer")
             end)
