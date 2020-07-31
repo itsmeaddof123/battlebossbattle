@@ -169,6 +169,7 @@ function plyMeta:ChangeStats()
     elseif rank == "Rogue" then
         self:SetWalkSpeed(self:GetWalkSpeed() + 75)
         self:SetRunSpeed(self:GetRunSpeed() + 75)
+        self:SetDefense(self:GetDefense() + 0.1)
     elseif rank == "Medic" then
         timer.Create("medicregen"..self:SteamID64(), 1, 0, function() medicRegen(self) end)
         self:SetWalkSpeed(self:GetWalkSpeed() + 25)
