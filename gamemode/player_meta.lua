@@ -589,11 +589,11 @@ function plyMeta:CraftItem(catId, itemId)
 end
 
 -- Part of a two-function recursion 
-local function trainStat(ply, statId)
+local function trainStat(ply, statId, id)
     if not IsValid(ply) then return end
     ply:UpdateStat(statId, ply:GetStat(statId) + 0.1)
     ply:UpdateScore(0.1)
-    timer.Remove("trainstat"..ply:SteamID64())
+    timer.Remove("trainstat"..id)
     ply:TrainStat(statId)
 end
 
@@ -612,7 +612,7 @@ function plyMeta:TrainStat(statId)
             timer.Remove("trainstat"..id)
             return
         end
-        trainStat(self, statId)
+        trainStat(self, statId, id)
     end)
     return true, "Success!"
 end

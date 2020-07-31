@@ -261,6 +261,8 @@ function toggleCrafting(toggle)
         if IsValid(trainingPanel) then
             trainingPanel:Remove()
         end
+        net.Start("TrainClosed")
+        net.SendToServer()
 
         -- Page open sound
         surface.PlaySound(panelOpen)

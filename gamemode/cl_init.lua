@@ -77,8 +77,25 @@ net.Receive("UpdateStat", function(len)
         playerCache.stats = {0, 0, 0, 0, 0, 0}
     end
     playerCache.stats[statId] = amt
-    if amt % 3 < 1 and amt - math.floor(amt) < 0.05 then
-        LocalPlayer():EmitSound("hl1/fvox/boop.wav", 100, 50 + amt)
+    if amt > 0 and IsValid(LocalPlayer()) then
+        local ply = LocalPlayer()
+        if timer.Exists("trainingsound") then
+            timer.Remove("trainingsound")
+            timer.Create("trainingsound", 0.25, 1, function()
+                if ply then 
+                    ply:StopSound("ambient/levels/labs/teleport_active_loop1.wav")
+                end
+                timer.Remove("trainingsound")
+            end)
+        else
+            ply:EmitSound("ambient/levels/labs/teleport_active_loop1.wav", 100, 100, 0.5)
+            timer.Create("trainingsound", 0.25, 1, function()
+                if ply then 
+                    ply:StopSound("ambient/levels/labs/teleport_active_loop1.wav")
+                end
+                timer.Remove("trainingsound")
+            end)
+        end
     end
     if amt >= 50 and IsValid(LocalPlayer()) then
         LocalPlayer():ChatPrint("Finished training: "..statNames[statId])
@@ -105,6 +122,7 @@ net.Receive("UpdateRound", function(len)
         end
     elseif playerCache.round == "Battle" and IsValid(ply) then
         playerCache.lastAbility = 0
+        timer.Remove("trainingsound")
         if playerCache.playSongs then
             for k, v in ipairs(craftingSongs) do
                 ply:StopSound(v)
