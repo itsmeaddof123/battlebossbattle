@@ -847,10 +847,6 @@ function toggleF1Menu(toggle)
             net.WriteBool(not bool)
             net.SendToServer()
         end
-
-
-
-
     else
         toggleF1 = false
         -- Close the f1 menu
