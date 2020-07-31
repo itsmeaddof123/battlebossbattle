@@ -6,16 +6,16 @@ ENT.PrintName = "Water"
 ENT.Spawnable = true
 
 local models = { -- Average health: 15.5
-    {model = "models/props_junk/garbage_milkcarton001a.mdl", health = 10, offset = Vector(0, 0, 8),},
-    {model = "models/props_junk/garbage_milkcarton002a.mdl", health = 10, offset = Vector(0, 0, 8),},
-    {model = "models/props_junk/garbage_plasticbottle001a.mdl", health = 10, offset = Vector(0, 0, 8),},
-    {model = "models/props_junk/garbage_plasticbottle002a.mdl", health = 10, offset = Vector(0, 0, 8),},
-    {model = "models/props_junk/garbage_plasticbottle003a.mdl", health = 10, offset = Vector(0, 0, 8),},
-    {model = "models/props_junk/PopCan01a.mdl", health = 10, offset = Vector(0, 0, 5),},
-    {model = "models/props_junk/watermelon01.mdl", health = 15, offset = Vector(0, 0, 8),},
-    {model = "models/props_junk/glassjug01.mdl", health = 10, offset = Vector(0, 0, 5),},
-    {model = "models/props_borealis/bluebarrel001.mdl", health = 35, offset = Vector(0, 0, 25),},
-    {model = "models/props_c17/oildrum001.mdl", health = 35},
+    {model = "models/props_junk/garbage_milkcarton001a.mdl", health = 20, offset = Vector(0, 0, 8),},
+    {model = "models/props_junk/garbage_milkcarton002a.mdl", health = 20, offset = Vector(0, 0, 8),},
+    {model = "models/props_junk/garbage_plasticbottle001a.mdl", health = 20, offset = Vector(0, 0, 8),},
+    {model = "models/props_junk/garbage_plasticbottle002a.mdl", health = 20, offset = Vector(0, 0, 8),},
+    {model = "models/props_junk/garbage_plasticbottle003a.mdl", health = 20, offset = Vector(0, 0, 8),},
+    {model = "models/props_junk/PopCan01a.mdl", health = 20, offset = Vector(0, 0, 5),},
+    {model = "models/props_junk/watermelon01.mdl", health = 20, offset = Vector(0, 0, 8),},
+    {model = "models/props_junk/glassjug01.mdl", health = 20, offset = Vector(0, 0, 5),},
+    {model = "models/props_borealis/bluebarrel001.mdl", health = 40, offset = Vector(0, 0, 25),},
+    {model = "models/props_c17/oildrum001.mdl", health = 40},
 }
 
 if SERVER then
