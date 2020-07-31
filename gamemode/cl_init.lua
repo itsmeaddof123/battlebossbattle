@@ -265,23 +265,24 @@ hook.Add("KeyPress", "UseOpened", function(ply, key)
         end
     end
 end)
+-- Releas
 hook.Add("KeyReleased", "UseReleased", function(ply, key)
-    toggleConsumables(false)
+    if key == IN_USE then
+        toggleConsumables(false)
+    end
 end)
+-- Toggle the f1 menu
 hook.Add("PlayerButtonDown", "MenuToggler", function(ply, key)
     if key == KEY_F1 then
         toggleF1Menu(not toggleF1)
     end
-    -- Cheap way to tell the server that the player is ready to receive scoreboard information
-    if not playerCache.scoreboardInitialized and not timer.Exists("waitforinfo") then
-        timer.Create("waitforinfo", 3, 1, function() timer.Remove("waitforinfo") end) -- Gives the server time to respond
-        net.Start("ScoreboardRequest")
-        net.SendToServer()
-    end
 end)
 
-hook.Add("PlayerButtonUp", "ConsumeReleaser", function(ply, key)
-    if key == KEY_Q or key == KEY_E then
-        toggleConsumables(false)
-    end
+-- Some initializations to do once the player is loaded in
+hook.Add("HUDPaint", "LoadedInits", function()
+    hook.Remove("HUDPaint", "LoadedInits")
+    -- Requests scoreboard cache info
+    net.Start("ScoreboardRequest")
+    net.SendToServer()
+    toggleF1Menu(true)
 end)
