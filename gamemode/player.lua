@@ -215,10 +215,12 @@ local majorHurts = {
 -- Handles damage taking
 function GM:EntityTakeDamage(victim, dmg)
     if IsValid(victim) and victim:IsPlayer() then
-         --Interrupts shield regen
-        timer.Remove("shieldregenbuffer"..victim:SteamID64())
-        timer.Remove("shieldregen"..victim:SteamID64())
-
+        --Interrupts shield regen
+        if dmg:GetDamageType() != DMG_FALL then
+            timer.Remove("shieldregenbuffer"..victim:SteamID64())
+            timer.Remove("shieldregen"..victim:SteamID64())
+        end
+    
         -- Gets relevant player info
         local shield = victim:GetShield()
         local baseDmg = dmg:GetDamage()
