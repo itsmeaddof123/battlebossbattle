@@ -57,7 +57,6 @@ function SWEP:PrimaryAttack()
     if ply:Health() ~= ply:GetMaxHealth() then
         ply:SetHealth(math.Clamp(ply:Health() + 10 * mult, ply:Health(), ply:GetMaxHealth()))
         ply:EmitSound("items/medshot4.wav", 100, 100, 0.5)
-        ply:UpdateScore(3)
     else
         ply:EmitSound("items/medshotno1.wav")
     end
