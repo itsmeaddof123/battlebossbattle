@@ -218,26 +218,40 @@ hook.Add("OnSpawnMenuOpen", "DisableSpawnMenu", function() return false end)
 toggleCraft = false
 toggleTrain = false
 toggleF1 = false
-hook.Add("PlayerButtonDown", "MenuToggler", function(ply, key)
-    if scoreboardCache[ply] and scoreboardCache[ply].playing and (key == KEY_Q or key == KEY_E) then
-        if scoreboardCache[ply].boss and (playerCache.round == "Crafting" or playerCache.round == "Battle" or playerCache.round == "Armageddon") then
-            if key == KEY_Q and (playerCache.lastAbility + 7.1 <= CurTime()) then
-                net.Start("AbilityAttempt")
-                net.WriteString("Q")
-                net.SendToServer()
-            elseif key == KEY_E and (playerCache.lastAbility + 7.1 <= CurTime()) then
-                net.Start("AbilityAttempt")
-                net.WriteString("E")
-                net.SendToServer()
-            end
-        elseif playerCache.round == "Crafting" and key == KEY_Q then
-            toggleCrafting(not toggleCraft)
-        elseif playerCache.round == "Crafting" and key == KEY_E then
+hook.Add("OnSpawnMenuOpen", "SpawnMenuClosed", function(ply, key)
+    if scoreboardCache[ply] and scoreboardCache[ply].playing then
+        if scoreboardCache[ply].boss and (playerCache.round == "Crafting" or playerCache.round == "Battle" or playerCache.round == "Crafting") and playerCache.lastAbility + 7.1 <= CurTime() then
+            net.Start("AbilityAttempt")
+            net.WriteString("E")
+            net.SendToServer()
+        elseif playerCache.round == "Crafting" then
             toggleTraining(not toggleTrain)
-        else
-            toggleConsumables(playerCache.round == "Battle" or playerCache.round == "Armageddon")
+        elseif playerCache.round == "Battle" or playerCache.round == "Armageddon" then
+            toggleConsumables(true)
         end
-    elseif key == KEY_F1 then
+    end
+end)
+hook.Add("OnSpawnMenuClose", "SpawnMenuOpen", function(ply, key)
+    toggleConsumables(false)
+end)
+hook.Add("KeyPress", "UseOpened", function(ply, key)
+    if scoreboardCache[ply] and scoreboardCache[ply].playing and key == IN_USE then
+        if scoreboardCache[ply].boss and (playerCache.round == "Crafting" or playerCache.round == "Battle" or playerCache.round == "Crafting") and playerCache.lastAbility + 7.1 <= CurTime() then
+            net.Start("AbilityAttempt")
+            net.WriteString("Q")
+            net.SendToServer()
+        elseif playerCache.round == "Crafting" then
+            toggleCrafting(not toggleCraft)
+        elseif playerCache.round == "Battle" or playerCache.round == "Armageddon" then
+            toggleConsumables(true)
+        end
+    end
+end)
+hook.Add("KeyReleased", "UseReleased", function(ply, key)
+    toggleConsumables(false)
+end)
+hook.Add("PlayerButtonDown", "MenuToggler", function(ply, key)
+    if key == KEY_F1 then
         toggleF1Menu(not toggleF1)
     end
     -- Cheap way to tell the server that the player is ready to receive scoreboard information
@@ -247,6 +261,7 @@ hook.Add("PlayerButtonDown", "MenuToggler", function(ply, key)
         net.SendToServer()
     end
 end)
+
 hook.Add("PlayerButtonUp", "ConsumeReleaser", function(ply, key)
     if key == KEY_Q or key == KEY_E then
         toggleConsumables(false)
