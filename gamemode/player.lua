@@ -548,3 +548,8 @@ end)
 net.Receive("DefaultModelChoice", function(len, ply)
     ply:SetDefaultModel(net.ReadInt(16))
 end)
+
+-- Toggles whether or not a player is playing
+net.Receive("TogglePlayable", function(len, ply)
+    ply:SetPlayable(net.ReadBool())
+end)
