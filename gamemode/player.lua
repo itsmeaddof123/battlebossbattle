@@ -145,7 +145,7 @@ end
 -----------------------------------------
 
 -- Regenerates the player's shield until it hits the max or until the player takes damage again
-local regenAmount = 0.5 -- How much is gained per regen
+local regenAmount = 1 -- How much is gained per regen
 local function shieldRegen(ply, id)
     if IsValid(ply) and ply:Alive() and GetRound() ~= "Armageddon" then
         -- Raises the shield level

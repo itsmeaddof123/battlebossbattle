@@ -107,7 +107,7 @@ end
 local function medicRegen(ply)
     if (GetRound() == "Battle" or GetRound() == "Armageddon") and ply:GetPlaying() then
         if ply:Alive() then
-            ply:SetHealth(math.min(ply:Health() + 3, ply:GetMaxHealth()))
+            ply:SetHealth(math.min(ply:Health() + 5, ply:GetMaxHealth()))
         end
     else
         timer.Remove("medicregen"..ply:SteamID64())
@@ -130,9 +130,9 @@ function plyMeta:ChangeStats()
         self:SetMeleeAttack(self:GetMeleeAttack() + 0.5)
         self:SetRangedAttack(self:GetRangedAttack() - 0.25)
     elseif mark == 3 then
-        self:SetWalkSpeed(self:GetWalkSpeed() + 50)
-        self:SetRunSpeed(self:GetRunSpeed() + 50)
-        self:SetJumpPower(self:GetJumpPower() + 50)
+        self:SetWalkSpeed(self:GetWalkSpeed() + 75)
+        self:SetRunSpeed(self:GetRunSpeed() + 75)
+        self:SetJumpPower(self:GetJumpPower() + 100)
         self:SetMaxHP(self:GetMaxHP() - 25)
     elseif mark == 4 then
         self:SetRangedAttack(self:GetRangedAttack() + 0.5)
@@ -142,8 +142,8 @@ function plyMeta:ChangeStats()
         self:SetWalkSpeed(self:GetWalkSpeed() - 50)
         self:SetRunSpeed(self:GetRunSpeed() - 50)
     elseif mark == 6 then
-        self:SetShieldRegen(self:GetShieldRegen() + 0.25)
-        self:SetAttack(self:GetAttack() - 0.25)
+        self:SetShieldRegen(self:GetShieldRegen() + 0.3)
+        self:SetAttack(self:GetAttack() - 0.2)
     end
 
     -- Changes stats based on equip
@@ -167,24 +167,28 @@ function plyMeta:ChangeStats()
     if rank == "Warrior" then
         self:SetAttack(self:GetAttack() + 0.25)
     elseif rank == "Rogue" then
-        self:SetWalkSpeed(self:GetWalkSpeed() + 50)
-        self:SetRunSpeed(self:GetRunSpeed() + 50)
+        self:SetWalkSpeed(self:GetWalkSpeed() + 75)
+        self:SetRunSpeed(self:GetRunSpeed() + 75)
     elseif rank == "Medic" then
         timer.Create("medicregen"..self:SteamID64(), 1, 0, function() medicRegen(self) end)
+        self:SetWalkSpeed(self:GetWalkSpeed() + 25)
+        self:SetRunSpeed(self:GetRunSpeed() + 25)
     elseif rank == "Wild Card" then
         self:SetAttack(self:GetAttack() + 0.5)
         self:SetDefense(self:GetDefense() + 0.5)
     elseif rank == "Overtrained" then
         self:SetAttack(self:GetAttack() + 0.5)
         self:SetDefense(self:GetDefense() + 0.5)
-        self:SetWalkSpeed(self:GetWalkSpeed() + 100)
-        self:SetRunSpeed(self:GetRunSpeed() + 100)
-        self:SetJumpPower(self:GetJumpPower() + 100)
+        self:SetWalkSpeed(self:GetWalkSpeed() + 125)
+        self:SetRunSpeed(self:GetRunSpeed() + 125)
+        self:SetJumpPower(self:GetJumpPower() + 125)
         self:SetMaxHP(self:GetMaxHP() + 50)
         self:SetMaxShield(self:GetMaxShield() + 50)
     elseif rank == "Collector" then
         self:SetAttack(self:GetAttack() + 1)
         self:SetMeleeAttack(self:GetMeleeAttack() + 1)
+        self:SetWalkSpeed(self:GetWalkSpeed() + 75)
+        self:SetRunSpeed(self:GetRunSpeed() + 75)
     end
 
     -- Change stats based on training
