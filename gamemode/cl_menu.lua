@@ -840,11 +840,11 @@ function toggleF1Menu(toggle)
         -- Toggle round transition noises
         local spectateCheck = vgui.Create("DCheckBox", settingsPanel)
         spectateCheck:SetPos(25, 250)
-        spectateCheck:SetValue(playerCache.playable)
+        spectateCheck:SetValue(playerCache.spectateOnly)
         function spectateCheck:OnChange(bool)
-            playerCache.playable = bool
+            playerCache.spectateOnly = bool
             net.Start("TogglePlayable")
-            net.WriteBool(not bool)
+            net.WriteBool(bool)
             net.SendToServer()
         end
     else
