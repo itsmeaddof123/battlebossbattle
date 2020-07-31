@@ -80,7 +80,7 @@ local function checkForEnd()
     -- Checks how many players are still playing
     local playing = 0
     for ply, bool in pairs(BBB.playing) do
-        if IsValid(ply) then
+        if IsValid(ply) and ply:GetPlaying() then
             playing = playing + 1
         end
     end
@@ -92,9 +92,7 @@ local function checkForEnd()
     timer.Remove("checkforend")
     for ply, bool in pairs(BBB.playing) do
         if IsValid(ply) then
-            -- Points for being the final survivor - will also get points for surviving armageddon
             ply:UpdateScore(50, "You got 50 points for being the final survivor!")
-            -- Declare player final survivor
         end
     end
     -- Add a small timer for final survivor declaration?
@@ -283,7 +281,13 @@ function StartBattle()
         end
     end
     timer.Remove("abilitycooldown")
-    timer.Create("endbattle", roundTimes.Battle, 1, EndBattle)
+    if BBB.bossLiving then
+        timer.Create("endbattle", roundTimes.Battle, 1, EndBattle)
+    else
+        timer.Create("endbattle", 10, 1, function()
+            EndBattle()
+        end)
+    end
     timer.Create("checkforend", 3, 0, checkForEnd)
 end
 

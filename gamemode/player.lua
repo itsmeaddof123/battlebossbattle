@@ -11,6 +11,7 @@ function GM:PlayerDisconnected(ply)
         BBB.bossLiving = false
         messageSide("The Battle Boss has been defeated!")
         if GetRound() == "Battle" and timer.Exists("endbattle") then
+            timer.Remove("endbattle")
             EndBattle()
         end
     end
@@ -129,6 +130,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
             end
         end
         if victim:GetBoss() and GetRound() == "Battle" and timer.Exists("endbattle") then
+            timer.Remove("endbattle")
             EndBattle()
         end
         victim:EmitSound(deathSounds[math.random(1, #deathSounds)])

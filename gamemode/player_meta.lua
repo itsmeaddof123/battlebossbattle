@@ -107,7 +107,7 @@ end
 local function medicRegen(ply)
     if (GetRound() == "Battle" or GetRound() == "Armageddon") and ply:GetPlaying() then
         if ply:Alive() then
-            ply:SetHealth(math.min(ply:Health() + 5, ply:GetMaxHealth()))
+            ply:SetHealth(math.min(ply:Health() + 1, ply:GetMaxHealth()))
         end
     else
         timer.Remove("medicregen"..ply:SteamID64())

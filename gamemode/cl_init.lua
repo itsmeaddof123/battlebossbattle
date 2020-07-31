@@ -118,7 +118,7 @@ net.Receive("UpdateRound", function(len)
         if scoreboardCache[ply] and scoreboardCache[ply].boss then
             messageTop("Crafting: Slap players with your bat, destroy props with your zapper, and use your abilities to slow the others!")
         else
-            messageTop("Crafting: Punch props to gain materials! Craft gear and train stats to get ready for the Battle Round!")
+            messageTop("Crafting: Punch props to gain materials! Craft gear (Spawn menu) and train stats (Use Button) to get ready for the Battle Round!")
         end
     elseif playerCache.round == "Battle" and IsValid(ply) then
         playerCache.lastAbility = 0
@@ -149,7 +149,7 @@ net.Receive("UpdateRound", function(len)
     end
 end)
 
--- e
+-- Display the winner
 net.Receive("WinnerMessage", function(len)
     messageTop(net.ReadString())
 end)
@@ -172,9 +172,6 @@ net.Receive("UpdateScoreboard", function(len)
         else
             scoreboardCache[ply] = cacheInit()
             scoreboardCache[ply][key] = arg
-        end
-        if key == "boss" and arg == true and playerCache.round == "Armageddon" then
-            messageTop("The champion of this game is "..ply:Name()..", who has won with "..tostring(scoreboardCache[ply].score).." points! They have earned the title of Battle Boss!")
         end
     end
 end)
