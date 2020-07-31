@@ -803,10 +803,7 @@ net.Receive("CraftResult", function(len)
 end)
 
 net.Receive("TrainResult", function(len)
-    if net.ReadBool() then
-        surface.PlaySound(trainSuccess)
-        LocalPlayer():ChatPrint("Successfully began training: "..statNames[net.ReadInt(16)])
-    else
+    if not net.ReadBool() then
         surface.PlaySound(failure)
         LocalPlayer():ChatPrint(net.ReadString())
     end

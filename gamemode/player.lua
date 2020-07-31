@@ -39,6 +39,12 @@ function GM:PlayerSpawn(ply)
     end
 end
 
+-- Freezes the player when they're training
+hook.Add("StartCommand", "TrainingFreeze", function(ply, cmd)
+    if not (IsValid(ply) and ply:SteamID64() and timer.Exists("trainstat"..ply:SteamID64())) then return end
+    cmd:ClearMovement()
+end)
+
 ----------------------------------------
 --[[     PLAYER DEATH FUNCTIONS     ]]--
 ----------------------------------------

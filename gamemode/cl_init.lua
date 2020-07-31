@@ -79,17 +79,17 @@ net.Receive("UpdateStat", function(len)
     playerCache.stats[statId] = amt
     if amt > 0 and IsValid(LocalPlayer()) then
         local ply = LocalPlayer()
-        if timer.Exists("trainingsound") then
-            timer.Remove("trainingsound")
-            timer.Create("trainingsound", 0.25, 1, function()
+        if timer.Exists("trainingtimer") then
+            timer.Remove("trainingtimer")
+            timer.Create("trainingtimer", 0.2, 1, function()
                 if ply then ply:StopSound("ambient/levels/labs/teleport_active_loop1.wav") end
-                timer.Remove("trainingsound")
+                timer.Remove("trainingtimer")
             end)
         else
-            ply:EmitSound("ambient/levels/labs/teleport_active_loop1.wav", 100, 100, 0.5)
-            timer.Create("trainingsound", 0.25, 1, function()
+            ply:EmitSound("ambient/levels/labs/teleport_active_loop1.wav", 100, 100, 0.25)
+            timer.Create("trainingtimer", 0.2, 1, function()
                 if ply then ply:StopSound("ambient/levels/labs/teleport_active_loop1.wav") end
-                timer.Remove("trainingsound")
+                timer.Remove("trainingtimer")
             end)
         end
     end
@@ -326,4 +326,10 @@ hook.Add("InputMouseApply", "WeaponSwitch", function(cmd, x, y, ang)
             end
         end
     end
+end)
+
+-- Freezes the player when they're training
+hook.Add("StartCommand", "TrainingFreeze", function(ply, cmd)
+    if not IsValid(ply) or not timer.Exists("trainingtimer") then return end
+    cmd:ClearMovement()
 end)
