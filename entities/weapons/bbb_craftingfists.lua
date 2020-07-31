@@ -8,6 +8,7 @@ SWEP.Instructions       = ""
 
 SWEP.ViewModel          = "models/weapons/c_arms.mdl"
 SWEP.WorldModel         = ""
+SWEP.ViewModelFOV       = 54
 SWEP.ViewModelFlip      = false 
 SWEP.UseHands           = true
 
