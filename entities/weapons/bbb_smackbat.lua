@@ -99,7 +99,7 @@ function SWEP:PrimaryAttack()
             damage:SetDamageType(DMG_SLASH)
             damage:SetAttacker(ply)
             target:TakeDamageInfo(damage)
-            ply:EmitSound(stabSound, 100, 100, 0.75)
+            ply:EmitSound(stabSound, 100, 100, 0.50)
 
             if target:IsPlayer() then
                 local slapDirection = target:GetPos() - ply:GetPos()
@@ -109,7 +109,7 @@ function SWEP:PrimaryAttack()
                 target:SetVelocity(slapDirection)
             end
         elseif SERVER then 
-            ply:EmitSound(hitSound)
+            ply:EmitSound(hitSound, 100, 100, 0.75)
         end
     else
         self.Weapon:SendWeaponAnim(ACT_VM_HITCENTER)
