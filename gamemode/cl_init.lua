@@ -82,17 +82,13 @@ net.Receive("UpdateStat", function(len)
         if timer.Exists("trainingsound") then
             timer.Remove("trainingsound")
             timer.Create("trainingsound", 0.25, 1, function()
-                if ply then 
-                    ply:StopSound("ambient/levels/labs/teleport_active_loop1.wav")
-                end
+                if ply then ply:StopSound("ambient/levels/labs/teleport_active_loop1.wav") end
                 timer.Remove("trainingsound")
             end)
         else
             ply:EmitSound("ambient/levels/labs/teleport_active_loop1.wav", 100, 100, 0.5)
             timer.Create("trainingsound", 0.25, 1, function()
-                if ply then 
-                    ply:StopSound("ambient/levels/labs/teleport_active_loop1.wav")
-                end
+                if ply then ply:StopSound("ambient/levels/labs/teleport_active_loop1.wav") end
                 timer.Remove("trainingsound")
             end)
         end
@@ -122,7 +118,6 @@ net.Receive("UpdateRound", function(len)
         end
     elseif playerCache.round == "Battle" and IsValid(ply) then
         playerCache.lastAbility = 0
-        timer.Remove("trainingsound")
         if playerCache.playSongs then
             for k, v in ipairs(craftingSongs) do
                 ply:StopSound(v)
