@@ -49,6 +49,7 @@ BBB = BBB or {
     time = 0,
     playing = {},
     estimatedPlaying = 0,
+    bossLiving = false
 }
 
 function GetRound() return BBB.round end
@@ -124,7 +125,7 @@ local function pickBoss(attempt)
     local potentialBoss = potentialBosses[math.random(#potentialBosses)]
     if IsValid(potentialBoss) and potentialBoss:IsPlayer() then
         potentialBoss:SetBoss(true)
-
+        BBB.bossLiving = true
         return potentialBoss
     elseif attempt <= 3 then
         return pickBoss(attempt + 1)
@@ -194,6 +195,7 @@ function EndPreparing()
             if IsValid(ply) and ply:GetPlayable() then
                 if ply:GetBoss() then
                     bossFound = true
+                    BBB.bossLiving = true
                 end
             end
         end
@@ -323,6 +325,7 @@ function EndArmageddon()
             ply:UpdateScore(50 * ply:GetLives(), "You got 50 points for each leftover life!")
         end
     end
+    BBB.bossLiving = false
     timer.Remove("breakobstacles")
     timer.Remove("checkforend")
     RemoveMaterials()
@@ -380,6 +383,7 @@ function ResetTimers()
     for k, ply in ipairs(player.GetAll()) do
         if IsValid(ply) then
             ply:SetBoss(false)
+            BBB.bossLiving = false
         end
     end
     EndScoring()

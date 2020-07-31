@@ -96,6 +96,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
             victim:SetPlaying(false)
             BBB.playing[victim] = nil
             if victim:GetBoss() then
+                BBB.bossLiving = false
                 if IsValid(attacker) and attacker:IsPlayer() and victim != attacker then
                     attacker:UpdateScore(150," You got 150 points for eliminating the boss!")
                     attacker:EmitSound(eliminationSounds[math.random(1, #eliminationSounds)])
@@ -238,6 +239,14 @@ function GM:EntityTakeDamage(victim, dmg)
             if timer.Exists("spawnprotection"..attacker:SteamID64()) then
                 timer.Remove("spawnprotection"..attacker:SteamID64())
                 attacker:ChatPrint("You have ended your spawn protection!")
+            end
+            if BBB.bossLiving and not victim:GetBoss() and not attacker:GetBoss() and baseDmg > 0 then
+                baseDmg = baseDmg * 0.75
+                if not timer.Exists("bosslivingmessage"..attacker:SteamID64()) then
+                    local id = attacker:SteamID64()
+                    timer.Create("bosslivingmessage"..id, 2, 1, function() timer.Remove("bosslivingmessage"..id) end)
+                    attacker:ChatPrint("Your damage has been reduced because the boss is still alive!")
+                end
             end
             -- Rank advantage
             local weakTo = victim:GetWeakTo()
