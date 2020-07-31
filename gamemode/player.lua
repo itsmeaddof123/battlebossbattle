@@ -146,10 +146,10 @@ function GM:PostPlayerDeath(ply)
         timer.Create("respawn"..ply:SteamID64(), 3, 1, function()
             if not IsValid(ply) then return end
             ply:Spawn()
-            ply:ChatPrint("You will be protected for a few seconds until you rejoin the fight!")
+            ply:PrintColored(Color(200, 200, 200), "You will be ", Color(25, 255, 25), "protected ", Color(200, 200, 200), "for a few seconds!")
             timer.Create("spawnprotection"..ply:SteamID64(), 5, 1, function()
                 if not IsValid(ply) then return end
-                ply:ChatPrint("Your spawn protection has ended!")
+                ply:PrintColored(Color(200, 200, 200), "Your spawn protection has ", Color(255, 25, 25), "ended!")
             end)
         end)
     else
@@ -259,14 +259,14 @@ function GM:EntityTakeDamage(victim, dmg)
             -- Removes spawn protection if it exists
             if timer.Exists("spawnprotection"..attacker:SteamID64()) then
                 timer.Remove("spawnprotection"..attacker:SteamID64())
-                attacker:ChatPrint("You have ended your spawn protection!")
+                attacker:PrintColored(Color(200, 200, 200), "You have ", Color(255, 25, 25), "ended ", Color(200, 200, 200), "your spawn protection!")
             end
             if BBB.bossLiving and not victim:GetBoss() and not attacker:GetBoss() and baseDmg > 0 then
                 baseDmg = baseDmg * 0.75
                 if not timer.Exists("bosslivingmessage"..attacker:SteamID64()) then
                     local id = attacker:SteamID64()
                     timer.Create("bosslivingmessage"..id, 2, 1, function() timer.Remove("bosslivingmessage"..id) end)
-                    attacker:ChatPrint("Your damage has been reduced because the boss is still alive!")
+                    attacker:PrintColored(Color(200, 200, 200), "Your damage has been ", Color(255, 255, 255), "reduced ", Color(200, 200, 200), "because ", Color(255, 25, 25), "the boss is still alive!")
                 end
             end
             -- Rank advantage
@@ -382,7 +382,7 @@ net.Receive("CraftAttempt", function(len, ply)
     local catId = net.ReadInt(16)
     local itemId = net.ReadInt(16)
     local success = false
-    local craftStatus = "Unknown error!"
+    local craftStatus = {Color(255, 25, 25), "Unknown error!"}
     if IsValid(ply) and catId and itemId and not ply:GetCrafting() then
         ply:SetCrafting(true)
         local canCraft = false
@@ -399,17 +399,19 @@ net.Receive("CraftAttempt", function(len, ply)
     if success then
         net.WriteInt(catId, 16)
         net.WriteInt(itemId, 16)
-    else
-        net.WriteString(craftStatus)
     end
     net.Send(ply)
+    -- Separated because it begins a second net message
+    if not success then
+        ply:PrintColored(unpack(craftStatus))
+    end
 end)
 
 -- Handles the client request for crafting
 net.Receive("TrainAttempt", function(len, ply)
     local statId = net.ReadInt(16)
     local success = false
-    local trainStatus = "Unknown error!"
+    local trainStatus = {Color(255, 25, 25), "Unknown error!"}
     timer.Remove("trainstat"..ply:SteamID64())
     if IsValid(ply) and statId then
         success, trainStatus = ply:TrainStat(statId)
@@ -420,10 +422,12 @@ net.Receive("TrainAttempt", function(len, ply)
     net.WriteBool(success)
     if success then
         net.WriteInt(statId, 16)
-    else
-        net.WriteString(trainStatus)
     end
     net.Send(ply)
+    -- Separated because it begins a second net message
+    if not success then
+        ply:PrintColored(unpack(trainStatus))
+    end
 end)
 
 -- Received when a player closes their training menu
@@ -435,7 +439,7 @@ end)
 net.Receive("ConsumeAttempt", function(len, ply)
     local itemId = net.ReadInt(16)
     local success = false
-    local consumeStatus = "Unknown error!"
+    local consumeStatus = {Color(255, 25, 25), "Unknown error!"}
     if IsValid(ply) and itemId then
         local canConsume = false
         canConsume, consumeStatus = ply:CanConsume(itemId)
@@ -449,10 +453,12 @@ net.Receive("ConsumeAttempt", function(len, ply)
     net.WriteBool(success)
     if success then
         net.WriteInt(itemId, 16)
-    else
-        net.WriteString(consumeStatus)
     end
     net.Send(ply)
+    -- Separated because it begins a second net message
+    if not success then
+        ply:PrintColored(unpack(consumeStatus))
+    end
 end)
 
 -- Handles a player attempt to use a boss ability
@@ -472,7 +478,7 @@ net.Receive("AbilityAttempt", function(len, ply)
                 end)
                 for target, bool in pairs(BBB.playing) do
                     if IsValid(target) and target:Alive() and not target:GetBoss() then
-                        target:ChatPrint("You've been hit by Gravity Toss!")
+                        target:PrintColored(Color(200, 200, 200), "You've been hit by ", Color(255, 25, 25), "Gravity Toss", Color(200, 200, 200), "!")
                         target:EmitSound("ambient/levels/canals/windmill_wind_loop1.wav")
                         target:SetVelocity(Vector(math.random(-400, 400), math.random(-400, 400), 400))
                         timer.Simple(0.7, function()
@@ -490,7 +496,7 @@ net.Receive("AbilityAttempt", function(len, ply)
                 end)
                 for target, bool in pairs(BBB.playing) do
                     if IsValid(target) and target:Alive() and not target:GetBoss() then
-                        target:ChatPrint("You've been hit by Gravity Pummel!")
+                        target:PrintColored(Color(200, 200, 200), "You've been hit by ", Color(255, 25, 25), "Gravity Pummel", Color(200, 200, 200), "!")
                         target:EmitSound("ambient/levels/canals/windmill_wind_loop1.wav")
                         target:SetVelocity(Vector(math.random(-150, 150), math.random(-150, 150), 600))
                         timer.Simple(0.5, function()
@@ -509,7 +515,7 @@ net.Receive("AbilityAttempt", function(len, ply)
             if GetRound() == "Crafting" then
                 for target, bool in pairs(BBB.playing) do
                     if IsValid(target) and target:Alive() and not target:GetBoss() then
-                        target:ChatPrint("You've been slowed by the Slowness Beam!")
+                        target:PrintColored(Color(200, 200, 200), "You've slowed by the ", Color(255, 25, 25), "Slowness Beam", Color(200, 200, 200), "!")
                         target:EmitSound("ambient/energy/spark5.wav")
                         target:SetWalkSpeed(target:GetWalkSpeed() - 200)
                         target:SetRunSpeed(target:GetRunSpeed() - 200)
@@ -527,7 +533,7 @@ net.Receive("AbilityAttempt", function(len, ply)
                 ply:EmitSound("ambient/energy/zap9.wav")
                 for target, bool in pairs(BBB.playing) do
                     if IsValid(target) and target:Alive() and not target:GetBoss() then
-                        target:ChatPrint("You've been struck by the Death Beam!")
+                        target:PrintColored(Color(200, 200, 200), "You've struck by the ", Color(255, 25, 25), "Death Beam", Color(200, 200, 200), "!")
                         target:EmitSound("ambient/energy/spark5.wav")
                         target:EmitSound("ambient/energy/zap8.wav")
                         target:EmitSound("player/pl_burnpain"..math.random(1, 3)..".wav")

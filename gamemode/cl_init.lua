@@ -30,7 +30,7 @@ playerCache = playerCache or {
     playTransitions = false,
     spectateOnly = false,
     defaultModel = "Random Model",
-    songVolume = 50,
+    songVolume = 0.5,
     scoreboardInitialized = false,
 }
 
@@ -97,7 +97,7 @@ net.Receive("UpdateStat", function(len)
         end
     end
     if amt >= 50 and IsValid(LocalPlayer()) then
-        LocalPlayer():ChatPrint("Finished training: "..statNames[statId])
+        chat.AddText(Color(25, 255, 25), "Finished training ", Color(255, 255, 255), statNames[statId], Color(25, 255, 25), " to 50!")
         LocalPlayer():EmitSound("hl1/fvox/bell.wav")
     end
 end)
@@ -184,14 +184,12 @@ net.Receive("MessageSide", function(len)
 end)
 
 net.Receive("ScoreMessage", function(len)
-    local msg = net.ReadString()
-    if IsValid(LocalPlayer()) then LocalPlayer():ChatPrint(msg) end
+    chat.AddText(Color(25, 255, 25), net.ReadString())
 end)
 
 net.Receive("ConsumeExpired", function(len)
     local itemId = net.ReadInt(16)
-    if IsValid(LocalPlayer()) then LocalPlayer():ChatPrint("Your "..craftingTable.items[6][itemId].name.." has expired!") end
-    -- Add a sound here
+    chat.AddText(Color(200, 200, 200), "Your "..craftingTable.items[6][itemId].name, Color(255, 25, 25), "expired!")
 end)
 
 -- Removes a player from the cache
@@ -224,6 +222,22 @@ net.Receive("ScoreboardResult", function(len)
         scoreboardCache[ply].boss = bossInfo
         scoreboardCache[ply].score = scoreInfo
     end
+end)
+
+-- Prints colored text
+net.Receive("PrintColored", function(len)
+    local args = {}
+    while true do
+        local nextType = net.ReadString()
+        if nextType == "table" then
+            table.insert(args, net.ReadTable())
+        elseif nextType == "string" then
+            table.insert(args, net.ReadString())
+        elseif nextType == "done" then
+            break
+        end
+    end
+    chat.AddText(unpack(args))
 end)
 
 -- Toggle crafting and training

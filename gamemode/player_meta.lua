@@ -290,6 +290,22 @@ function plyMeta:ChooseRank()
     end
 end
 
+function plyMeta:PrintColored(...)
+    local args = {...}
+    net.Start("PrintColored")
+    for k, v in ipairs(args) do
+        if istable(v) then
+            net.WriteString("table")
+            net.WriteTable(v)
+        elseif isstring(v) then
+            net.WriteString("string")
+            net.WriteString(v)
+        end
+    end
+    net.WriteString("done")
+    net.Send(self)
+end
+
 ---------------------------------------------------------------------------
 --[[    PLAYER VARIABLE GETS AND SETS THAT EXIST ON THE SERVER ONLY    ]]--
 ---------------------------------------------------------------------------
@@ -549,20 +565,20 @@ end
 
 -- Verifies that catId and itemId are valid, and that the player has the space and materials for it
 function plyMeta:CanCraft(catId, itemId)
-    if self:GetBoss() then return false, "Wrong role!" end
-    if not self:GetPlaying() then return false, "Not playing!" end
-    if GetRound() ~= "Crafting" then return false, "Wrong round!" end
-    if catId <= 0 or catId >= 7 then return false, "Invalid item!" end
-    if itemId <= 0 or itemId >= 7 then return false, "Invalid item!" end
-    if catId < 6 and self.gear[catId] ~= 0 then return false, "Slot filled!" end
+    if self:GetBoss() then return false, {Color(255, 25, 25), "Wrong role!"} end
+    if not self:GetPlaying() then return false, {Color(255, 25, 25), "Not playing!"} end
+    if GetRound() ~= "Crafting" then return false, {Color(255, 25, 25), "Wrong round!"} end
+    if catId <= 0 or catId >= 7 then return false, {Color(255, 25, 25), "Invalid item!"} end
+    if itemId <= 0 or itemId >= 7 then return false, {Color(255, 25, 25), "Invalid item!"} end
+    if catId < 6 and self.gear[catId] ~= 0 then return false, {Color(255, 25, 25), "Slot filled!"} end
 
     local itemTable = craftingTable.items[catId][itemId]
 
     for k, v in ipairs(itemTable.cost) do
-        if self.mats[k] < v then return false, "Missing materials!" end
+        if self.mats[k] < v then return false, {Color(255, 25, 25), "Missing materials!"} end
     end
 
-    return true, "Success!"
+    return true, {"Success!"}
 end
 
 -- Charges the player for the item then puts it into their inventory
@@ -596,12 +612,12 @@ local function trainStat(ply, statId, id)
 end
 
 function plyMeta:TrainStat(statId)
-    if self:GetBoss() then return false, "Wrong role!" end
-    if not self:GetPlaying() then return false, "Not playing!" end
-    if GetRound() ~= "Crafting" then return false, "Wrong round!" end
-    if statId <= 0 or statId >= 7 then return false, "Invalid item!" end
+    if self:GetBoss() then return false, {Color(255, 25, 25), "Wrong role!"} end
+    if not self:GetPlaying() then return false, {Color(255, 25, 25), "Not playing!"} end
+    if GetRound() ~= "Crafting" then return false, {Color(255, 25, 25), "Wrong round!"} end
+    if statId <= 0 or statId >= 7 then return false, {Color(255, 25, 25), "Invalid item!"} end
     local statLevel = self:GetStat(statId)
-    if statLevel >= 50 then return false, "Stat fully trained!" end
+    if statLevel >= 50 then return false, {Color(255, 25, 25), "Stat fully trained!"} end
 
     -- This timer causes a two-function recursion that ends once any of the above conditions are met
     local id = self:SteamID64()
@@ -612,18 +628,18 @@ function plyMeta:TrainStat(statId)
         end
         trainStat(self, statId, id)
     end)
-    return true, "Success!"
+    return true, {"Success!"}
 end
 
 function plyMeta:CanConsume(itemId)
-    if self:GetBoss() then return false, "Wrong role!" end
-    if not self:GetPlaying() or not self:Alive() then return false, "Not alive!" end
-    if not (GetRound() == "Battle" or GetRound() == "Armageddon") then return false, "Wrong round!" end
-    if itemId <= 0 or itemId >= 7 then return false, "Invalid item!" end
-    if not self.consumable[itemId] or self.consumable[itemId] <= 0 then return false, "You don't have that!" end
-    if timer.Exists("consume"..tostring(itemId)..self:SteamID64()) then return false, "Last consumable still in effect!" end
+    if self:GetBoss() then return false, {Color(255, 25, 25), "Wrong role!"} end
+    if not self:GetPlaying() or not self:Alive() then return false, {Color(255, 25, 25), "Not alive!"} end
+    if not (GetRound() == "Battle" or GetRound() == "Armageddon") then return false, {Color(255, 25, 25), "Wrong round!"} end
+    if itemId <= 0 or itemId >= 7 then return false, {Color(255, 25, 25), "Invalid item!"} end
+    if not self.consumable[itemId] or self.consumable[itemId] <= 0 then return false, {Color(255, 25, 25), "You don't have that consumable!"} end
+    if timer.Exists("consume"..tostring(itemId)..self:SteamID64()) then return false, {Color(255, 25, 25), "Last consumable still in effect!"} end
 
-    return true, "Success!"
+    return true, {"Success!"}
 end
 
 function plyMeta:ConsumeItem(itemId)

@@ -122,7 +122,7 @@ local function toggleScoreboard(toggle)
                 -- SteamID to clipboard on click
                 plyButton.DoClick = function()
                     SetClipboardText(id)
-                    LocalPlayer():ChatPrint("Copied the SteamID of "..name)
+                    chat.AddText(Color(200, 200, 200), "Copied the SteamID of ", Color(255, 255, 255), name, Color(200, 200, 200), "!")
                 end
                 plyButton:Dock(TOP)
                 plyButton:SetSize(scoreW, interval)

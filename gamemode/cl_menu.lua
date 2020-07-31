@@ -867,7 +867,7 @@ net.Receive("CraftResult", function(len)
         local catId = net.ReadInt(16)
         local itemId = net.ReadInt(16)
         if catId and itemId then
-            LocalPlayer():ChatPrint("Successfully crafted: "..craftingTable.items[catId][itemId].name)
+            chat.AddText(Color(25, 255, 25), "Succesfully crafted: ", Color(255, 255, 255), craftingTable.items[catId][itemId].name)
         end
         if catId != 6 and IsValid(catPanel) then
             catPanel:Remove()
@@ -875,23 +875,20 @@ net.Receive("CraftResult", function(len)
         end
     else
         surface.PlaySound(failure)
-        LocalPlayer():ChatPrint(net.ReadString())
     end
 end)
 
 net.Receive("TrainResult", function(len)
     if not net.ReadBool() then
         surface.PlaySound(failure)
-        LocalPlayer():ChatPrint(net.ReadString())
     end
 end)
 
 net.Receive("ConsumeResult", function(len)
     if net.ReadBool() then
         surface.PlaySound(consumeSuccess)
-        LocalPlayer():ChatPrint("Successfully consumed: "..craftingTable.items[6][net.ReadInt(16)].name)
+        chat.AddText(Color(25, 255, 25), "Succesfully crafted: ", Color(255, 255, 255), craftingTable.items[6][net.ReadInt(16)].name)
     else
         surface.PlaySound(failure)
-        LocalPlayer():ChatPrint(net.ReadString())
     end
 end)
