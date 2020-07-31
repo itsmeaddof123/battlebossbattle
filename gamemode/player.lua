@@ -105,8 +105,9 @@ function GM:PlayerDeath(victim, inflictor, attacker)
             if IsValid(attacker) and attacker:IsPlayer() and not (victim == attacker) then
                 attacker:UpdateScore(75, "You got 50 points for the kill!")
             end
+            victim:SetLives(lives)
+            victim:PrintColored(Color(200, 200, 200), "Lives left: ", Color(255, 25, 25), tostring(lives))
         end
-        victim:SetLives(lives)
         if lives == 0 then
             victim:SetPlaying(false)
             BBB.playing[victim] = nil
