@@ -51,11 +51,11 @@ function SWEP:PrimaryAttack()
 
     local mult = 1
     if ply:GetModel() == "models/payday2/units/medic_player.mdl" then
-        mult = 1.2
+        mult = 1.5
     end
 
     if ply:Health() ~= ply:GetMaxHealth() then
-        ply:SetHealth(math.Clamp(ply:Health() + 5 * mult, ply:Health(), ply:GetMaxHealth()))
+        ply:SetHealth(math.Clamp(ply:Health() + 10 * mult, ply:Health(), ply:GetMaxHealth()))
         ply:EmitSound("items/medshot4.wav", 100, 100, 0.5)
     else
         ply:EmitSound("items/medshotno1.wav")

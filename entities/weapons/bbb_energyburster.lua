@@ -29,9 +29,9 @@ SWEP.Primary.ClipSize   = 10
 SWEP.Primary.DefaultClip= 10
 SWEP.Primary.Ammo       = "none"
 SWEP.Primary.Recoil     = 0.25
-SWEP.Primary.Damage     = 50
+SWEP.Primary.Damage     = 45
 SWEP.Primary.Spread     = 0.01
-SWEP.Primary.Delay      = 0.3
+SWEP.Primary.Delay      = 0.4
 SWEP.Primary.Automatic  = true
 
 SWEP.Secondary.ClipSize = -1
