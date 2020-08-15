@@ -843,7 +843,7 @@ function toggleF1Menu(toggle)
         function spectateCheck:OnChange(bool)
             playerCache.spectateOnly = bool
             net.Start("TogglePlayable")
-            net.WriteBool(bool)
+            net.WriteBool(not bool)
             net.SendToServer()
         end
 

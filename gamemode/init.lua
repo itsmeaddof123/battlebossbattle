@@ -176,6 +176,7 @@ end
 function StartPreparing()
     SetRound("Preparing")
     game.CleanUpMap()
+    BBB.playing = {}
     BBB.estimatedPlaying = 0
     for k, ply in ipairs(player.GetAll()) do
         if IsValid(ply) and ply:GetPlayable() then
@@ -189,6 +190,7 @@ end
 
 -- Begins the game or restarts the waiting timer
 function EndPreparing()
+    timer.Remove("endpreparing")
     if minPlayersMet() then
         -- Attempts to find a boss
         local bossFound = false
@@ -216,13 +218,18 @@ function StartCrafting()
     SetRound("Crafting")
     local amt = 0
     for k, ply in ipairs(player.GetAll()) do
-        if IsValid(ply) and ply:GetPlayable() then
-            ply:SetPlaying(true)
-            ply:SetPlayed(true)
-            ply:SetLives(3)
-            ply:GiveTools()
-            BBB.playing[ply] = true
-            amt = amt + 1
+        if IsValid(ply) then
+            if ply:GetPlayable() then
+                ply:SetPlaying(true)
+                ply:SetPlayed(true)
+                ply:SetLives(3)
+                ply:GiveTools()
+                ply:ChatPrint("You're set to playable.")
+                BBB.playing[ply] = true
+                amt = amt + 1
+            else
+                BBB.playing[ply] = nil
+            end
         end
     end
     -- The double loop is a necessary evil
@@ -252,6 +259,7 @@ end
 
 -- Determines player ranks before the battle phase begins
 function EndCrafting()
+    timer.Remove("endcrafting")
     for ply, bool in pairs(BBB.playing) do
         if IsValid(ply) then
             ply:ChooseRank()
@@ -294,6 +302,7 @@ end
 
 -- Transitions to the armageddon phase
 function EndBattle()
+    timer.Remove("checkforend")
     StartArmageddon()
 end
 
@@ -322,6 +331,9 @@ end
 
 -- Removes everyone's items and removes the boss
 function EndArmageddon()
+    timer.Remove("endarmageddon")
+    timer.Remove("breakobstacles")
+    timer.Remove("checkforend")
     for k, ply in ipairs(player.GetAll()) do
         if IsValid(ply) then
             ply:SetBoss(false)
@@ -335,8 +347,6 @@ function EndArmageddon()
         end
     end
     BBB.bossLiving = false
-    timer.Remove("breakobstacles")
-    timer.Remove("checkforend")
     RemoveMaterials()
     StartScoring()
 end
@@ -368,6 +378,7 @@ end
 
 -- Resets everyone's stats and starts checks if enough people are available for the next round
 function EndScoring()
+    timer.Remove("endscoring")
     for k, ply in ipairs(player.GetAll()) do
         if IsValid(ply) then
             ply:FullReset()

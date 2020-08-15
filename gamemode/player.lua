@@ -586,5 +586,6 @@ net.Receive("TogglePlayable", function(len, ply)
         ply:SetPlaying(false)
         ply:SetPlayed(false)
         ply:SetScore(0)
+        BBB.playing[ply] = nil
     end
 end)
