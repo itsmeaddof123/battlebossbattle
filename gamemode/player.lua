@@ -467,7 +467,7 @@ net.Receive("AbilityAttempt", function(len, ply)
     local key = net.ReadString()
     local success = false
     if IsValid(ply) and ply:GetBoss() and ply:GetPlaying() then
-        if key == "Q" and not timer.Exists("abilitycooldown") then
+        if key == "Left" and not timer.Exists("abilitycooldown") then
             success = true
             timer.Create("abilitycooldown", 7, 1, function() end)
             -- Gravity Toss
@@ -509,7 +509,7 @@ net.Receive("AbilityAttempt", function(len, ply)
                     end
                 end
             end
-        elseif key == "E" and not timer.Exists("abilitycooldown") then
+        elseif key == "Right" and not timer.Exists("abilitycooldown") then
             success = true
             timer.Create("abilitycooldown", 7, 1, function() end)
             -- Slowness Beam
@@ -553,7 +553,6 @@ net.Receive("AbilityAttempt", function(len, ply)
 
     -- Tells the client the status of the attempt
     net.Start("AbilityResult")
-    net.WriteString(key)
     net.WriteBool(success)
     net.Send(ply)
 end)

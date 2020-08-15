@@ -67,31 +67,33 @@ hook.Add("HUDPaint", "HUDs", function()
     draw.SimpleTextOutlined(healthString, "Roboto Big 1", 25 + statusW * 0.5, scrH - 25 - statusH * 0.5 - border, fullWhite, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 2, fullBlack) -- Health Text
 
     -- Abilities and Menu Prompts
+    local leftKey = string.upper(input.GetKeyName(playerCache.leftToggle))
+    local rightKey = string.upper(input.GetKeyName(playerCache.rightToggle))
     if scoreboardCache[ply] and scoreboardCache[ply].boss then
         if currentRound == "Crafting" then
             draw.RoundedBox(10, scrW / 2 - insW - insBuffer, scrH - insH - insBuffer, insW, insH, partialBlack)
             draw.RoundedBox(10, scrW / 2 - insW - insBuffer, scrH - insH - insBuffer, insW * math.min(CurTime() - playerCache.lastAbility, 7) / 7, insH, partialBlack)
-            draw.SimpleTextOutlined("Q: Gravity Toss", "Roboto Small 1", (scrW - insW) / 2 - insBuffer, scrH - insH / 2 - insBuffer, fullWhite, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 2, fullBlack)
+            draw.SimpleTextOutlined(leftKey..": Gravity Toss", "Roboto Small 1", (scrW - insW) / 2 - insBuffer, scrH - insH / 2 - insBuffer, fullWhite, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 2, fullBlack)
             draw.RoundedBox(10, scrW / 2 + insBuffer, scrH - insH - insBuffer, insW, insH, partialBlack)
             draw.RoundedBox(10, scrW / 2 + insBuffer, scrH - insH - insBuffer, insW * math.min(CurTime() - playerCache.lastAbility, 7) / 7, insH, partialBlack)
-            draw.SimpleTextOutlined("E: Slowness Beam", "Roboto Small 1", (scrW + insW) / 2 + insBuffer, scrH - insH / 2 - insBuffer, fullWhite, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 2, fullBlack)
+            draw.SimpleTextOutlined(rightKey..": Slowness Beam", "Roboto Small 1", (scrW + insW) / 2 + insBuffer, scrH - insH / 2 - insBuffer, fullWhite, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 2, fullBlack)
         elseif (currentRound == "Battle" or currentRound == "Armageddon") then
             draw.RoundedBox(10, scrW / 2 - insW - insBuffer, scrH - insH - insBuffer, insW, insH, partialBlack)
             draw.RoundedBox(10, scrW / 2 - insW - insBuffer, scrH - insH - insBuffer, insW * math.min(CurTime() - playerCache.lastAbility, 7) / 7, insH, partialBlack)
-            draw.SimpleTextOutlined("Q: Gravity Pummel", "Roboto Small 1", (scrW - insW) / 2 - insBuffer, scrH - insH / 2 - insBuffer, fullWhite, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 2, fullBlack)
+            draw.SimpleTextOutlined(leftKey..": Gravity Pummel", "Roboto Small 1", (scrW - insW) / 2 - insBuffer, scrH - insH / 2 - insBuffer, fullWhite, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 2, fullBlack)
             draw.RoundedBox(10, scrW / 2 + insBuffer, scrH - insH - insBuffer, insW, insH, partialBlack)
             draw.RoundedBox(10, scrW / 2 + insBuffer, scrH - insH - insBuffer, insW * math.min(CurTime() - playerCache.lastAbility, 7) / 7, insH, partialBlack)
-            draw.SimpleTextOutlined("E: Death Beam", "Roboto Small 1", (scrW + insW) / 2 + insBuffer, scrH - insH / 2 - insBuffer, fullWhite, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 2, fullBlack)
+            draw.SimpleTextOutlined(rightKey..": Death Beam", "Roboto Small 1", (scrW + insW) / 2 + insBuffer, scrH - insH / 2 - insBuffer, fullWhite, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 2, fullBlack)
         end
     else
         if currentRound == "Crafting" then
             draw.RoundedBox(10, scrW / 2 - insW - insBuffer, scrH - insH - insBuffer, insW, insH, partialBlack)
-            draw.SimpleTextOutlined("Q: Start Crafting", "Roboto Small 1", (scrW - insW) / 2 - insBuffer, scrH - insH / 2 - insBuffer, fullWhite, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 2, fullBlack)
+            draw.SimpleTextOutlined(leftKey..": Start Crafting", "Roboto Small 1", (scrW - insW) / 2 - insBuffer, scrH - insH / 2 - insBuffer, fullWhite, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 2, fullBlack)
             draw.RoundedBox(10, scrW / 2 + insBuffer, scrH - insH - insBuffer, insW, insH, partialBlack)
-            draw.SimpleTextOutlined("E: Start Training", "Roboto Small 1", (scrW + insW) / 2 + insBuffer, scrH - insH / 2 - insBuffer, fullWhite, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 2, fullBlack)
+            draw.SimpleTextOutlined(rightKey..": Start Training", "Roboto Small 1", (scrW + insW) / 2 + insBuffer, scrH - insH / 2 - insBuffer, fullWhite, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 2, fullBlack)
         elseif (currentRound == "Battle" or currentRound == "Armageddon") then
             draw.RoundedBox(10, (scrW - insW) / 2, scrH - insH - insBuffer, insW, insH, partialBlack)
-            draw.SimpleTextOutlined("Q/E: Use consumables", "Roboto Small 1", scrW / 2, scrH - insH / 2 - insBuffer, fullWhite, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 2, fullBlack)
+            draw.SimpleTextOutlined(leftKey.."/"..rightKey..": Consumables", "Roboto Small 1", scrW / 2, scrH - insH / 2 - insBuffer, fullWhite, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 2, fullBlack)
         end
     end
 

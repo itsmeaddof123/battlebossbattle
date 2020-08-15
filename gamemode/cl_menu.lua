@@ -608,7 +608,6 @@ function toggleF1Menu(toggle)
         f1Panel:SetSize(f1Width + 20, f1Height + 20)
         f1Panel:Center()
         f1Panel:MakePopup()
-        f1Panel:SetKeyboardInputEnabled(false)
         f1Panel.Paint = function(self, w, h)
             draw.RoundedBox(20, 0, 0, w, h, lightGrey)
         end
@@ -831,7 +830,7 @@ function toggleF1Menu(toggle)
         local spectateLabel = vgui.Create("DLabel", settingsPanel)
         spectateLabel:SetWide(500)
         spectateLabel:SetAutoStretchVertical(true)
-        spectateLabel:SetPos(50, 247)
+        spectateLabel:SetPos(50, 262)
         spectateLabel:SetFont("F1 Menu 3")
         spectateLabel:SetTextColor(solidWhite)
         spectateLabel:SetText("Spectate only")
@@ -839,13 +838,77 @@ function toggleF1Menu(toggle)
 
         -- Toggle round transition noises
         local spectateCheck = vgui.Create("DCheckBox", settingsPanel)
-        spectateCheck:SetPos(25, 250)
+        spectateCheck:SetPos(25, 265)
         spectateCheck:SetValue(playerCache.spectateOnly)
         function spectateCheck:OnChange(bool)
             playerCache.spectateOnly = bool
             net.Start("TogglePlayable")
             net.WriteBool(bool)
             net.SendToServer()
+        end
+
+        -- Left label
+        local waitingFor = ""
+        local toggleLabel = vgui.Create("DLabel", settingsPanel)
+        toggleLabel:SetWide(500)
+        toggleLabel:SetAutoStretchVertical(true)
+        toggleLabel:SetPos(25, 300)
+        toggleLabel:SetFont("F1 Menu 3")
+        toggleLabel:SetTextColor(solidWhite)
+        toggleLabel:SetText("Set Menu/Ability Buttons:")
+        toggleLabel:SetWrap(true)
+
+        -- Left button
+        local leftKey = string.upper(input.GetKeyName(playerCache.leftToggle))
+        local leftButton = vgui.Create("DButton", settingsPanel)
+        leftButton:SetSize(100, 30)
+        leftButton:SetPos(25, 325)
+        leftButton:SetText(leftKey)
+        function leftButton:DoClick()
+            if waitingFor == "left" then
+                waitingFor = ""
+                leftButton:SetText(leftKey)
+            else
+                waitingFor = "left"
+                leftButton:SetText("Cancel")
+            end
+        end
+
+        -- Right button
+        local rightKey = string.upper(input.GetKeyName(playerCache.rightToggle))
+        local rightButton = vgui.Create("DButton", settingsPanel)
+        rightButton:SetSize(100, 30)
+        rightButton:SetPos(150, 325)
+        rightButton:SetText(rightKey)
+        function rightButton:DoClick()
+            if waitingFor == "right" then
+                waitingFor = ""
+                rightButton:SetText(rightKey)
+            else
+                waitingFor = "right"
+                rightButton:SetText("Cancel")
+            end
+        end
+
+        function f1Panel:OnKeyCodePressed(key)
+            if waitingFor == "left" then
+                if playerCache.rightToggle == key then
+                    waitingFor = ""
+                else
+                    playerCache.leftToggle = key
+                leftKey = string.upper(input.GetKeyName(key))
+                end
+                    leftButton:SetText(leftKey)
+            elseif waitingFor == "right" then
+                if playerCache.leftToggle == key then
+                    waitingFor = ""
+                else
+                    playerCache.rightToggle = key
+                    rightKey = string.upper(input.GetKeyName(key))
+                end
+                rightButton:SetText(rightKey)
+            end
+            waitingFor = ""
         end
     else
         toggleF1 = false

@@ -32,6 +32,8 @@ playerCache = playerCache or {
     defaultModel = "Random Model",
     songVolume = 0.5,
     scoreboardInitialized = false,
+    leftToggle = KEY_Q,
+    rightToggle = KEY_E,
 }
 
 -- Cache with info on each player
@@ -118,7 +120,9 @@ net.Receive("UpdateRound", function(len)
         if scoreboardCache[ply] and scoreboardCache[ply].boss then
             messageTop("Crafting: Slap players with your bat, destroy props with your zapper, and use your abilities to slow the others!")
         else
-            messageTop("Crafting: Punch props to gain materials! Craft gear (Spawn menu) and train stats (Use Button) to get ready for the Battle Round!")
+            local leftKey = string.upper(input.GetKeyName(playerCache.leftToggle))
+            local rightKey = string.upper(input.GetKeyName(playerCache.rightToggle))
+            messageTop("Crafting: Punch props to gain materials! Craft gear ("..leftKey..") and train stats ("..rightKey..") to get ready for the Battle Round!")
         end
     elseif playerCache.round == "Battle" and IsValid(ply) then
         playerCache.lastAbility = 0
@@ -243,54 +247,57 @@ end)
 -- Toggle crafting and training
 toggleCraft = false
 toggleTrain = false
--- Togles gravity ability attempts, training and consumables
+
+-- Disables the spawn menu
 hook.Add("OnSpawnMenuOpen", "SpawnMenuClose", function()
-    local ply = LocalPlayer()
-    if ply and scoreboardCache[ply] and scoreboardCache[ply].playing then
-        if scoreboardCache[ply].boss and (playerCache.round == "Crafting" or playerCache.round == "Battle" or playerCache.round == "Armageddon") then
-            if playerCache.lastAbility + 7.1 <= CurTime() then
-                net.Start("AbilityAttempt")
-                net.WriteString("Q")
-                net.SendToServer()
-            end
-        elseif playerCache.round == "Crafting" then
-            toggleCrafting(not toggleCraft)
-        elseif playerCache.round == "Battle" or playerCache.round == "Armageddon" then
-            toggleConsumables(true)
-        end
-    end
     return false
 end)
--- Toggles off the consumables menu
-hook.Add("OnSpawnMenuClose", "SpawnMenuClose", function()
-    toggleConsumables(false)
-end)
--- Toggles beam ability attempts, crafting, and consumables
-hook.Add("KeyPress", "UseOpened", function(ply, key)
-    if scoreboardCache[ply] and scoreboardCache[ply].playing and key == IN_USE then
-        if scoreboardCache[ply].boss and (playerCache.round == "Crafting" or playerCache.round == "Battle" or playerCache.round == "Armageddon") then
-            if playerCache.lastAbility + 7.1 <= CurTime() then
-                net.Start("AbilityAttempt")
-                net.WriteString("E")
-                net.SendToServer()
-            end
-        elseif playerCache.round == "Crafting" then
-            toggleTraining(not toggleTrain)
-        elseif playerCache.round == "Battle" or playerCache.round == "Armageddon" then
-            toggleConsumables(true)
-        end
+
+-- Toggles the left menu
+local function toggleLeft(round)
+    if not LocalPlayer() then return end
+    if scoreboardCache[LocalPlayer()].boss then
+        net.Start("AbilityAttempt")
+        net.WriteString("Left")
+        net.SendToServer()
+    elseif round == "Crafting" then
+        toggleCrafting(not toggleCraft)
+    elseif round == "Battle" or round == "Armageddon" then
+        toggleConsumables(true)
     end
-end)
--- Toggles off the consumables menu
-hook.Add("KeyReleased", "UseReleased", function(ply, key)
-    if key == IN_USE then
-        toggleConsumables(false)    
+end
+
+-- Toggles the right menu
+local function toggleRight(round)
+    if not LocalPlayer() then return end
+    if scoreboardCache[LocalPlayer()].boss then
+        net.Start("AbilityAttempt")
+        net.WriteString("Right")
+        net.SendToServer()
+    elseif round == "Crafting" then
+        toggleTraining(not toggleTrain)
+    elseif round == "Battle" or round == "Armageddon" then
+        toggleConsumables(true)
     end
-end)
--- Toggle the f1 menu
+end
+
+-- Toggle the menus
 hook.Add("PlayerButtonDown", "MenuToggler", function(ply, key)
     if key == KEY_F1 then
         toggleF1Menu(not toggleF1)
+    elseif scoreboardCache[ply] and scoreboardCache[ply].playing then
+        if key == playerCache.leftToggle then
+            toggleLeft(playerCache.round)
+        elseif key == playerCache.rightToggle then
+            toggleRight(playerCache.round)
+        end
+    end
+end)
+
+-- Toggle off consumables
+hook.Add("PlayerButtonUp", "ConsumablesOff", function(ply, key)
+    if key == playerCache.leftToggle or key == playerCache.rightToggle then
+        toggleConsumables(false)
     end
 end)
 
