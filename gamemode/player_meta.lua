@@ -605,8 +605,8 @@ end
 -- Part of a two-function recursion 
 local function trainStat(ply, statId, id)
     if not IsValid(ply) then return end
-    ply:UpdateStat(statId, ply:GetStat(statId) + 0.1)
-    ply:UpdateScore(0.1)
+    ply:UpdateStat(statId, ply:GetStat(statId) + 0.15)
+    ply:UpdateScore(0.15)
     timer.Remove("trainstat"..id)
     ply:TrainStat(statId)
 end
