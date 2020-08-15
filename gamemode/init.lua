@@ -136,12 +136,12 @@ local function pickBoss(attempt)
 end
 
 local roundTimes = {
-    Waiting = 2,
-    Preparing = 10,
-    Crafting = 150,
-    Battle = 120,
-    Armageddon = 90,
-    Scoring = 10,
+    Waiting = 1,
+    Preparing = 7,
+    Crafting = 165,
+    Battle = 105,
+    Armageddon = 105,
+    Scoring = 5,
 }
 
 -- Sets the round marker and tells the clients
