@@ -8,4 +8,4 @@ Made during the gmodstore gamemode competition during the summer of 2020.
 
 
 
-Shoutout to 🥞Pancake!🥞#5459 for making the icon and logo and Dog#6969 for helping with the logo.
+Gamemode icon and logo by https://steamcommunity.com/id/Shadow01100/ and with help on the logo by Dog
