@@ -52,7 +52,7 @@ BBB = BBB or {
     time = 0,
     playing = {},
     estimatedPlaying = 0,
-    bossLiving = false
+    bossLiving = false,
 }
 
 function GetRound() return BBB.round end
@@ -366,10 +366,13 @@ function StartScoring()
     if IsValid(winner) and winner:GetBoss() then
         winner = playerScoresSorted[2]
     end
+    for k, ply in ipairs(player.GetAll()) do
+        ply:SetBoss(false)
+    end
     if IsValid(winner) then
         winner:SetBoss(true)
         net.Start("WinnerMessage")
-        local winnerMessage = winner:Name().." has won with "..tostring(math.ceil(winner:GetScore())).." points and has proven worthy of being Battle Boss!"
+        local winnerMessage = winner:Name().." has won with "..tostring(math.floor(winner:GetScore())).." points and has proven worthy of being Battle Boss!"
         net.WriteString(winnerMessage)
         net.Broadcast()
     end
@@ -382,7 +385,6 @@ function EndScoring()
     timer.Remove("endscoring")
     for k, ply in ipairs(player.GetAll()) do
         if IsValid(ply) then
-            ply:SetBoss(false)
             ply:FullReset()
         end
     end
