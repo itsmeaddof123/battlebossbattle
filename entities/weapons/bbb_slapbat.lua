@@ -106,23 +106,23 @@ function SWEP:PrimaryAttack()
                 -- Reduces the effectiveness of consecutive slaps
                 if timer.Exists("slapcooldown4"..target:SteamID64()) then
                     slapMult = 0
-                    ply:PrintColord(Color(200, 200, 200), "Your slap is at ", Color(255, 25, 25), "minimum power! ", Color(200, 200, 200), "Time to find a ", Color(255, 255, 255), "new target.")
+                    ply:PrintColored(Color(200, 200, 200), "Your slap is at ", Color(255, 25, 25), "minimum power! ", Color(200, 200, 200), "Time to find a ", Color(255, 255, 255), "new target.")
                     timer.Remove("slapcooldown3"..target:SteamID64())
                     timer.Create("slapcooldown3"..target:SteamID64(), 5, 1, function() end)
                 elseif timer.Exists("slapcooldown3"..target:SteamID64()) then
                     slapMult = 0.25
-                    ply:PrintColord(Color(200, 200, 200), "Your slap is feeling ", Color(255, 25, 25), "very weak! ", Color(200, 200, 200), "Try hitting ", Color(255, 255, 255), "someone else.")
+                    ply:PrintColored(Color(200, 200, 200), "Your slap is feeling ", Color(255, 25, 25), "very weak! ", Color(200, 200, 200), "Try hitting ", Color(255, 255, 255), "someone else.")
                     timer.Create("slapcooldown4"..target:SteamID64(), 5, 1, function() end)
                 elseif timer.Exists("slapcooldown2"..target:SteamID64()) then
                     slapMult = 0.5
-                    ply:PrintColord(Color(200, 200, 200), "Your slap is getting ", Color(255, 25, 25), "weaker! ", Color(200, 200, 200), "Maybe hit ", Color(255, 255, 255), "someone else.")
+                    ply:PrintColored(Color(200, 200, 200), "Your slap is getting ", Color(255, 25, 25), "weaker! ", Color(200, 200, 200), "Maybe hit ", Color(255, 255, 255), "someone else.")
                     timer.Create("slapcooldown3"..target:SteamID64(), 5, 1, function() end)
                 elseif timer.Exists("slapcooldown1"..target:SteamID64()) then
                     slapMult = 0.75
-                    ply:PrintColord(Color(200, 200, 200), "Your slap feels ", Color(255, 25, 25), "weaker ", Color(200, 200, 200), "as you hit ", Color(255, 255, 255), target:Name(), Color(200, 200, 200), " again!")
+                    ply:PrintColored(Color(200, 200, 200), "Your slap feels ", Color(255, 25, 25), "weaker ", Color(200, 200, 200), "as you hit ", Color(255, 255, 255), target:Name(), Color(200, 200, 200), " again!")
                     timer.Create("slapcooldown2"..target:SteamID64(), 5, 1, function() end)
                 else
-                    ply:UpdateScore(5, "You got 5 points for slapping "..target:Name().."!")
+                    ply:UpdateScore(5, "You got points for slapping "..target:Name().."!")
                     timer.Create("slapcooldown1"..target:SteamID64(), 5, 1, function() end)
                 end
                 local slapDirection = target:GetPos() - ply:GetPos()

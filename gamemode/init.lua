@@ -224,7 +224,6 @@ function StartCrafting()
                 ply:SetPlayed(true)
                 ply:SetLives(3)
                 ply:GiveTools()
-                ply:ChatPrint("You're set to playable.")
                 BBB.playing[ply] = true
                 amt = amt + 1
             else
@@ -302,7 +301,7 @@ end
 
 -- Transitions to the armageddon phase
 function EndBattle()
-    timer.Remove("checkforend")
+    timer.Remove("endbattle")
     StartArmageddon()
 end
 
@@ -336,7 +335,6 @@ function EndArmageddon()
     timer.Remove("checkforend")
     for k, ply in ipairs(player.GetAll()) do
         if IsValid(ply) then
-            ply:SetBoss(false)
             ply:FullStrip()
         end
     end
@@ -359,17 +357,20 @@ function StartScoring()
             if ply:GetBoss() then
                 ply:SetScore(ply:GetScore() / 2)
             end
-            -- Increases the scores of players who repeatedly lose (Resets when boss)
-            ply:SetScore(ply:GetScore() * ply:GetPity())
             ply:SetPity(ply:GetPity() + 0.2)
             playerScores[ply] = ply:GetScore()
         end
     end
-    local winner = table.SortByKey(playerScores)[1]
-    if winner then
+    local playerScoresSorted = table.SortByKey(playerScores)
+    local winner = playerScoresSorted[1]
+    if IsValid(winner) and winner:GetBoss() then
+        winner = playerScoresSorted[2]
+    end
+    if IsValid(winner) then
         winner:SetBoss(true)
         net.Start("WinnerMessage")
-        net.WriteString(winner:Name().." has won with "..tostring(math.ceil(winner:GetScore())).." points and has proven worthy of being Battle Boss!")
+        local winnerMessage = winner:Name().." has won with "..tostring(math.ceil(winner:GetScore())).." points and has proven worthy of being Battle Boss!"
+        net.WriteString(winnerMessage)
         net.Broadcast()
     end
     SetRound("Scoring")
@@ -381,6 +382,7 @@ function EndScoring()
     timer.Remove("endscoring")
     for k, ply in ipairs(player.GetAll()) do
         if IsValid(ply) then
+            ply:SetBoss(false)
             ply:FullReset()
         end
     end
@@ -403,8 +405,8 @@ function ResetTimers()
     for k, ply in ipairs(player.GetAll()) do
         if IsValid(ply) then
             ply:SetBoss(false)
-            BBB.bossLiving = false
         end
     end
+    BBB.bossLiving = false
     EndScoring()
 end

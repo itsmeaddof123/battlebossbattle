@@ -46,7 +46,7 @@ if SERVER then
             if inflictor:GetClass() == "bbb_craftingfists" then
                 attacker:GiveMat(1)
                 attacker:UpdateScore(3)
-            elseif inflictor:GetClass() == "bbb_energyzapper" then
+            elseif inflictor:GetClass() == "bbb_energyzapper" or inflictor:GetClass() == "bbb_slapbat" then
                 attacker:UpdateScore(1)
             end
         end

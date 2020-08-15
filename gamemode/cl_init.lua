@@ -155,7 +155,9 @@ end)
 
 -- Display the winner
 net.Receive("WinnerMessage", function(len)
-    messageTop(net.ReadString())
+    local winnerMessage = net.ReadString()
+    print(winnerMessage)
+    messageTop(winnerMessage)
 end)
 
 -- Updates the scoreboard cache with new player info

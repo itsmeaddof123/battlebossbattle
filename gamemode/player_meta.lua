@@ -516,7 +516,7 @@ function plyMeta:GetBoss() return self.boss end
 function plyMeta:SetBoss(arg)
     self.boss = arg
     if arg then
-        self:SetPity(0.6)
+        self:SetPity(0.5)
         self:SetWeakTo("Wild Card")
     end
     updateScoreboard("boss", arg, self)
@@ -525,7 +525,7 @@ end
 -- Track's the player's score
 function plyMeta:GetScore() return self.score end
 function plyMeta:UpdateScore(arg, msg)
-    self.score = self.score + arg
+    self.score = self.score + arg * self.pity
     updateScoreboard("score", math.floor(self.score), self)
     if msg and msg != "" then
         net.Start("ScoreMessage")
