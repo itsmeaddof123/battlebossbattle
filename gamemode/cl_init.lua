@@ -156,7 +156,6 @@ end)
 -- Display the winner
 net.Receive("WinnerMessage", function(len)
     local winnerMessage = net.ReadString()
-    print(winnerMessage)
     messageTop(winnerMessage)
 end)
 
